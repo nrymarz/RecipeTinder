@@ -10,8 +10,8 @@ export default function App() {
 
       </View>
       <View style={styles.buttonContainer}>
-        <Button title="Left" color="brown" style={styles.leftButton}></Button>
-        <Button title="Right" color="brown"></Button>
+        <Button title="Left" color="brown" style={styles.button}></Button>
+        <Button title="Right" color="brown" style={styles.button}></Button>
       </View>
       <StatusBar style="auto" />
     </View>
@@ -31,9 +31,8 @@ const styles = StyleSheet.create({
     width: "80%"
   },
   buttonContainer:{
-    flexDirection:'row'
-  },
-  leftButton:{
-    marginRight:'auto'
+    width:"80%",
+    flexDirection:'row',
+    justifyContent:"space-between"
   }
 });
