@@ -7,7 +7,7 @@ export default function RecipeContainer() {
   const [recipe, setRecipe] = useState(recipes[0])
   
   const handlePress = () =>{
-    setRecipe(recipes[Math.floor(Math.random()*4)])
+    setRecipe(recipes[Math.floor(Math.random()*3)])
   }
 
   const renderIngredients = ({item}) =>{
@@ -20,16 +20,16 @@ export default function RecipeContainer() {
   return (
     <>
       <View style={styles.recipeContainer}>
-        <Text>{recipe.title}</Text>
-        <Text>{recipe.chef}</Text>
-        <Text>Ingredients:</Text>
+        <Text style={{textAlign: 'center', paddingBottom:"7px"}}>{recipe.title}</Text>
+        <Text style={{textAlign: 'center', paddingBottom:"7px"}}>Chef: {recipe.chef}</Text>
+        <Text style={{textAlign: 'center'}}>Ingredients:</Text>
         <FlatList data={recipe.ingredients} renderItem={renderIngredients}></FlatList>
-        <Text>Directions:</Text>
+        <Text style={{textAlign: 'center'}}>Directions:</Text>
         <FlatList data={recipe.directions} renderItem={renderDirections}></FlatList>
       </View>
       <View style={styles.buttonContainer}>
-        <Button title="Left" color="brown" style={styles.button}></Button>
-        <Button title="Right" color="brown" style={styles.button}></Button>
+        <Button title="Left" color="brown" style={styles.button} onPress={handlePress}></Button>
+        <Button title="Right" color="brown" style={styles.button} onPress ={handlePress}></Button>
       </View>
     </>
   );
@@ -39,8 +39,7 @@ const styles = StyleSheet.create({
   recipeContainer:{
     backgroundColor: "white",
     height:"70%",
-    width: "80%",
-    alignContent: "center", 
+    width: "80%"
   },
   buttonContainer:{
     width:"80%",
