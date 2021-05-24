@@ -4,21 +4,28 @@ import recipes from './TestData'
 
 export default function RecipeContainer() {
 
-  [recipe, setRecipe] = useState(recipes[0])
-
-  handlePress = () =>{
+  const [recipe, setRecipe] = useState(recipes[0])
+  
+  const handlePress = () =>{
     setRecipe(recipes[Math.floor(Math.random()*4)])
+  }
+
+  const renderIngredients = ({item}) =>{
+    return <Text>{`- ${item}`}</Text>
+  }
+
+  const renderDirections = ({item,index}) =>{
+    return <Text>{`${index}. ${item}`}</Text>
   }
   return (
     <>
       <View style={styles.recipeContainer}>
-        <Text>Some Recipe</Text>
-        <Text>Ingredients:
-          <FlatList>{recipe.ingredients}</FlatList>
-        </Text>
-        <Text>Directions:
-          <FlatList>{recipe.diretions}</FlatList>
-        </Text>
+        <Text>{recipe.title}</Text>
+        <Text>{recipe.chef}</Text>
+        <Text>Ingredients:</Text>
+        <FlatList data={recipe.ingredients} renderItem={renderIngredients}></FlatList>
+        <Text>Directions:</Text>
+        <FlatList data={recipe.directions} renderItem={renderDirections}></FlatList>
       </View>
       <View style={styles.buttonContainer}>
         <Button title="Left" color="brown" style={styles.button}></Button>

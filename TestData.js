@@ -1,4 +1,4 @@
-recipes = [
+const recipes = [
     {
         title:"Strawberry Muffins",
         chef:"Ina Garten",
