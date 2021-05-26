@@ -20,9 +20,9 @@ export default function RecipeContainer() {
   return (
     <>
       <View style={styles.recipeContainer}>
-        <Text style={{textAlign: 'center', paddingBottom:"7px"}}>{recipe.title}</Text>
-        <Text style={{textAlign: 'center', paddingBottom:"7px"}}>Chef: {recipe.chef}</Text>
-        <Text style={{textAlign: 'center'}}>Ingredients:</Text>
+        <Text>{recipe.title}</Text>
+        <Text >Chef: {recipe.chef}</Text>
+        <Text >Ingredients:</Text>
         <FlatList data={recipe.ingredients} renderItem={renderIngredients}></FlatList>
         <Text style={{textAlign: 'center'}}>Directions:</Text>
         <FlatList data={recipe.directions} renderItem={renderDirections}></FlatList>
