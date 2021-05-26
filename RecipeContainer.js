@@ -15,7 +15,25 @@ export default function RecipeContainer() {
   }
 
   const renderDirections = ({item,index}) =>{
-    return <Text key={item.slice(20)}>{`${index}. ${item}`}</Text>
+    return(
+      <Text key={item.slice(20)}>
+        <Text style={{fontWeight:"bold"}}>{`${index}. `}</Text>
+        <Text>{item}</Text>
+      </Text>
+    )
+  }
+
+  const ingredientSeperator = () =>{
+    return(
+      <View
+        style={{
+          height:2,
+          width:"100%",
+          backgroundColor:'black',
+          marginBottom:8
+        }}
+      />
+    )
   }
   return (
     <>
@@ -25,7 +43,7 @@ export default function RecipeContainer() {
         <Text style={{paddingTop:10}}>Ingredients:</Text>
         <FlatList data={recipe.ingredients} style={{backgroundColor:'lightgreen'}} renderItem={renderIngredients}></FlatList>
         <Text style={{paddingTop:15}}>Directions:</Text>
-        <FlatList style={{backgroundColor:"pink"}}data={recipe.directions} renderItem={renderDirections}></FlatList>
+        <FlatList style={{backgroundColor:"pink"}} ItemSeparatorComponent={ingredientSeperator} data={recipe.directions} renderItem={renderDirections}></FlatList>
       </View>
       <View style={styles.buttonContainer}>
         <Button title="Left" color="brown" style={styles.button} onPress={handlePress}></Button>
