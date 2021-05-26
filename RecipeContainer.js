@@ -11,11 +11,11 @@ export default function RecipeContainer() {
   }
 
   const renderIngredients = ({item}) =>{
-    return <Text>{`- ${item}`}</Text>
+    return <Text key = {item.slice(20)}>{`- ${item}`}</Text>
   }
 
   const renderDirections = ({item,index}) =>{
-    return <Text>{`${index}. ${item}`}</Text>
+    return <Text key={item.slice(20)}>{`${index}. ${item}`}</Text>
   }
   return (
     <>
