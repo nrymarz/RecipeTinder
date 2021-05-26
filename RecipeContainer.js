@@ -20,12 +20,12 @@ export default function RecipeContainer() {
   return (
     <>
       <View style={styles.recipeContainer}>
-        <Text>{recipe.title}</Text>
-        <Text >Chef: {recipe.chef}</Text>
-        <Text >Ingredients:</Text>
-        <FlatList data={recipe.ingredients} renderItem={renderIngredients}></FlatList>
-        <Text style={{textAlign: 'center'}}>Directions:</Text>
-        <FlatList data={recipe.directions} renderItem={renderDirections}></FlatList>
+        <Text style={{textAlign:'center', paddingTop:12}}>{recipe.title}</Text>
+        <Text style={{textAlign:'center', paddingTop:10}}>Chef: {recipe.chef}</Text>
+        <Text style={{paddingTop:10}}>Ingredients:</Text>
+        <FlatList data={recipe.ingredients} style={{backgroundColor:'lightgreen'}} renderItem={renderIngredients}></FlatList>
+        <Text style={{paddingTop:15}}>Directions:</Text>
+        <FlatList style={{backgroundColor:"pink"}}data={recipe.directions} renderItem={renderDirections}></FlatList>
       </View>
       <View style={styles.buttonContainer}>
         <Button title="Left" color="brown" style={styles.button} onPress={handlePress}></Button>
