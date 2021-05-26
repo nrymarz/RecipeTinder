@@ -1,15 +1,18 @@
-import { StatusBar } from 'expo-status-bar';
+import 'react-native-gesture-handler'
+import { StatusBar } from 'expo-status-bar'
 import React from 'react';
 import RecipeContainer from "./RecipeContainer"
-import { StyleSheet, Text, View, Button } from 'react-native';
-import recipes from './TestData'
+import { StyleSheet, Text, View, Button } from 'react-native'
+import {NavigationContainer} from '@react-navigation/native'
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <RecipeContainer/>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <View style={styles.container}>
+        <RecipeContainer/>
+        <StatusBar style="auto" />
+      </View>
+    </NavigationContainer>
   );
 }
 

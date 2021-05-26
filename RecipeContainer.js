@@ -11,12 +11,12 @@ export default function RecipeContainer() {
   }
 
   const renderIngredients = ({item}) =>{
-    return <Text key = {item.slice(20)}>{`- ${item}`}</Text>
+    return <Text>{`- ${item}`}</Text>
   }
 
   const renderDirections = ({item,index}) =>{
     return(
-      <Text key={item.slice(20)}>
+      <Text >
         <Text style={{fontWeight:"bold"}}>{`${index}. `}</Text>
         <Text>{item}</Text>
       </Text>
@@ -42,9 +42,20 @@ export default function RecipeContainer() {
         <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}>{recipe.title}</Text>
         <Text style={{textAlign:'center', paddingTop:10}}>{recipe.chef}</Text>
         <Text style={{paddingTop:10, fontWeight:"bold"}}>Ingredients</Text>
-        <FlatList data={recipe.ingredients} style={{backgroundColor:'lightgreen'}} renderItem={renderIngredients}></FlatList>
+        <FlatList 
+          keyExtractor={(item)=>item.slice(20)} 
+          data={recipe.ingredients} 
+          style={{backgroundColor:'lightgreen'}} 
+          renderItem={renderIngredients}
+        />
         <Text style={{paddingTop:15, fontWeight:"bold"}}>Directions</Text>
-        <FlatList style={{backgroundColor:"pink"}} ItemSeparatorComponent={ingredientSeperator} data={recipe.directions} renderItem={renderDirections}></FlatList>
+        <FlatList 
+          style={{backgroundColor:"pink"}} 
+          ItemSeparatorComponent={ingredientSeperator} 
+          data={recipe.directions} 
+          renderItem={renderDirections}
+          keyExtractor={(item)=>item.slice(20)}
+        />
       </View>
       <View style={styles.buttonContainer}>
         <Button title="Left" color="brown" style={styles.button} onPress={handlePress}></Button>
