@@ -30,7 +30,8 @@ export default function RecipeContainer() {
           height:2,
           width:"100%",
           backgroundColor:'black',
-          marginBottom:8
+          marginBottom:4,
+          marginTop:4
         }}
       />
     )
@@ -38,11 +39,11 @@ export default function RecipeContainer() {
   return (
     <>
       <View style={styles.recipeContainer}>
-        <Text style={{textAlign:'center', paddingTop:12}}>{recipe.title}</Text>
-        <Text style={{textAlign:'center', paddingTop:10}}>Chef: {recipe.chef}</Text>
-        <Text style={{paddingTop:10}}>Ingredients:</Text>
+        <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}>{recipe.title}</Text>
+        <Text style={{textAlign:'center', paddingTop:10}}>{recipe.chef}</Text>
+        <Text style={{paddingTop:10, fontWeight:"bold"}}>Ingredients</Text>
         <FlatList data={recipe.ingredients} style={{backgroundColor:'lightgreen'}} renderItem={renderIngredients}></FlatList>
-        <Text style={{paddingTop:15}}>Directions:</Text>
+        <Text style={{paddingTop:15, fontWeight:"bold"}}>Directions</Text>
         <FlatList style={{backgroundColor:"pink"}} ItemSeparatorComponent={ingredientSeperator} data={recipe.directions} renderItem={renderDirections}></FlatList>
       </View>
       <View style={styles.buttonContainer}>
@@ -55,12 +56,12 @@ export default function RecipeContainer() {
   
 const styles = StyleSheet.create({
   recipeContainer:{
-    backgroundColor: "white",
+    backgroundColor: 'rgba(250,250,250,.85)',
     height:"70%",
-    width: "80%"
+    width: "100%"
   },
   buttonContainer:{
-    width:"80%",
+    width:"100%",
     flexDirection:'row',
     justifyContent:"space-between"
   }
