@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
-import recipes from './TestData'
+import recipes from '../TestData'
 
 export default function HomePage() {
 
