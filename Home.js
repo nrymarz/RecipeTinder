@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import recipes from './TestData'
 
-export default function RecipeContainer() {
+export default function HomePage() {
 
   const [recipe, setRecipe] = useState(recipes[0])
   
@@ -37,7 +37,7 @@ export default function RecipeContainer() {
     )
   }
   return (
-    <>
+    <View style={styles.container}>
       <View style={styles.recipeContainer}>
         <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}>{recipe.title}</Text>
         <Text style={{textAlign:'center', paddingTop:10}}>{recipe.chef}</Text>
@@ -61,11 +61,17 @@ export default function RecipeContainer() {
         <Button title="Left" color="brown" style={styles.button} onPress={handlePress}></Button>
         <Button title="Right" color="brown" style={styles.button} onPress ={handlePress}></Button>
       </View>
-    </>
+    </View>
   );
 }
   
 const styles = StyleSheet.create({
+  container:{
+    flex: 1,
+    backgroundColor: 'orange',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   recipeContainer:{
     backgroundColor: 'rgba(250,250,250,.85)',
     height:"70%",
