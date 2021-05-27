@@ -2,11 +2,12 @@ import React, {useState} from 'react';
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import recipes from '../TestData'
 
-export default function HomePage() {
+export default function HomePage({navigation, addRecipe}) {
 
   const [recipe, setRecipe] = useState(recipes[0])
   
   const handlePress = () =>{
+    addRecipe(prevRecipes => [...prevRecipes, recipe])
     setRecipe(recipes[Math.floor(Math.random()*3)])
   }
 
@@ -38,6 +39,7 @@ export default function HomePage() {
   }
   return (
     <View style={styles.container}>
+      <Button title ="Go to My Recipes" onPress={()=>navigation.navigate('My Recipes')}></Button>
       <View style={styles.recipeContainer}>
         <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}>{recipe.title}</Text>
         <Text style={{textAlign:'center', paddingTop:10}}>{recipe.chef}</Text>
