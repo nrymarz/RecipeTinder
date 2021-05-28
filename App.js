@@ -9,13 +9,13 @@ import {createStackNavigator} from '@react-navigation/stack'
 const Stack = createStackNavigator()
 
 export default function App() {
-  const [recipes,addRecipe] = useState([])
+  const [recipes,setRecipes] = useState([])
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Find Recipes">
-          {props => <HomePage {...props} addRecipe = {addRecipe}/>}
+          {props => <HomePage {...props} addRecipe = {setRecipes}/>}
         </Stack.Screen>
 
         <Stack.Screen name="My Recipes">

@@ -24,7 +24,7 @@ export default function HomePage({navigation, addRecipe}) {
     )
   }
 
-  const ingredientSeperator = () =>{
+  const directionSeperator = () =>{
     return(
       <View
         style={{
@@ -53,10 +53,9 @@ export default function HomePage({navigation, addRecipe}) {
         <Text style={{paddingTop:15, fontWeight:"bold"}}>Directions</Text>
         <FlatList 
           style={{backgroundColor:"pink"}} 
-          ItemSeparatorComponent={ingredientSeperator} 
+          ItemSeparatorComponent={directionSeperator} 
           data={recipe.directions} 
           renderItem={renderDirections}
-          keyExtractor={(item)=>item.slice(20)}
         />
       </View>
       <View style={styles.buttonContainer}>
