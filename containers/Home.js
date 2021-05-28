@@ -45,10 +45,10 @@ export default function HomePage({navigation, addRecipe}) {
         <Text style={{textAlign:'center', paddingTop:10}}>{recipe.chef}</Text>
         <Text style={{paddingTop:10, fontWeight:"bold"}}>Ingredients</Text>
         <FlatList 
-          keyExtractor={(item)=>item.slice(20)} 
           data={recipe.ingredients} 
           style={{backgroundColor:'lightgreen'}} 
           renderItem={renderIngredients}
+          keyExtractor={item => item}
         />
         <Text style={{paddingTop:15, fontWeight:"bold"}}>Directions</Text>
         <FlatList 
@@ -56,6 +56,7 @@ export default function HomePage({navigation, addRecipe}) {
           ItemSeparatorComponent={directionSeperator} 
           data={recipe.directions} 
           renderItem={renderDirections}
+          keyExtractor={item => item}
         />
       </View>
       <View style={styles.buttonContainer}>
