@@ -3,11 +3,11 @@ import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 
 
 export default function MyRecipes({navigation, recipes}){
-
-    const renderRecipe = (recipe) =>{
+    const renderRecipe = ({item}) =>{
+        console.log(item)
         return(
             <View>
-                <Text>{recipe.title} by: {recipe.chef}</Text>
+                <Text>{item.title} by {item.chef}</Text>
             </View>
         )
     }
@@ -19,7 +19,6 @@ export default function MyRecipes({navigation, recipes}){
             <FlatList 
                 data={recipes}
                 renderItem={renderRecipe}
-                keyExtractor={item => item.title}
             />
         </View>
     )

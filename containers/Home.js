@@ -4,11 +4,24 @@ import recipes from '../TestData'
 
 export default function HomePage({navigation, addRecipe}) {
 
-  const [recipe, setRecipe] = useState(recipes[0])
+  const [recipeIndex,setRecipeIndex] = useState(0)
+  const [recipe, setRecipe] = useState(recipes[recipeIndex])
   
-  const handlePress = () =>{
+  const handlePressRight = () =>{
     addRecipe(prevRecipes => [...prevRecipes, recipe])
-    setRecipe(recipes[Math.floor(Math.random()*3)])
+    newRecipe()
+  }
+
+  const handlePressLeft = () =>{
+    newRecipe()
+  }
+
+  const newRecipe = () =>{
+    setRecipeIndex(prevIndex =>{
+      prevIndex = prevIndex===2 ? 0 : prevIndex+1
+      return prevIndex
+    })
+    setRecipe(recipes[recipeIndex])
   }
 
   const renderIngredients = ({item}) =>{
@@ -60,8 +73,8 @@ export default function HomePage({navigation, addRecipe}) {
         />
       </View>
       <View style={styles.buttonContainer}>
-        <Button title="Left" color="brown" style={styles.button} onPress={handlePress}></Button>
-        <Button title="Right" color="brown" style={styles.button} onPress ={handlePress}></Button>
+        <Button title="Left" color="brown" style={styles.button} onPress={handlePressLeft}></Button>
+        <Button title="Right" color="brown" style={styles.button} onPress ={handlePressRight}></Button>
       </View>
     </View>
   );
