@@ -1,17 +1,42 @@
-import { HeaderTitle } from '@react-navigation/stack';
 import React from 'react';
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 
 
 export default function Recipe({route}){
     const {title, chef, ingredients, directions} = route.params.recipe
+
+    const renderIngredients = ({item}) =>{
+        return <Text>{`- ${item}`}</Text>
+      }
+    
+    const renderDirections = ({item,index}) =>{
     return(
-        <View>
-            <Text>{title}</Text>
-            <Text>{chef}</Text>
+        <Text >
+        <Text style={{fontWeight:"bold"}}>{`${index}. `}</Text>
+        <Text>{item}</Text>
+        </Text>
+    )}
+
+    const directionSeperator = () =>{
+    return(
+        <View
+        style={{
+            height:2,
+            width:"100%",
+            backgroundColor:'black',
+            marginBottom:4,
+            marginTop:4
+        }}
+        />
+    )}
+
+    return(
+        <View style={styles.container}>
+            <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}>{title}</Text>
+            <Text style={{textAlign:'center', paddingTop:10}}>{chef}</Text>
             <Text style={{paddingTop:15, fontWeight:"bold"}}>Ingredients</Text>
             <FlatList 
-                data={recipe.ingredients} 
+                data={ingredients} 
                 style={{backgroundColor:'lightgreen'}} 
                 renderItem={renderIngredients}
                 keyExtractor={item => item}
@@ -20,7 +45,7 @@ export default function Recipe({route}){
             <FlatList 
                 style={{backgroundColor:"pink"}} 
                 ItemSeparatorComponent={directionSeperator} 
-                data={recipe.directions} 
+                data={directions} 
                 renderItem={renderDirections}
                 keyExtractor={item => item}
             />
@@ -29,4 +54,8 @@ export default function Recipe({route}){
 }
 
 const styles = StyleSheet.create({
+    container:{
+        backgroundColor:'orange',
+        height:"100%"
+    }
 })
