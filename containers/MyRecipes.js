@@ -6,7 +6,7 @@ export default function MyRecipes({navigation, recipes}){
     const renderRecipe = ({item}) =>{
         return(
             <View style={{paddingTop:5}}>
-                <Text>{item.title} by {item.chef}</Text>
+                <Text onPress={ () => navigation.navigate('Recipe Page',{recipe: item})}>{item.title} by {item.chef}</Text>
             </View>
         )
     }
