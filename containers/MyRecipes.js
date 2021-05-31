@@ -4,9 +4,8 @@ import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 
 export default function MyRecipes({navigation, recipes}){
     const renderRecipe = ({item}) =>{
-        console.log(item)
         return(
-            <View>
+            <View style={{paddingTop:5}}>
                 <Text>{item.title} by {item.chef}</Text>
             </View>
         )
@@ -15,7 +14,6 @@ export default function MyRecipes({navigation, recipes}){
     return(
         <View>
             <Button title="Find New Recipes" onPress={() => navigation.navigate("Find Recipes")}></Button>
-            <Text>My Recipes</Text>
             <FlatList 
                 data={recipes}
                 renderItem={renderRecipe}
