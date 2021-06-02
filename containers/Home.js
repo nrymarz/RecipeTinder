@@ -1,8 +1,11 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import recipes from '../TestData'
+import findRecipe from '../scraper'
 
 export default function HomePage({navigation, addRecipe}) {
+
+  findRecipe()
 
   const [recipeIndex,setRecipeIndex] = useState(0)
   const [recipe, setRecipe] = useState(recipes[recipeIndex])
