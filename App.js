@@ -11,9 +11,6 @@ import {parse} from 'node-html-parser'
 
 const Stack = createStackNavigator()
 
-axios.get("https://www.foodnetwork.com/search/p/1/CUSTOM_FACET:RECIPE_FACET")
-  .then( res => console.log(res.data))
-
 export default function App() {
   const [recipes,setRecipes] = useState([])
 
