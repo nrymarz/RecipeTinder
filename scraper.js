@@ -4,17 +4,18 @@ import {parse} from 'node-html-parser'
 const recipeIndex = "https://www.foodnetwork.com/search/p/1/CUSTOM_FACET:RECIPE_FACET"
 
 let dom = ''
-
-export default function findRecipe(){
+let recipeObj
+export default function findRecipe(setRecipe){
     axios.get(recipeIndex)
         .then(res => dom = parse(res.data))
-        .then(openRecipe)
+        .then(() => openRecipe(setRecipe))
 }
 
-function openRecipe(){
+function openRecipe(setRecipe){
     const recipe = dom.querySelector('h3 a')
      axios.get("https://" + recipe.attrs.href.slice(2))
-         .then(res => createRecipeObj(parse(res.data)))
+         .then(res => recipeObj =  createRecipeObj(parse(res.data)))
+         .then(() => setRecipe(recipeObj))
 }
 
 function createRecipeObj(recipe){

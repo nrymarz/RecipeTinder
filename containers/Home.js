@@ -5,8 +5,6 @@ import findRecipe from '../scraper'
 
 export default function HomePage({navigation, addRecipe}) {
 
-  findRecipe()
-
   const [recipeIndex,setRecipeIndex] = useState(0)
   const [recipe, setRecipe] = useState(recipes[recipeIndex])
   
@@ -53,6 +51,8 @@ export default function HomePage({navigation, addRecipe}) {
       />
     )
   }
+
+  findRecipe(setRecipe)
   return (
     <View style={styles.container}>
       <Button title ="Go to My Recipes" onPress={()=>navigation.navigate('My Recipes')}></Button>
