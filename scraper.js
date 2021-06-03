@@ -18,5 +18,16 @@ function openRecipe(){
 }
 
 function createRecipeObj(recipe){
-    console.log(recipe)
+    const title = recipe.querySelector(".o-AssetTitle__a-HeadlineText").innerHTML
+    const chef = recipe.querySelector(".o-Attribution__a-Name a").innerHTML
+    let ingredients = recipe.querySelectorAll(".o-Ingredients__a-Ingredient .o-Ingredients__a-Ingredient--CheckboxLabel").slice(1)
+    ingredients = ingredients.map(i => i.innerHTML.trim())
+    let directions = recipe.querySelectorAll(".o-Method__m-Body ol li").slice(0,-1)
+    directions = directions.map(d => d.innerHTML.trim())
+    return {
+        title,
+        chef,
+        ingredients,
+        directions
+    }
 }
