@@ -13,7 +13,7 @@ export default function findRecipe(){
 
 function openRecipe(){
     const recipe = dom.querySelector('h3 a')
-     axios.get(recipe.attrs.href)
+     axios.get("https://" + recipe.attrs.href.slice(2))
          .then(res => createRecipeObj(parse(res.data)))
 }
 
