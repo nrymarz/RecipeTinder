@@ -1,28 +1,19 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
-import recipes from '../TestData'
 import findRecipe from '../scraper'
 
 export default function HomePage({navigation, addRecipe}) {
 
-  const [recipeIndex,setRecipeIndex] = useState(0)
-  const [recipe, setRecipe] = useState(recipes[recipeIndex])
+  const [recipe, setRecipe] = useState(findRecipe())
   
   const handlePressRight = () =>{
-    addRecipe(prevRecipes => [...prevRecipes, recipe])
-    newRecipe()
+    const r = findRecipe()
+    addRecipe(r)
+    setRecipe(r)
   }
 
   const handlePressLeft = () =>{
-    newRecipe()
-  }
-
-  const newRecipe = () =>{
-    setRecipeIndex(prevIndex =>{
-      prevIndex = prevIndex===2 ? 0 : prevIndex+1
-      return prevIndex
-    })
-    setRecipe(recipes[recipeIndex])
+    setRecipe(findRecipe())
   }
 
   const renderIngredients = ({item}) =>{
@@ -52,7 +43,6 @@ export default function HomePage({navigation, addRecipe}) {
     )
   }
 
-  findRecipe(setRecipe)
   return (
     <View style={styles.container}>
       <Button title ="Go to My Recipes" onPress={()=>navigation.navigate('My Recipes')}></Button>

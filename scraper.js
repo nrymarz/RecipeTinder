@@ -12,7 +12,9 @@ export default function findRecipe(setRecipe){
 }
 
 function openRecipe(setRecipe){
-    const recipe = dom.querySelector('h3 a')
+    const num = Math.floor(Math.random()*10)
+    const recipes = dom.querySelectorAll('h3 a')
+    const recipe = recipes[num]
      axios.get("https://" + recipe.attrs.href.slice(2))
          .then(res => recipeObj =  createRecipeObj(parse(res.data)))
          .then(() => setRecipe(recipeObj))
