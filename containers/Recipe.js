@@ -12,8 +12,8 @@ export default function Recipe({route}){
     const renderDirections = ({item,index}) =>{
     return(
         <Text >
-        <Text style={{fontWeight:"bold"}}>{`${index}. `}</Text>
-        <Text>{item}</Text>
+            <Text style={{fontWeight:"bold"}}>{`${index}. `}</Text>
+            <Text>{item}</Text>
         </Text>
     )}
 
