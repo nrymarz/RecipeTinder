@@ -1,19 +1,23 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import findRecipe from '../scraper'
 
 export default function HomePage({navigation, addRecipe}) {
 
-  const [recipe, setRecipe] = useState(findRecipe())
+  const [recipe, setRecipe] = useState({})
+
+  useEffect(()=>{
+    findRecipe(setRecipe)
+  },[])
   
   const handlePressRight = () =>{
-    const r = findRecipe()
+    const r = findRecipe(setRecipe)
     addRecipe(r)
     setRecipe(r)
   }
 
   const handlePressLeft = () =>{
-    setRecipe(findRecipe())
+    findRecipe(setRecipe)
   }
 
   const renderIngredients = ({item}) =>{
@@ -42,7 +46,7 @@ export default function HomePage({navigation, addRecipe}) {
       />
     )
   }
-
+  
   return (
     <View style={styles.container}>
       <Button title ="Go to My Recipes" onPress={()=>navigation.navigate('My Recipes')}></Button>
@@ -54,7 +58,7 @@ export default function HomePage({navigation, addRecipe}) {
           data={recipe.ingredients} 
           style={{backgroundColor:'lightgreen'}} 
           renderItem={renderIngredients}
-          keyExtractor={item => item}
+          keyExtractor={(item,idx) => item + idx}
         />
         <Text style={{paddingTop:15, fontWeight:"bold"}}>Directions</Text>
         <FlatList 
