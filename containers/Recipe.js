@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
-import findRecipe from '../scraper';
 
 
 export default function Recipe({route}){

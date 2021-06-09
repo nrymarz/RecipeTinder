@@ -17,6 +17,7 @@ export default function MyRecipes({navigation, recipes}){
             <FlatList 
                 data={recipes}
                 renderItem={renderRecipe}
+                keyExtractor={(item) => item.title + item.chef}
             />
         </View>
     )
