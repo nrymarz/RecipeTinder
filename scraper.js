@@ -22,8 +22,10 @@ function openRecipe(setRecipe){
 }
 
 function createRecipeObj(recipe){
-    const title = recipe.querySelector(".o-AssetTitle__a-HeadlineText").innerHTML || "Recipe Title Unavailable"
-    const chef = recipe.querySelector(".o-Attribution__a-Name a").innerHTML || "Chef Unknown"
+    let title = recipe.querySelector(".o-AssetTitle__a-HeadlineText")
+    title = title ? title.innerHTML : "Recipe Title Unavailable"
+    let chef = recipe.querySelector(".o-Attribution__a-Name a")
+    chef = chef ? chef.innerHTML : "Chef Unkown"
     let ingredients = recipe.querySelectorAll(".o-Ingredients__a-Ingredient .o-Ingredients__a-Ingredient--CheckboxLabel").slice(1) || ["Ingredients Unavailable"]
     ingredients = ingredients.map(i => i.innerHTML.trim())
     let directions = recipe.querySelectorAll(".o-Method__m-Body ol li").slice(0,-1) || ["Directions Unavailable"]
