@@ -12,7 +12,9 @@ export default function HomePage({navigation, addRecipe}) {
   
   const handlePressRight = () =>{
     findRecipe(setRecipe)
-    addRecipe(prevRecipes => [...prevRecipes, recipe])
+    addRecipe(prevRecipes =>{
+      if(!prevRecipes.includes(recipe)) return [...prevRecipes, recipe]
+    })
   }
 
   const handlePressLeft = () =>{

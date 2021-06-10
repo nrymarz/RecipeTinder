@@ -2,8 +2,12 @@ swipe gesture instead of buttons
 personal recipe pages
 fix layout
 
+add loading notfiication
+no repeat recipes into app state
+
 
 webscraper -- foodnetwork/custom JS Class
+    add error handling when recipes dont have certain attributes -title/chef/ingredients
 upvote/downvote recipes
 
 custom user recipes

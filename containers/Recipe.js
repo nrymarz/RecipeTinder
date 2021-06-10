@@ -39,7 +39,7 @@ export default function Recipe({route}){
                 data={ingredients} 
                 style={{backgroundColor:'lightgreen'}} 
                 renderItem={renderIngredients}
-                keyExtractor={item => item}
+                keyExtractor={(item,idx) => item+idx}
             />
             <Text style={{paddingTop:15, fontWeight:"bold"}}>Directions</Text>
             <FlatList 
@@ -47,7 +47,7 @@ export default function Recipe({route}){
                 ItemSeparatorComponent={directionSeperator} 
                 data={directions} 
                 renderItem={renderDirections}
-                keyExtractor={item => item}
+                keyExtractor={(item,idx) => item+idx}
             />
         </View>
     )

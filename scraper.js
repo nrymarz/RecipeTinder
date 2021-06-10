@@ -22,11 +22,11 @@ function openRecipe(setRecipe){
 }
 
 function createRecipeObj(recipe){
-    const title = recipe.querySelector(".o-AssetTitle__a-HeadlineText").innerHTML
-    const chef = recipe.querySelector(".o-Attribution__a-Name a").innerHTML
-    let ingredients = recipe.querySelectorAll(".o-Ingredients__a-Ingredient .o-Ingredients__a-Ingredient--CheckboxLabel").slice(1)
+    const title = recipe.querySelector(".o-AssetTitle__a-HeadlineText").innerHTML || "Recipe Title Unavailable"
+    const chef = recipe.querySelector(".o-Attribution__a-Name a").innerHTML || "Chef Unknown"
+    let ingredients = recipe.querySelectorAll(".o-Ingredients__a-Ingredient .o-Ingredients__a-Ingredient--CheckboxLabel").slice(1) || ["Ingredients Unavailable"]
     ingredients = ingredients.map(i => i.innerHTML.trim())
-    let directions = recipe.querySelectorAll(".o-Method__m-Body ol li").slice(0,-1)
+    let directions = recipe.querySelectorAll(".o-Method__m-Body ol li").slice(0,-1) || ["Directions Unavailable"]
     directions = directions.map(d => d.innerHTML.trim())
     return {
         title,

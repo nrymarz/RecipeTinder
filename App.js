@@ -6,8 +6,7 @@ import MyRecipes from './containers/MyRecipes'
 import Recipe from './containers/Recipe'
 import {NavigationContainer} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack'
-import axios from 'axios'
-import {parse} from 'node-html-parser'
+
 
 const Stack = createStackNavigator()
 
