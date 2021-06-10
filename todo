@@ -7,7 +7,9 @@ no repeat recipes into app state
 
 
 webscraper -- foodnetwork/custom JS Class
-    add error handling when recipes dont have certain attributes -title/chef/ingredients
+    select random page
+    
+   
 upvote/downvote recipes
 
 custom user recipes
