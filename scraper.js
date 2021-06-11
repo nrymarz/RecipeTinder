@@ -28,10 +28,10 @@ function createRecipeObj(recipe){
     title = title ? title.innerHTML : "Recipe Title Unavailable"
     let chef = recipe.querySelector(".o-Attribution__a-Name a")
     chef = chef ? chef.innerHTML : "Chef Unkown"
-    let ingredients = recipe.querySelectorAll(".o-Ingredients__a-Ingredient .o-Ingredients__a-Ingredient--CheckboxLabel").slice(1) || ["Ingredients Unavailable"]
-    ingredients = ingredients.map(i => i.innerHTML.trim())
-    let directions = recipe.querySelectorAll(".o-Method__m-Body ol li").slice(0,-1) || ["Directions Unavailable"]
-    directions = directions.map(d => d.innerHTML.trim())
+    let ingredients = recipe.querySelectorAll(".o-Ingredients__a-Ingredient .o-Ingredients__a-Ingredient--CheckboxLabel")
+    ingredients = ingredients ? ingredients.slice(1).map(i => i.innerHTML.trim()) : ["Ingredients Unavailable"]
+    let directions = recipe.querySelectorAll(".o-Method__m-Body ol li")
+    directions = directions ? directions.slice(0,-1).map(d => d.innerHTML.trim()) : ["Directions Unavailable"]
     return {
         title,
         chef,
