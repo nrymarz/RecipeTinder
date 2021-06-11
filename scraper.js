@@ -1,12 +1,11 @@
 import axios from 'axios'
 import {parse} from 'node-html-parser'
 
-const pageNum = Math.floor(Math.random()*7000)
-const recipeIndex = `https://www.foodnetwork.com/search/p/${pageNum}/CUSTOM_FACET:RECIPE_FACET`
-
 let dom = ''
 let recipeObj
 export default function findRecipe(setRecipe, setLoading){
+    const pageNum = Math.floor(Math.random()*7000)
+    const recipeIndex = `https://www.foodnetwork.com/search/p/${pageNum}/CUSTOM_FACET:RECIPE_FACET` 
     axios.get(recipeIndex)
         .then(res => dom = parse(res.data))
         .then(() => openRecipe(setRecipe, setLoading))
