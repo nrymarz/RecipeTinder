@@ -1,13 +1,12 @@
 swipe gesture instead of buttons
-personal recipe pages
 fix layout
 
-add loading notfiication
+add loading notfiication styling
 no repeat recipes into app state
 
 
 webscraper -- foodnetwork/custom JS Class
-    select random page
+    fetch different sites?
     
    
 upvote/downvote recipes
