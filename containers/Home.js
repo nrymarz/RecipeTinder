@@ -51,14 +51,6 @@ export default function HomePage({navigation, addRecipe}) {
       />
     )
   }
-
-  if(loading){
-    return(
-      <View styles={styles.container}>
-        <Text>Loading</Text>
-      </View>
-    )
-  }
   
   return (
     <View style={styles.container}>

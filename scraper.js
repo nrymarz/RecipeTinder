@@ -20,6 +20,7 @@ function openRecipe(setRecipe, setLoading){
          .then(res => recipeObj =  createRecipeObj(parse(res.data)))
          .then(() => setRecipe(recipeObj))
          .then(() => setLoading(false))
+         
 }
 
 function createRecipeObj(recipe){
