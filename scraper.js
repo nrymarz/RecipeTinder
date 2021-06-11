@@ -5,13 +5,13 @@ const recipeIndex = "https://www.foodnetwork.com/search/p/1/CUSTOM_FACET:RECIPE_
 
 let dom = ''
 let recipeObj
-export default function findRecipe(setRecipe){
+export default function findRecipe(setRecipe, setLoading){
     axios.get(recipeIndex)
         .then(res => dom = parse(res.data))
-        .then(() => openRecipe(setRecipe))
+        .then(() => openRecipe(setRecipe, setLoading))
 }
 
-function openRecipe(setRecipe){
+function openRecipe(setRecipe, setLoading){
     const num = Math.floor(Math.random()*10)
     console.log(num)
     const recipes = dom.querySelectorAll('h3 a')
@@ -19,6 +19,7 @@ function openRecipe(setRecipe){
      axios.get("https://" + recipe.attrs.href.slice(2))
          .then(res => recipeObj =  createRecipeObj(parse(res.data)))
          .then(() => setRecipe(recipeObj))
+         .then(() => setLoading(false))
 }
 
 function createRecipeObj(recipe){

@@ -5,9 +5,10 @@ import findRecipe from '../scraper'
 export default function HomePage({navigation, addRecipe}) {
 
   const [recipe, setRecipe] = useState({})
+  const [loading, setLoading] = useState(true)
 
   useEffect(()=>{
-    findRecipe(setRecipe)
+    findRecipe(setRecipe, setLoading)
   },[])
   
   const handlePressRight = () =>{
@@ -15,11 +16,13 @@ export default function HomePage({navigation, addRecipe}) {
       if(!prevRecipes.find(r => r.chef === recipe.chef && r.title === recipe.title)) return [...prevRecipes, recipe]
       else return prevRecipes
     })
-    findRecipe(setRecipe)
+    setLoading(true)
+    findRecipe(setRecipe, setLoading)
   }
 
   const handlePressLeft = () =>{
-    findRecipe(setRecipe)
+    setLoading(true)
+    findRecipe(setRecipe, setLoading)
   }
 
   const renderIngredients = ({item}) =>{
@@ -46,6 +49,14 @@ export default function HomePage({navigation, addRecipe}) {
           marginTop:4
         }}
       />
+    )
+  }
+
+  if(loading){
+    return(
+      <View styles={styles.container}>
+        <Text>Loading</Text>
+      </View>
     )
   }
   
