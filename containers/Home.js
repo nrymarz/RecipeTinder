@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Button, FlatList, Image } from 'react-native';
 import findRecipe from '../scraper'
 
 export default function HomePage({navigation, addRecipe}) {
@@ -51,13 +51,16 @@ export default function HomePage({navigation, addRecipe}) {
       />
     )
   }
+
+  console.log(recipe)
   
   return (
     <View style={styles.container}>
       <Button title ="Go to My Recipes" onPress={()=>navigation.navigate('My Recipes')}></Button>
       <View style={styles.recipeContainer}>
         <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}>{loading ? "Loading..." : recipe.title}</Text>
-        <Text style={{textAlign:'center', paddingTop:10}}>{loading ? "" : recipe.chef}</Text>
+        <Text style={{textAlign:'center', paddingTop:5}}>{loading ? "" : recipe.chef}</Text>
+        <Image style={{width:100, height:80}} source={recipe.image}/>
         <Text style={{paddingTop:10, fontWeight:"bold"}}>Ingredients</Text>
         <FlatList 
           data={loading ? ["Loading..."] : recipe.ingredients} 
