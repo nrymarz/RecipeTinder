@@ -2,10 +2,13 @@ swipe gesture instead of buttons
 fix layout
 
 add loading notfiication styling
-no repeat recipes into app state
+    disable buttons while loading
+        buttons different color while loading...
+
 
 
 webscraper -- foodnetwork/custom JS Class
+    pictures
     fetch different sites?
     
    

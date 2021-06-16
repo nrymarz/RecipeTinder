@@ -91,8 +91,8 @@ const styles = StyleSheet.create({
   },
   recipeContainer:{
     backgroundColor: 'rgba(250,250,250,.85)',
-    height:"70%",
-    width: "100%"
+    height:"85%",
+    width: "90%"
   },
   buttonContainer:{
     width:"100%",
