@@ -56,11 +56,11 @@ export default function HomePage({navigation, addRecipe}) {
     <View style={styles.container}>
       <Button title ="Go to My Recipes" onPress={()=>navigation.navigate('My Recipes')}></Button>
       <View style={styles.recipeContainer}>
-        <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}>{recipe.title}</Text>
-        <Text style={{textAlign:'center', paddingTop:10}}>{recipe.chef}</Text>
+        <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}>{loading ? "Loading..." : recipe.title}</Text>
+        <Text style={{textAlign:'center', paddingTop:10}}>{loading ? "" : recipe.chef}</Text>
         <Text style={{paddingTop:10, fontWeight:"bold"}}>Ingredients</Text>
         <FlatList 
-          data={recipe.ingredients} 
+          data={loading ? ["Loading..."] : recipe.ingredients} 
           style={{backgroundColor:'lightgreen'}} 
           renderItem={renderIngredients}
           keyExtractor={(item,idx) => item + idx}
@@ -69,7 +69,7 @@ export default function HomePage({navigation, addRecipe}) {
         <FlatList 
           style={{backgroundColor:"pink"}} 
           ItemSeparatorComponent={directionSeperator} 
-          data={recipe.directions} 
+          data={loading ? ["Loading..."] : recipe.directions} 
           renderItem={renderDirections}
           keyExtractor={item => item}
         />
