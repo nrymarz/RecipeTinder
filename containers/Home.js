@@ -59,17 +59,17 @@ export default function HomePage({navigation, addRecipe}) {
         <Button title ="Go to My Recipes" onPress={()=>navigation.navigate('My Recipes')}></Button>
       </View>
         <Swipeable containerStyle={styles.recipeContainer}>
-            <View >
+            <View>
               <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}>{loading ? "Loading..." : recipe.title}</Text>
               <Text style={{textAlign:'center', paddingTop:5}}>{loading ? "" : recipe.chef}</Text>
             </View>
-            <Text style={{paddingTop:10, fontWeight:"bold"}}>Ingredients</Text>
-            <FlatList 
-              data={loading ? ["Loading..."] : recipe.ingredients} 
-              style={{backgroundColor:'lightgreen'}} 
-              renderItem={renderIngredients}
-              keyExtractor={(item,idx) => item + idx}
-            />
+              <Text style={{paddingTop:10, fontWeight:"bold"}}>Ingredients</Text>
+              <FlatList
+                data={loading ? ["Loading..."] : recipe.ingredients} 
+                style={{backgroundColor:'lightgreen', height:"33%"}} 
+                renderItem={renderIngredients}
+                keyExtractor={(item,idx) => item + idx}
+              />
             <Text style={{paddingTop:15, fontWeight:"bold"}}>Directions</Text>
             <FlatList 
               style={{backgroundColor:"pink"}} 
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   recipeContainer:{
-    height:"90%",
+    flex:1,
     backgroundColor: 'rgba(250,250,250,.85)',
     width:"100%"
   },
