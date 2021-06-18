@@ -35,7 +35,7 @@ export default function HomePage({navigation, addRecipe}) {
   const renderDirections = ({item,index}) =>{
     return(
       <Text >
-        <Text style={{fontWeight:"bold"}}>{`${index}. `}</Text>
+        <Text style={{fontWeight:"bold"}}>{`${index+1}. `}</Text>
         <Text>{item}</Text>
       </Text>
     )
@@ -54,7 +54,7 @@ export default function HomePage({navigation, addRecipe}) {
       />
     )
   }
-  
+  console.log(recipe.directions)
   return (
     <View style={styles.container}>
       <View style={{height:"5%"}}>
@@ -68,13 +68,13 @@ export default function HomePage({navigation, addRecipe}) {
               <Text style={{paddingTop:10, fontWeight:"bold"}}>Ingredients</Text>
               <FlatList
                 data={loading ? ["Loading..."] : recipe.ingredients} 
-                style={{backgroundColor:'lightgreen', height:"33%"}} 
+                style={{backgroundColor:'lightgreen', maxHeight:"38%"}} 
                 renderItem={renderIngredients}
                 keyExtractor={(item,idx) => item + idx}
               />
             <Text style={{paddingTop:15, fontWeight:"bold"}}>Directions</Text>
             <FlatList 
-              style={{backgroundColor:"pink"}} 
+              style={{backgroundColor:"pink", maxHeight:"40%"}} 
               ItemSeparatorComponent={directionSeperator} 
               data={loading ? ["Loading..."] : recipe.directions} 
               renderItem={renderDirections}
