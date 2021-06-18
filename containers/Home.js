@@ -5,11 +5,13 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 export default function HomePage({navigation, addRecipe}) {
 
+  const [nextRecipe, setNext] = useState({})
   const [recipe, setRecipe] = useState({})
   const [loading, setLoading] = useState(true)
 
   useEffect(()=>{
     findRecipe(setRecipe, setLoading)
+    findRecipe(setNext)
   },[])
   
   const handlePressRight = () =>{
@@ -17,13 +19,13 @@ export default function HomePage({navigation, addRecipe}) {
       if(!prevRecipes.find(r => r.chef === recipe.chef && r.title === recipe.title)) return [...prevRecipes, recipe]
       else return prevRecipes
     })
-    setLoading(true)
-    findRecipe(setRecipe, setLoading)
+    setRecipe(nextRecipe)
+    findRecipe(setNext)
   }
 
   const handlePressLeft = () =>{
-    setLoading(true)
-    findRecipe(setRecipe, setLoading)
+    setRecipe(nextRecipe)
+    findRecipe(setNext)
   }
 
   const renderIngredients = ({item}) =>{

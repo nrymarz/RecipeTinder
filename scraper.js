@@ -18,7 +18,7 @@ function openRecipe(setRecipe, setLoading){
      axios.get("https://" + recipe.attrs.href.slice(2))
          .then(res => recipeObj =  createRecipeObj(parse(res.data)))
          .then(() => setRecipe(recipeObj))
-         .then(() => setLoading(false))
+         .then(() =>{ if(setLoading) setLoading(false)})
          
 }
 
