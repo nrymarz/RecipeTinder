@@ -55,30 +55,30 @@ export default function HomePage({navigation, addRecipe}) {
   
   return (
     <View style={styles.container}>
-      <Button title ="Go to My Recipes" onPress={()=>navigation.navigate('My Recipes')}></Button>
-      <Swipeable style={{width:"100%",backgroundColor:"blue"}}
-        onSwipeableLeftOpen={handlePressLeft}>
-        <View style={styles.recipeContainer}>
-          <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}>{loading ? "Loading..." : recipe.title}</Text>
-          <Text style={{textAlign:'center', paddingTop:5}}>{loading ? "" : recipe.chef}</Text>
-          <Image style={{width:100, height:80}} source={recipe.image}/>
-          <Text style={{paddingTop:10, fontWeight:"bold"}}>Ingredients</Text>
-          <FlatList 
-            data={loading ? ["Loading..."] : recipe.ingredients} 
-            style={{backgroundColor:'lightgreen'}} 
-            renderItem={renderIngredients}
-            keyExtractor={(item,idx) => item + idx}
-          />
-          <Text style={{paddingTop:15, fontWeight:"bold"}}>Directions</Text>
-          <FlatList 
-            style={{backgroundColor:"pink"}} 
-            ItemSeparatorComponent={directionSeperator} 
-            data={loading ? ["Loading..."] : recipe.directions} 
-            renderItem={renderDirections}
-            keyExtractor={item => item}
-          />
-        </View>
-      </Swipeable>
+      <View style={{height:"5%"}}>
+        <Button title ="Go to My Recipes" onPress={()=>navigation.navigate('My Recipes')}></Button>
+      </View>
+        <Swipeable containerStyle={styles.recipeContainer}>
+            <View >
+              <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}>{loading ? "Loading..." : recipe.title}</Text>
+              <Text style={{textAlign:'center', paddingTop:5}}>{loading ? "" : recipe.chef}</Text>
+            </View>
+            <Text style={{paddingTop:10, fontWeight:"bold"}}>Ingredients</Text>
+            <FlatList 
+              data={loading ? ["Loading..."] : recipe.ingredients} 
+              style={{backgroundColor:'lightgreen'}} 
+              renderItem={renderIngredients}
+              keyExtractor={(item,idx) => item + idx}
+            />
+            <Text style={{paddingTop:15, fontWeight:"bold"}}>Directions</Text>
+            <FlatList 
+              style={{backgroundColor:"pink"}} 
+              ItemSeparatorComponent={directionSeperator} 
+              data={loading ? ["Loading..."] : recipe.directions} 
+              renderItem={renderDirections}
+              keyExtractor={item => item}
+            />
+        </Swipeable>
       <View style={styles.buttonContainer}>
         <Button title="Left" color="brown" style={styles.button} onPress={handlePressLeft}></Button>
         <Button title="Right" color="brown" style={styles.button} onPress ={handlePressRight}></Button>
@@ -95,11 +95,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   recipeContainer:{
+    height:"90%",
     backgroundColor: 'rgba(250,250,250,.85)',
-    flex:1
+    width:"100%"
   },
   buttonContainer:{
-    height:60,
+    height:"5%",
     width:"100%",
     flexDirection:'row',
     justifyContent:"space-between"
