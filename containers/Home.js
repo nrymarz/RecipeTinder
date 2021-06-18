@@ -41,6 +41,32 @@ export default function HomePage({navigation, addRecipe}) {
     )
   }
 
+  const renderNextRecipe = () =>{
+    return(
+      <View>
+        <View>
+          <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}>{loading ? "Loading..." : nextRecipe.title}</Text>
+          <Text style={{textAlign:'center', paddingTop:5}}>{loading ? "" : nextRecipe.chef}</Text>
+        </View>
+        <Text style={{paddingTop:10, fontWeight:"bold"}}>Ingredients</Text>
+        <FlatList
+          data={loading ? ["Loading..."] : nextRecipe.ingredients} 
+          style={{backgroundColor:'lightgreen', maxHeight:"38%"}} 
+          renderItem={renderIngredients}
+          keyExtractor={(item,idx) => item + idx}
+        />
+        <Text style={{paddingTop:15, fontWeight:"bold"}}>Directions</Text>
+        <FlatList 
+          style={{backgroundColor:"pink", maxHeight:"40%"}} 
+          ItemSeparatorComponent={directionSeperator} 
+          data={loading ? ["Loading..."] : nextRecipe.directions} 
+          renderItem={renderDirections}
+          keyExtractor={item => item}
+        />
+    </View>
+    )
+  }
+
   const directionSeperator = () =>{
     return(
       <View
@@ -60,7 +86,12 @@ export default function HomePage({navigation, addRecipe}) {
       <View style={{height:"5%"}}>
         <Button title ="Go to My Recipes" onPress={()=>navigation.navigate('My Recipes')}></Button>
       </View>
-        <Swipeable containerStyle={styles.recipeContainer}>
+        <Swipeable 
+          containerStyle={styles.recipeContainer}
+          renderLeftActions={renderNextRecipe}
+          onSwipeableLeftOpen={handlePressLeft}
+          renderRightActions={renderNextRecipe}
+        >
             <View>
               <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}>{loading ? "Loading..." : recipe.title}</Text>
               <Text style={{textAlign:'center', paddingTop:5}}>{loading ? "" : recipe.chef}</Text>
