@@ -5,6 +5,8 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 export default function HomePage({navigation, addRecipe}) {
 
+
+  const [clicked,click] = useState(true)
   const [nextRecipe, setNext] = useState({})
   const [recipe, setRecipe] = useState({})
   const [loading, setLoading] = useState(true)
@@ -80,37 +82,45 @@ export default function HomePage({navigation, addRecipe}) {
       />
     )
   }
-  console.log(recipe.directions)
+
+  function renderRecipe(){
+    return(
+      <>
+        <View>
+          <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}>{loading ? "Loading..." : recipe.title}</Text>
+          <Text style={{textAlign:'center', paddingTop:5}}>{loading ? "" : recipe.chef}</Text>
+        </View>
+        <Text style={{paddingTop:10, fontWeight:"bold"}}>Ingredients</Text>
+        <FlatList
+          data={loading ? ["Loading..."] : recipe.ingredients} 
+          style={{backgroundColor:'lightgreen', maxHeight:"38%"}} 
+          renderItem={renderIngredients}
+          keyExtractor={(item,idx) => item + idx}
+        />
+        <Text style={{paddingTop:15, fontWeight:"bold"}}>Directions</Text>
+        <FlatList 
+          style={{backgroundColor:"pink", maxHeight:"40%"}} 
+          ItemSeparatorComponent={directionSeperator} 
+          data={loading ? ["Loading..."] : recipe.directions} 
+          renderItem={renderDirections}
+          keyExtractor={item => item}
+        />
+      </>
+    )
+  }
+
   return (
-    <View style={styles.container}>
+    <View style={styles.container} >
       <View style={{height:"5%"}}>
         <Button title ="Go to My Recipes" onPress={()=>navigation.navigate('My Recipes')}></Button>
       </View>
         <Swipeable 
-          containerStyle={styles.recipeContainer}
-          renderLeftActions={renderNextRecipe}
-          onSwipeableLeftOpen={handlePressLeft}
-          renderRightActions={renderNextRecipe}
+           containerStyle={styles.recipeContainer}
+          // renderLeftActions={renderNextRecipe}
+          // onSwipeableLeftOpen={handlePressLeft}
+          // renderRightActions={renderNextRecipe}
         >
-            <View>
-              <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}>{loading ? "Loading..." : recipe.title}</Text>
-              <Text style={{textAlign:'center', paddingTop:5}}>{loading ? "" : recipe.chef}</Text>
-            </View>
-              <Text style={{paddingTop:10, fontWeight:"bold"}}>Ingredients</Text>
-              <FlatList
-                data={loading ? ["Loading..."] : recipe.ingredients} 
-                style={{backgroundColor:'lightgreen', maxHeight:"38%"}} 
-                renderItem={renderIngredients}
-                keyExtractor={(item,idx) => item + idx}
-              />
-            <Text style={{paddingTop:15, fontWeight:"bold"}}>Directions</Text>
-            <FlatList 
-              style={{backgroundColor:"pink", maxHeight:"40%"}} 
-              ItemSeparatorComponent={directionSeperator} 
-              data={loading ? ["Loading..."] : recipe.directions} 
-              renderItem={renderDirections}
-              keyExtractor={item => item}
-            />
+           {clicked ? renderRecipe() : renderImage()}
         </Swipeable>
       <View style={styles.buttonContainer}>
         <Button title="Left" color="brown" style={styles.button} onPress={handlePressLeft}></Button>

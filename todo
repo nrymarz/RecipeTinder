@@ -12,7 +12,4 @@ upvote/downvote recipes
 
 custom user recipes
 
-load a number of recipes at once to avoid loading between every recipe swipe
-    reload more recipes after num recipes have been seen
-
 convert scraper to async function
