@@ -31,7 +31,7 @@ function createRecipeObj(recipe){
     ingredients = ingredients.length>0 ? ingredients.slice(1).map(i => i.innerHTML.trim()) : ["Ingredients Unavailable"]
     let directions = recipe.querySelectorAll(".o-Method__m-Body ol li")
     directions = directions.length>0 ? directions.map(d => d.innerHTML.trim()) : ["Directions Unavailable"]
-    const image = recipe.querySelector(".m-MediaBlock__a-Image").attrs.src
+    const image = "https:" +  recipe.querySelector(".m-MediaBlock__a-Image").attrs.src
     return {
         title,
         chef,

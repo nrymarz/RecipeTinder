@@ -6,7 +6,7 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 export default function HomePage({navigation, addRecipe}) {
 
 
-  const [clicked,click] = useState(true)
+  const [clicked,click] = useState(false)
   const [nextRecipe, setNext] = useState({})
   const [recipe, setRecipe] = useState({})
   const [loading, setLoading] = useState(true)
@@ -17,6 +17,7 @@ export default function HomePage({navigation, addRecipe}) {
   },[])
   
   const handlePressRight = () =>{
+    click(false)
     addRecipe(prevRecipes =>{
       if(!prevRecipes.find(r => r.chef === recipe.chef && r.title === recipe.title)) return [...prevRecipes, recipe]
       else return prevRecipes
@@ -26,6 +27,7 @@ export default function HomePage({navigation, addRecipe}) {
   }
 
   const handlePressLeft = () =>{
+    click(false)
     setRecipe(nextRecipe)
     findRecipe(setNext)
   }
@@ -82,7 +84,7 @@ export default function HomePage({navigation, addRecipe}) {
       />
     )
   }
-
+  console.log(recipe.image)
   function renderRecipe(){
     return(
       <>
@@ -109,13 +111,23 @@ export default function HomePage({navigation, addRecipe}) {
     )
   }
 
+  function renderImage(){
+    return(
+      <Image
+        onPress={() => click(true)}
+        source={{uri: recipe.image}}
+        style={{height:500,width:"100%"}}
+      />
+    )
+  }
+
   return (
     <View style={styles.container} >
       <View style={{height:"5%"}}>
         <Button title ="Go to My Recipes" onPress={()=>navigation.navigate('My Recipes')}></Button>
       </View>
         <Swipeable 
-           containerStyle={styles.recipeContainer}
+          containerStyle={styles.recipeContainer}
           // renderLeftActions={renderNextRecipe}
           // onSwipeableLeftOpen={handlePressLeft}
           // renderRightActions={renderNextRecipe}
