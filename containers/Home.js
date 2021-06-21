@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, Button, FlatList, Image } from 'react-native';
+import { StyleSheet, Text, View, Button, FlatList, Image, TouchableWithoutFeedback } from 'react-native';
 import findRecipe from '../scraper'
-import Swipeable from 'react-native-gesture-handler/Swipeable';
+import PanGestureHandler from 'react-native-gesture-handler';
 
 export default function HomePage({navigation, addRecipe}) {
 
@@ -45,32 +45,6 @@ export default function HomePage({navigation, addRecipe}) {
     )
   }
 
-  const renderNextRecipe = () =>{
-    return(
-      <View>
-        <View>
-          <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}>{loading ? "Loading..." : nextRecipe.title}</Text>
-          <Text style={{textAlign:'center', paddingTop:5}}>{loading ? "" : nextRecipe.chef}</Text>
-        </View>
-        <Text style={{paddingTop:10, fontWeight:"bold"}}>Ingredients</Text>
-        <FlatList
-          data={loading ? ["Loading..."] : nextRecipe.ingredients} 
-          style={{backgroundColor:'lightgreen', maxHeight:"38%"}} 
-          renderItem={renderIngredients}
-          keyExtractor={(item,idx) => item + idx}
-        />
-        <Text style={{paddingTop:15, fontWeight:"bold"}}>Directions</Text>
-        <FlatList 
-          style={{backgroundColor:"pink", maxHeight:"40%"}} 
-          ItemSeparatorComponent={directionSeperator} 
-          data={loading ? ["Loading..."] : nextRecipe.directions} 
-          renderItem={renderDirections}
-          keyExtractor={item => item}
-        />
-    </View>
-    )
-  }
-
   const directionSeperator = () =>{
     return(
       <View
@@ -84,7 +58,7 @@ export default function HomePage({navigation, addRecipe}) {
       />
     )
   }
-  console.log(recipe.image)
+  
   function renderRecipe(){
     return(
       <>
@@ -113,11 +87,18 @@ export default function HomePage({navigation, addRecipe}) {
 
   function renderImage(){
     return(
-      <Image
-        onPress={() => click(true)}
-        source={{uri: recipe.image}}
-        style={{height:500,width:"100%"}}
-      />
+      <>
+      <TouchableWithoutFeedback onPress={() => click(true)}>
+        <Image
+          source={{uri: recipe.image}}
+          style={{height:500,width:"100%"}}
+        />
+      </TouchableWithoutFeedback>
+      <View>
+          <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}>{loading ? "Loading..." : recipe.title}</Text>
+          <Text style={{textAlign:'center', paddingTop:5}}>{loading ? "" : recipe.chef}</Text>
+      </View>
+      </>
     )
   }
 
@@ -126,14 +107,11 @@ export default function HomePage({navigation, addRecipe}) {
       <View style={{height:"5%"}}>
         <Button title ="Go to My Recipes" onPress={()=>navigation.navigate('My Recipes')}></Button>
       </View>
-        <Swipeable 
-          containerStyle={styles.recipeContainer}
-          // renderLeftActions={renderNextRecipe}
-          // onSwipeableLeftOpen={handlePressLeft}
-          // renderRightActions={renderNextRecipe}
-        >
-           {clicked ? renderRecipe() : renderImage()}
-        </Swipeable>
+      
+        <View style={styles.recipeContainer}>
+            {clicked ? renderRecipe() : renderImage()}
+        </View>
+     
       <View style={styles.buttonContainer}>
         <Button title="Left" color="brown" style={styles.button} onPress={handlePressLeft}></Button>
         <Button title="Right" color="brown" style={styles.button} onPress ={handlePressRight}></Button>
