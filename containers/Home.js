@@ -32,6 +32,11 @@ export default function HomePage({navigation, addRecipe}) {
     findRecipe(setNext)
   }
 
+  const handleSwipe = ({nativeEvent}) =>{
+    if(nativeEvent.velocityX > 0) handlePressLeft()
+    else handlePressRight()
+  }
+
   const renderIngredients = ({item}) =>{
     return <Text>{`- ${item}`}</Text>
   }
@@ -108,8 +113,8 @@ export default function HomePage({navigation, addRecipe}) {
         <Button title ="Go to My Recipes" onPress={()=>navigation.navigate('My Recipes')}></Button>
       </View>
       <PanGestureHandler
-        onGestureEvent={handlePressLeft}
-        minDist={10}
+        onGestureEvent={handleSwipe}
+        minDeltaX={100}
       >
         <View style={styles.recipeContainer}>
             {clicked ? renderRecipe() : renderImage()}
