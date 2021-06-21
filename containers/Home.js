@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, Button, FlatList, Image, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, Button, FlatList, Image, TouchableHighlight, Animated } from 'react-native';
 import findRecipe from '../scraper'
 import {PanGestureHandler} from 'react-native-gesture-handler';
 
@@ -11,30 +11,39 @@ export default function HomePage({navigation, addRecipe}) {
   const [recipe, setRecipe] = useState({})
   const [loading, setLoading] = useState(true)
 
+  let newSwipe = false
+
   useEffect(()=>{
     findRecipe(setRecipe, setLoading)
     findRecipe(setNext)
   },[])
   
   const handlePressRight = () =>{
+    newSwipe = false
+    console.log("RIGHT")
+    const oldRecipe = recipe
+    setRecipe(nextRecipe)
+    findRecipe(setNext, setLoading)
     click(false)
     addRecipe(prevRecipes =>{
-      if(!prevRecipes.find(r => r.chef === recipe.chef && r.title === recipe.title)) return [...prevRecipes, recipe]
+      if(!prevRecipes.find(r => r.chef === oldRecipe.chef && r.title === oldRecipe.title)) return [...prevRecipes, oldRecipe]
       else return prevRecipes
     })
-    setRecipe(nextRecipe)
-    findRecipe(setNext)
   }
 
   const handlePressLeft = () =>{
+    newSwipe = false
+    console.log("LEFT")
     click(false)
     setRecipe(nextRecipe)
-    findRecipe(setNext)
+    findRecipe(setNext, setLoading)
   }
 
   const handleSwipe = ({nativeEvent}) =>{
-    if(nativeEvent.velocityX > 0) handlePressLeft()
-    else handlePressRight()
+    if(nativeEvent.translationX === 0) newSwipe = true
+    console.log(nativeEvent.translationX)
+    if(nativeEvent.translationX > 75 && newSwipe) handlePressLeft()
+    else if(nativeEvent.translationX < -75 && newSwipe) handlePressRight()
   }
 
   const renderIngredients = ({item}) =>{
@@ -113,8 +122,9 @@ export default function HomePage({navigation, addRecipe}) {
         <Button title ="Go to My Recipes" onPress={()=>navigation.navigate('My Recipes')}></Button>
       </View>
       <PanGestureHandler
+        enabled = {!loading}
         onGestureEvent={handleSwipe}
-        minDeltaX={100}
+        activeOffsetX={[-100,100]}
       >
         <View style={styles.recipeContainer}>
             {clicked ? renderRecipe() : renderImage()}
