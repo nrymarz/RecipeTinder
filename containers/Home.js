@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, Button, FlatList, Image, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Text, View, Button, FlatList, Image, TouchableHighlight } from 'react-native';
 import findRecipe from '../scraper'
-import PanGestureHandler from 'react-native-gesture-handler';
+import {PanGestureHandler} from 'react-native-gesture-handler';
 
 export default function HomePage({navigation, addRecipe}) {
 
@@ -88,12 +88,12 @@ export default function HomePage({navigation, addRecipe}) {
   function renderImage(){
     return(
       <>
-      <TouchableWithoutFeedback onPress={() => click(true)}>
+      <TouchableHighlight onPress={() => click(true)}>
         <Image
           source={{uri: recipe.image}}
           style={{height:500,width:"100%"}}
         />
-      </TouchableWithoutFeedback>
+      </TouchableHighlight>
       <View>
           <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}>{loading ? "Loading..." : recipe.title}</Text>
           <Text style={{textAlign:'center', paddingTop:5}}>{loading ? "" : recipe.chef}</Text>
@@ -107,11 +107,14 @@ export default function HomePage({navigation, addRecipe}) {
       <View style={{height:"5%"}}>
         <Button title ="Go to My Recipes" onPress={()=>navigation.navigate('My Recipes')}></Button>
       </View>
-      
+      <PanGestureHandler
+        onGestureEvent={handlePressLeft}
+        minDist={10}
+      >
         <View style={styles.recipeContainer}>
             {clicked ? renderRecipe() : renderImage()}
         </View>
-     
+      </PanGestureHandler>
       <View style={styles.buttonContainer}>
         <Button title="Left" color="brown" style={styles.button} onPress={handlePressLeft}></Button>
         <Button title="Right" color="brown" style={styles.button} onPress ={handlePressRight}></Button>
