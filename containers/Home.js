@@ -21,19 +21,17 @@ export default function HomePage({navigation, addRecipe}) {
     findRecipe(setNext)
   },[])
   
-  const handlePressRight = () =>{
-    newSwipe = false
+  const swipeRight = () =>{
     const oldRecipe = recipe
-    setRecipe(nextRecipe)
-    findRecipe(setNext, setLoading)
-    click(false)
+    swipeLeft()
+
     addRecipe(prevRecipes =>{
       if(!prevRecipes.find(r => r.chef === oldRecipe.chef && r.title === oldRecipe.title)) return [...prevRecipes, oldRecipe]
       else return prevRecipes
     })
   }
 
-  const handlePressLeft = () =>{
+  const swipeLeft = () =>{
     newSwipe = false
     click(false)
     setRecipe(nextRecipe)
@@ -44,46 +42,13 @@ export default function HomePage({navigation, addRecipe}) {
     if(nativeEvent.translationX === 0) newSwipe = true
     if(newSwipe) translateX.setValue(nativeEvent.translationX)
     if(nativeEvent.translationX > 175 && newSwipe){
-      handlePressLeft()
+      swipeLeft()
       translateX.setValue(0)
     }
     else if(nativeEvent.translationX < -150 && newSwipe){
-      handlePressRight()
+      swipeRight()
       translateX.setValue(0)
     }
-  }
-
-  const renderIngredients = ({item}) =>{
-    return <Text>{`- ${item}`}</Text>
-  }
-
-  const renderDirections = ({item,index}) =>{
-    return(
-      <Text >
-        <Text style={{fontWeight:"bold"}}>{`${index+1}. `}</Text>
-        <Text>{item}</Text>
-      </Text>
-    )
-  }
-
-  const directionSeperator = () =>{
-    return(
-      <View
-        style={{
-          height:2,
-          width:"100%",
-          backgroundColor:'black',
-          marginBottom:4,
-          marginTop:4
-        }}
-      />
-    )
-  }
-  
-  function renderRecipe(){
-    return(
-      <Recipe recipe={recipe} />
-    )
   }
 
   return (
@@ -97,12 +62,12 @@ export default function HomePage({navigation, addRecipe}) {
         activeOffsetX={[-100,100]}
       >
         <Animated.View style={[styles.recipeContainer,{transform:[{translateX}]}]}>
-            {clicked ? renderRecipe() : <RecipeImage click={click} recipe={recipe}/>}
+            {clicked ? <Recipe recipe={recipe} /> : <RecipeImage click={click} recipe={recipe}/>}
         </Animated.View>
       </PanGestureHandler>
       <View style={styles.buttonContainer}>
-        <Button title="Left" color="brown" style={styles.button} onPress={handlePressLeft}></Button>
-        <Button title="Right" color="brown" style={styles.button} onPress ={handlePressRight}></Button>
+        <Button title="Left" color="brown" style={styles.button} onPress={swipeLeft}></Button>
+        <Button title="Right" color="brown" style={styles.button} onPress ={swipeRight}></Button>
       </View>
     </View>
   );
