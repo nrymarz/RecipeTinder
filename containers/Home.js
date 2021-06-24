@@ -20,7 +20,6 @@ export default function HomePage({navigation, addRecipe}) {
   },[])
   
   const handlePressRight = () =>{
-    translateX.setValue(0)
     newSwipe = false
     const oldRecipe = recipe
     setRecipe(nextRecipe)
@@ -33,7 +32,6 @@ export default function HomePage({navigation, addRecipe}) {
   }
 
   const handlePressLeft = () =>{
-    translateX.setValue(0)
     newSwipe = false
     click(false)
     setRecipe(nextRecipe)
@@ -41,10 +39,17 @@ export default function HomePage({navigation, addRecipe}) {
   }
 
   const handleSwipe = ({nativeEvent}) =>{
-    translateX.setValue(nativeEvent.translationX)
+    console.log(translateX)
     if(nativeEvent.translationX === 0) newSwipe = true
-    if(nativeEvent.translationX > 75 && newSwipe) handlePressLeft()
-    else if(nativeEvent.translationX < -75 && newSwipe) handlePressRight()
+    if(newSwipe) translateX.setValue(nativeEvent.translationX)
+    if(nativeEvent.translationX > 175 && newSwipe){
+      handlePressLeft()
+      translateX.setValue(0)
+    }
+    else if(nativeEvent.translationX < -150 && newSwipe){
+      handlePressRight()
+      translateX.setValue(0)
+    }
   }
 
   const renderIngredients = ({item}) =>{
