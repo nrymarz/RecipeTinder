@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 
 
-export default function Recipe({route}){
+export default function RecipePage({route}){
     const {title, chef, ingredients, directions} = route.params.recipe
 
     const renderIngredients = ({item}) =>{

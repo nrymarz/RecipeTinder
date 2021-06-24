@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, Button, FlatList, Image, TouchableHighlight, Animated } from 'react-native';
 import findRecipe from '../scraper'
 import {PanGestureHandler} from 'react-native-gesture-handler';
+import RecipeImage from '../components/RecipeImage'
 
 export default function HomePage({navigation, addRecipe}) {
 
@@ -106,18 +107,7 @@ export default function HomePage({navigation, addRecipe}) {
 
   function renderImage(){
     return(
-      <>
-      <TouchableHighlight onPress={() => click(true)}>
-        <Image
-          source={{uri: recipe.image}}
-          style={{height:500,width:"100%"}}
-        />
-      </TouchableHighlight>
-      <View>
-          <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}>{recipe.title}</Text>
-          <Text style={{textAlign:'center', paddingTop:5}}>{recipe.chef}</Text>
-      </View>
-      </>
+      <RecipeImage click={click} recipe={recipe}/>
     )
   }
 

@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar'
 import React,{useState} from 'react';
 import HomePage from "./containers/Home"
 import MyRecipes from './containers/MyRecipes'
-import Recipe from './containers/Recipe'
+import RecipePage from './containers/RecipePage'
 import {NavigationContainer} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack'
 
@@ -24,7 +24,7 @@ export default function App() {
           {props => <MyRecipes {...props} recipes={recipes}/>}
         </Stack.Screen>
 
-        <Stack.Screen name="Recipe Page" component={Recipe} />
+        <Stack.Screen name="Recipe Page" component={RecipePage} />
       </Stack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>
