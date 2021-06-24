@@ -39,7 +39,6 @@ export default function HomePage({navigation, addRecipe}) {
   }
 
   const handleSwipe = ({nativeEvent}) =>{
-    console.log(translateX)
     if(nativeEvent.translationX === 0) newSwipe = true
     if(newSwipe) translateX.setValue(nativeEvent.translationX)
     if(nativeEvent.translationX > 175 && newSwipe){
@@ -121,6 +120,7 @@ export default function HomePage({navigation, addRecipe}) {
       </>
     )
   }
+
 
   return (
     <View style={styles.container} >
