@@ -1,16 +1,12 @@
-swipe gesture instead of buttons
-fix layout
-onpress picture show recipes
-swiping
 
-add loading notfiication styling
+fix layout
+
+swiping animation
+
+enable swiping while loading but have loading notification for loading current recipe
 
 webscraper -- foodnetwork/custom JS Class
     fetch different sites?
     
-   
-upvote/downvote recipes
-
-custom user recipes
 
 convert scraper to async function

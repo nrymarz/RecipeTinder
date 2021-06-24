@@ -12,6 +12,7 @@ export default function HomePage({navigation, addRecipe}) {
   const [loading, setLoading] = useState(true)
 
   let newSwipe = false
+  let translateX = new Animated.Value(0)
 
   useEffect(()=>{
     findRecipe(setRecipe, setLoading)
@@ -19,8 +20,8 @@ export default function HomePage({navigation, addRecipe}) {
   },[])
   
   const handlePressRight = () =>{
+    translateX.setValue(0)
     newSwipe = false
-    console.log("RIGHT")
     const oldRecipe = recipe
     setRecipe(nextRecipe)
     findRecipe(setNext, setLoading)
@@ -32,16 +33,16 @@ export default function HomePage({navigation, addRecipe}) {
   }
 
   const handlePressLeft = () =>{
+    translateX.setValue(0)
     newSwipe = false
-    console.log("LEFT")
     click(false)
     setRecipe(nextRecipe)
     findRecipe(setNext, setLoading)
   }
 
   const handleSwipe = ({nativeEvent}) =>{
+    translateX.setValue(nativeEvent.translationX)
     if(nativeEvent.translationX === 0) newSwipe = true
-    console.log(nativeEvent.translationX)
     if(nativeEvent.translationX > 75 && newSwipe) handlePressLeft()
     else if(nativeEvent.translationX < -75 && newSwipe) handlePressRight()
   }
@@ -77,12 +78,12 @@ export default function HomePage({navigation, addRecipe}) {
     return(
       <>
         <View>
-          <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}>{loading ? "Loading..." : recipe.title}</Text>
-          <Text style={{textAlign:'center', paddingTop:5}}>{loading ? "" : recipe.chef}</Text>
+          <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}></Text>
+          <Text style={{textAlign:'center', paddingTop:5}}>{recipe.title}</Text>
         </View>
         <Text style={{paddingTop:10, fontWeight:"bold"}}>Ingredients</Text>
         <FlatList
-          data={loading ? ["Loading..."] : recipe.ingredients} 
+          data={recipe.ingredients} 
           style={{backgroundColor:'lightgreen', maxHeight:"38%"}} 
           renderItem={renderIngredients}
           keyExtractor={(item,idx) => item + idx}
@@ -91,7 +92,7 @@ export default function HomePage({navigation, addRecipe}) {
         <FlatList 
           style={{backgroundColor:"pink", maxHeight:"40%"}} 
           ItemSeparatorComponent={directionSeperator} 
-          data={loading ? ["Loading..."] : recipe.directions} 
+          data={recipe.directions} 
           renderItem={renderDirections}
           keyExtractor={item => item}
         />
@@ -109,8 +110,8 @@ export default function HomePage({navigation, addRecipe}) {
         />
       </TouchableHighlight>
       <View>
-          <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}>{loading ? "Loading..." : recipe.title}</Text>
-          <Text style={{textAlign:'center', paddingTop:5}}>{loading ? "" : recipe.chef}</Text>
+          <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}>{recipe.title}</Text>
+          <Text style={{textAlign:'center', paddingTop:5}}>{recipe.chef}</Text>
       </View>
       </>
     )
@@ -126,9 +127,9 @@ export default function HomePage({navigation, addRecipe}) {
         onGestureEvent={handleSwipe}
         activeOffsetX={[-100,100]}
       >
-        <View style={styles.recipeContainer}>
+        <Animated.View style={[styles.recipeContainer,{transform:[{translateX}]}]}>
             {clicked ? renderRecipe() : renderImage()}
-        </View>
+        </Animated.View>
       </PanGestureHandler>
       <View style={styles.buttonContainer}>
         <Button title="Left" color="brown" style={styles.button} onPress={handlePressLeft}></Button>
