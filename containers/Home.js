@@ -47,8 +47,14 @@ export default function HomePage({navigation, addRecipe}) {
 
   const resetView = ({nativeEvent}) =>{
     const {state} = nativeEvent
-    console.log(state)
-    if(state === 5)translateX.setValue(0)
+    if(state === 5){
+      Animated.timing(translateX,{
+        toValue:0,
+        duration:500,
+        easing: Easing.ease,
+        useNativeDriver:true
+      }).start()
+    }
   }
 
   return (
@@ -64,10 +70,6 @@ export default function HomePage({navigation, addRecipe}) {
             {clicked ? <Recipe recipe={recipe} /> : <RecipeImage click={click} recipe={recipe}/>}
         </Animated.View>
       </PanGestureHandler>
-      <View style={styles.buttonContainer}>
-        <Button title="Left" color="brown" style={styles.button} onPress={swipeLeft}></Button>
-        <Button title="Right" color="brown" style={styles.button} onPress ={swipeRight}></Button>
-      </View>
     </View>
   );
 }
