@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, Button, FlatList, Image, TouchableHighlight, Animated } from 'react-native';
+import { StyleSheet, Text, View, Button, Animated } from 'react-native';
 import findRecipe from '../scraper'
 import {PanGestureHandler} from 'react-native-gesture-handler';
 import RecipeImage from '../components/RecipeImage'
+import Recipe from '../components/Recipe'
 
 export default function HomePage({navigation, addRecipe}) {
 
@@ -81,36 +82,9 @@ export default function HomePage({navigation, addRecipe}) {
   
   function renderRecipe(){
     return(
-      <>
-        <View>
-          <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}></Text>
-          <Text style={{textAlign:'center', paddingTop:5}}>{recipe.title}</Text>
-        </View>
-        <Text style={{paddingTop:10, fontWeight:"bold"}}>Ingredients</Text>
-        <FlatList
-          data={recipe.ingredients} 
-          style={{backgroundColor:'lightgreen', maxHeight:"38%"}} 
-          renderItem={renderIngredients}
-          keyExtractor={(item,idx) => item + idx}
-        />
-        <Text style={{paddingTop:15, fontWeight:"bold"}}>Directions</Text>
-        <FlatList 
-          style={{backgroundColor:"pink", maxHeight:"40%"}} 
-          ItemSeparatorComponent={directionSeperator} 
-          data={recipe.directions} 
-          renderItem={renderDirections}
-          keyExtractor={item => item}
-        />
-      </>
+      <Recipe recipe={recipe} />
     )
   }
-
-  function renderImage(){
-    return(
-      <RecipeImage click={click} recipe={recipe}/>
-    )
-  }
-
 
   return (
     <View style={styles.container} >
@@ -123,7 +97,7 @@ export default function HomePage({navigation, addRecipe}) {
         activeOffsetX={[-100,100]}
       >
         <Animated.View style={[styles.recipeContainer,{transform:[{translateX}]}]}>
-            {clicked ? renderRecipe() : renderImage()}
+            {clicked ? renderRecipe() : <RecipeImage click={click} recipe={recipe}/>}
         </Animated.View>
       </PanGestureHandler>
       <View style={styles.buttonContainer}>
