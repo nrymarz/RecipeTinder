@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, Button, Animated } from 'react-native';
+import { StyleSheet, Text, View, Button, Animated, Easing } from 'react-native';
 import findRecipe from '../scraper'
 import {PanGestureHandler} from 'react-native-gesture-handler';
 import RecipeImage from '../components/RecipeImage'
@@ -41,14 +41,14 @@ export default function HomePage({navigation, addRecipe}) {
   const handleSwipe = ({nativeEvent}) =>{
     if(nativeEvent.translationX === 0) newSwipe = true
     if(newSwipe) translateX.setValue(nativeEvent.translationX)
-    if(nativeEvent.translationX > 175 && newSwipe){
-      swipeLeft()
-      translateX.setValue(0)
-    }
-    else if(nativeEvent.translationX < -150 && newSwipe){
-      swipeRight()
-      translateX.setValue(0)
-    }
+    if(nativeEvent.translationX > 175 && newSwipe) swipeLeft()
+    else if(nativeEvent.translationX < -150 && newSwipe) swipeRight()
+  }
+
+  const resetView = ({nativeEvent}) =>{
+    const {state} = nativeEvent
+    console.log(state)
+    if(state === 5)translateX.setValue(0)
   }
 
   return (
@@ -57,9 +57,8 @@ export default function HomePage({navigation, addRecipe}) {
         <Button title ="Go to My Recipes" onPress={()=>navigation.navigate('My Recipes')}></Button>
       </View>
       <PanGestureHandler
-        enabled = {!loading}
+        onHandlerStateChange={resetView}
         onGestureEvent={handleSwipe}
-        activeOffsetX={[-100,100]}
       >
         <Animated.View style={[styles.recipeContainer,{transform:[{translateX}]}]}>
             {clicked ? <Recipe recipe={recipe} /> : <RecipeImage click={click} recipe={recipe}/>}
