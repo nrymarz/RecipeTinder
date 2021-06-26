@@ -64,7 +64,6 @@ export default function HomePage({navigation, addRecipe}) {
 
   const handleSwipe = ({nativeEvent}) =>{
     if(nativeEvent.translationX === 0) newSwipe = true
-    console.log(nativeEvent.translationX)
     if(newSwipe) translateX.setValue(nativeEvent.translationX)
     if(nativeEvent.translationX > 225 && newSwipe) swipeRight()
 
@@ -76,7 +75,9 @@ export default function HomePage({navigation, addRecipe}) {
     if(state === 5 && (nativeEvent.translationX > 225 || nativeEvent.translationX < -225)){
       const swipeAnimation = nativeEvent.translationX < 0 ?  swipeLeftAnimation : swipeRightAnimation
       swipeAnimation.start( ()=>{
-        translateX.setValue((nativeEvent.translationX+200)*-1)
+        const v = (nativeEvent.translationX)*-2
+        console.log(v)
+        translateX.setValue(v)
         resetView.start()
       })
     }
