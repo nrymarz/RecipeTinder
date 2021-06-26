@@ -88,11 +88,12 @@ export default function HomePage({navigation, addRecipe}) {
   return (
     <View style={styles.container} >
       <PanGestureHandler
+        enabled={!clicked}
         onHandlerStateChange={handlePanStateChange}
         onGestureEvent={handleSwipe}
       >
         <Animated.View style={[styles.recipeContainer,{transform:[{translateX}]}]}>
-            {clicked ? <Recipe recipe={recipe} /> : <RecipeImage click={click} recipe={recipe}/>}
+            {clicked ? <Recipe recipe={recipe} click={click} /> : <RecipeImage click={click} recipe={recipe}/>}
         </Animated.View>
       </PanGestureHandler>
       <View style={{height:"8%",marginTop:5}}>
