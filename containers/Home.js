@@ -23,7 +23,7 @@ export default function HomePage({navigation, addRecipe}) {
 
   const resetView = Animated.timing(translateX,{
     toValue:0,
-    duration:500,
+    duration:250,
     easing: Easing.linear,
     useNativeDriver:true
   })
@@ -79,6 +79,9 @@ export default function HomePage({navigation, addRecipe}) {
         translateX.setValue(v)
         resetView.start()
       })
+    }
+    else if(state===5){
+      resetView.start()
     }
   }
 
