@@ -27,11 +27,11 @@ export default function DirectionsList({directions}){
 
     return(
         <FlatList 
-            style={{backgroundColor:"pink", maxHeight:"40%"}} 
+            style={{backgroundColor:"pink", maxHeight:"42%"}} 
             ItemSeparatorComponent={directionSeperator} 
             data={directions} 
             renderItem={renderDirections}
-            keyExtractor={item => item}
+            keyExtractor={(item,idx) => item + idx}
         />
     )
 
