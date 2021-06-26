@@ -3,7 +3,7 @@ import { StyleSheet, Text, FlatList } from 'react-native';
 
 export default function IngredientsList({ingredients}){
     const renderIngredients = ({item}) =>{
-        return <Text>{`- ${item}`}</Text>
+        return <Text style={{paddingLeft:5,paddingTop:1}}>{`- ${item}`}</Text>
     }
 
     return(

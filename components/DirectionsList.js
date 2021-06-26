@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, FlatList } from 'react-native';
 export default function DirectionsList({directions}){
     const renderDirections = ({item,index}) =>{
         return(
-        <Text >
+        <Text style={{paddingLeft:5,paddingTop:3}}>
             <Text style={{fontWeight:"bold"}}>{`${index+1}. `}</Text>
             <Text>{item}</Text>
         </Text>

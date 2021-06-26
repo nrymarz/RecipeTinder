@@ -13,9 +13,9 @@ export default function Recipe({recipe, click}){
             </TouchableWithoutFeedback>
             <Text style={{textAlign:'center', fontWeight:"700", fontSize:15}}>{recipe.title}</Text>
             <Text style={{textAlign:'center', paddingTop:5}}>{recipe.chef}</Text>
-            <Text style={{paddingTop:10, fontWeight:"bold"}}>Ingredients</Text>
+            <Text style={{paddingTop:10,paddingLeft:5, fontWeight:"bold"}}>Ingredients</Text>
             <IngredientsList ingredients={recipe.ingredients}/>
-            <Text style={{paddingTop:15, fontWeight:"bold"}}>Directions</Text>
+            <Text style={{paddingTop:15,paddingLeft:5, fontWeight:"bold"}}>Directions</Text>
             <DirectionsList directions={recipe.directions} />
         </>
     )
