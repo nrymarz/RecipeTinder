@@ -1,61 +1,21 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import Recipe from '../components/Recipe'
 
 
 export default function RecipePage({route}){
-    const {title, chef, ingredients, directions} = route.params.recipe
-
-    const renderIngredients = ({item}) =>{
-        return <Text>{`- ${item}`}</Text>
-      }
-    
-    const renderDirections = ({item,index}) =>{
-    return(
-        <Text >
-            <Text style={{fontWeight:"bold"}}>{`${index}. `}</Text>
-            <Text>{item}</Text>
-        </Text>
-    )}
-
-    const directionSeperator = () =>{
-    return(
-        <View
-        style={{
-            height:2,
-            width:"100%",
-            backgroundColor:'black',
-            marginBottom:4,
-            marginTop:4
-        }}
-        />
-    )}
 
     return(
         <View style={styles.container}>
-            <Text style={{textAlign:'center', paddingTop:12, fontWeight:"700", fontSize:15}}>{title}</Text>
-            <Text style={{textAlign:'center', paddingTop:10}}>{chef}</Text>
-            <Text style={{paddingTop:15, fontWeight:"bold"}}>Ingredients</Text>
-            <FlatList 
-                data={ingredients} 
-                style={{backgroundColor:'lightgreen'}} 
-                renderItem={renderIngredients}
-                keyExtractor={(item,idx) => item+idx}
-            />
-            <Text style={{paddingTop:15, fontWeight:"bold"}}>Directions</Text>
-            <FlatList 
-                style={{backgroundColor:"pink"}} 
-                ItemSeparatorComponent={directionSeperator} 
-                data={directions} 
-                renderItem={renderDirections}
-                keyExtractor={(item,idx) => item+idx}
-            />
+            <Recipe recipe={route.params.recipe} />
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     container:{
-        backgroundColor:'orange',
+        backgroundColor:'white',
+        padding:10,
         height:"100%"
     }
 })
