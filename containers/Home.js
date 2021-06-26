@@ -87,9 +87,6 @@ export default function HomePage({navigation, addRecipe}) {
 
   return (
     <View style={styles.container} >
-      <View style={{height:"5%"}}>
-        <Button title ="Go to My Recipes" onPress={()=>navigation.navigate('My Recipes')}></Button>
-      </View>
       <PanGestureHandler
         onHandlerStateChange={handlePanStateChange}
         onGestureEvent={handleSwipe}
@@ -98,6 +95,9 @@ export default function HomePage({navigation, addRecipe}) {
             {clicked ? <Recipe recipe={recipe} /> : <RecipeImage click={click} recipe={recipe}/>}
         </Animated.View>
       </PanGestureHandler>
+      <View style={{height:"8%",marginTop:5}}>
+        <Button title ="Go to My Recipes" onPress={()=>navigation.navigate('My Recipes')}></Button>
+      </View>
     </View>
   );
 }
@@ -112,12 +112,9 @@ const styles = StyleSheet.create({
   recipeContainer:{
     flex:1,
     backgroundColor: 'rgba(250,250,250,.85)',
-    width:"100%"
-  },
-  buttonContainer:{
-    height:"5%",
-    width:"100%",
-    flexDirection:'row',
-    justifyContent:"space-between"
+    width:"96%",
+    borderRadius: 5,
+    paddingTop:5,
+    marginTop:2
   }
 });
