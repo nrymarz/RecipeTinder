@@ -24,21 +24,21 @@ export default function HomePage({navigation, addRecipe}) {
   const resetView = Animated.timing(translateX,{
     toValue:0,
     duration:500,
-    easing: Easing.ease,
+    easing: Easing.linear,
     useNativeDriver:true
   })
 
   const swipeRightAnimation = Animated.timing(translateX,{
     toValue: 500,
-    duration: 500,
-    easing: Easing.ease,
+    duration: 250,
+    easing: Easing.linear,
     useNativeDriver:true
   })
 
   const swipeLeftAnimation = Animated.timing(translateX,{
     toValue: -500,
-    duration: 500,
-    easing: Easing.ease,
+    duration: 250,
+    easing: Easing.linear,
     useNativeDriver:true
   })
   
@@ -64,7 +64,7 @@ export default function HomePage({navigation, addRecipe}) {
 
   const handleSwipe = ({nativeEvent}) =>{
     if(nativeEvent.translationX === 0) newSwipe = true
-    if(newSwipe) translateX.setValue(nativeEvent.translationX)
+    translateX.setValue(nativeEvent.translationX)
     if(nativeEvent.translationX > 225 && newSwipe) swipeRight()
 
     else if(nativeEvent.translationX < -225 && newSwipe) swipeLeft()
@@ -76,7 +76,6 @@ export default function HomePage({navigation, addRecipe}) {
       const swipeAnimation = nativeEvent.translationX < 0 ?  swipeLeftAnimation : swipeRightAnimation
       swipeAnimation.start( ()=>{
         const v = (nativeEvent.translationX)*-2
-        console.log(v)
         translateX.setValue(v)
         resetView.start()
       })
