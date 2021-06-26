@@ -59,15 +59,16 @@ export default function HomePage({navigation, addRecipe}) {
     newSwipe = false
     click(false)
     setRecipe(nextRecipe)
+    
     findRecipe(setNext, setLoading)
   }
 
   const handleSwipe = ({nativeEvent}) =>{
     if(nativeEvent.translationX === 0) newSwipe = true
     translateX.setValue(nativeEvent.translationX)
-    if(nativeEvent.translationX > 225 && newSwipe) swipeRight()
+    if(nativeEvent.translationX > 225 && newSwipe) swipeLeft()
 
-    else if(nativeEvent.translationX < -225 && newSwipe) swipeLeft()
+    else if(nativeEvent.translationX < -225 && newSwipe) swipeRight()
   }
 
   const handlePanStateChange = ({nativeEvent}) =>{
@@ -96,8 +97,8 @@ export default function HomePage({navigation, addRecipe}) {
             {clicked ? <Recipe recipe={recipe} click={click} /> : <RecipeImage click={click} recipe={recipe}/>}
         </Animated.View>
       </PanGestureHandler>
-      <View style={{height:"8%",marginTop:5}}>
-        <Button title ="Go to My Recipes" onPress={()=>navigation.navigate('My Recipes')}></Button>
+      <View style={styles.bottomNav}>
+        <Button title ="My Recipes" onPress={()=>navigation.navigate('My Recipes')} color={"silver"}></Button>
       </View>
     </View>
   );
@@ -117,7 +118,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth:1.5,
     borderColor:'black',
-    paddingTop:5,
-    marginTop:2
+    marginTop:5
+  },
+  bottomNav:{
+    width:"50%",
+    height:50,
+    marginTop:5
   }
+  
 });

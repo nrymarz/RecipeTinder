@@ -1,7 +1,6 @@
-split up home.js into multiple components
-fix layout
 
-swiping animation
+Bottom Navbar
+recipeshowpage and MyRecipes page layouts
 
 enable swiping while loading but have loading notification for loading current recipe
 
