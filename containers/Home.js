@@ -20,10 +20,27 @@ export default function HomePage({navigation, addRecipe}) {
     findRecipe(setRecipe, setLoading)
     findRecipe(setNext)
   },[])
+
+  const resetView = Animated.timing(translateX,{
+    toValue:0,
+    duration:500,
+    easing: Easing.ease,
+    useNativeDriver:true
+  })
+
+  const swipeAnimation = Animated.timing(translateX,{
+    toValue: 500,
+    duration: 500,
+    easing: Easing.ease,
+    useNativeDriver:true
+  })
   
   const swipeRight = () =>{
     const oldRecipe = recipe
-    swipeLeft()
+    newSwipe = false
+    click(false)
+    setRecipe(nextRecipe)
+    findRecipe(setNext,setLoading)
 
     addRecipe(prevRecipes =>{
       if(!prevRecipes.find(r => r.chef === oldRecipe.chef && r.title === oldRecipe.title)) return [...prevRecipes, oldRecipe]
@@ -40,20 +57,20 @@ export default function HomePage({navigation, addRecipe}) {
 
   const handleSwipe = ({nativeEvent}) =>{
     if(nativeEvent.translationX === 0) newSwipe = true
+    console.log(nativeEvent.translationX)
     if(newSwipe) translateX.setValue(nativeEvent.translationX)
-    if(nativeEvent.translationX > 175 && newSwipe) swipeLeft()
-    else if(nativeEvent.translationX < -150 && newSwipe) swipeRight()
+    if(nativeEvent.translationX > 225 && newSwipe) swipeRight()
+
+    else if(nativeEvent.translationX < -225 && newSwipe) swipeLeft()
   }
 
-  const resetView = ({nativeEvent}) =>{
+  const handlePanStateChange = ({nativeEvent}) =>{
     const {state} = nativeEvent
-    if(state === 5){
-      Animated.timing(translateX,{
-        toValue:0,
-        duration:500,
-        easing: Easing.ease,
-        useNativeDriver:true
-      }).start()
+    if(state === 5 && nativeEvent.translationX > 225){
+      swipeAnimation.start( ()=>{
+        translateX.setValue(-500)
+        resetView.start()
+      })
     }
   }
 
@@ -63,7 +80,7 @@ export default function HomePage({navigation, addRecipe}) {
         <Button title ="Go to My Recipes" onPress={()=>navigation.navigate('My Recipes')}></Button>
       </View>
       <PanGestureHandler
-        onHandlerStateChange={resetView}
+        onHandlerStateChange={handlePanStateChange}
         onGestureEvent={handleSwipe}
       >
         <Animated.View style={[styles.recipeContainer,{transform:[{translateX}]}]}>
