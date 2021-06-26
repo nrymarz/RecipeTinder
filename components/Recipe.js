@@ -11,10 +11,8 @@ export default function Recipe({recipe, click}){
             <TouchableWithoutFeedback onPress={() => click(false)}>
                 <Image source={back} style={{marginLeft:8,height:25,width:25}}/>
             </TouchableWithoutFeedback>
-            <View>
-                <Text style={{textAlign:'center', fontWeight:"700", fontSize:15}}></Text>
-                <Text style={{textAlign:'center', paddingTop:5}}>{recipe.title}</Text>
-            </View>
+            <Text style={{textAlign:'center', fontWeight:"700", fontSize:15}}>{recipe.title}</Text>
+            <Text style={{textAlign:'center', paddingTop:5}}>{recipe.chef}</Text>
             <Text style={{paddingTop:10, fontWeight:"bold"}}>Ingredients</Text>
             <IngredientsList ingredients={recipe.ingredients}/>
             <Text style={{paddingTop:15, fontWeight:"bold"}}>Directions</Text>

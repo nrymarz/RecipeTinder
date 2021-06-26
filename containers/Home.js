@@ -106,15 +106,17 @@ export default function HomePage({navigation, addRecipe}) {
 const styles = StyleSheet.create({
   container:{
     flex:1,
-    backgroundColor: 'orange',
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },
   recipeContainer:{
     flex:1,
-    backgroundColor: 'rgba(250,250,250,.85)',
+    backgroundColor: 'rgb(240,240,240)',
     width:"96%",
     borderRadius: 5,
+    borderWidth:1.5,
+    borderColor:'black',
     paddingTop:5,
     marginTop:2
   }
