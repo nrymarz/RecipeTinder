@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import Recipe from '../components/Recipe'
 
 
@@ -7,6 +7,7 @@ export default function RecipePage({route}){
 
     return(
         <View style={styles.container}>
+            <Image source={{uri: route.params.recipe.image}} style={{height:150, resizeMode:'contain'}}/>
             <Recipe recipe={route.params.recipe} />
         </View>
     )
@@ -15,7 +16,7 @@ export default function RecipePage({route}){
 const styles = StyleSheet.create({
     container:{
         backgroundColor:'white',
-        padding:10,
+        padding:5,
         height:"100%"
     }
 })
