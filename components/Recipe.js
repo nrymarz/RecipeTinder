@@ -6,11 +6,19 @@ import IngredientsList from './IngredientsList'
 
 export default function Recipe({recipe, click}){
 
+    function renderBackButton(){
+        if(click !== undefined){
+            return(
+                <TouchableWithoutFeedback onPress={() => click(false)}>
+                    <Image source={back} style={{marginLeft:8,height:25,width:25}}/>
+                </TouchableWithoutFeedback>
+            )
+        }
+    }
+
     return(
         <>
-            <TouchableWithoutFeedback onPress={() => click(false)}>
-                <Image source={back} style={{marginLeft:8,height:25,width:25}}/>
-            </TouchableWithoutFeedback>
+            {renderBackButton()}
             <Text style={{textAlign:'center', fontWeight:"700", fontSize:15}}>{recipe.title}</Text>
             <Text style={{textAlign:'center', paddingTop:5}}>{recipe.chef}</Text>
             <Text style={{paddingLeft:5, fontWeight:"bold"}}>Ingredients</Text>
