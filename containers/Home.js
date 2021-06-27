@@ -13,6 +13,7 @@ export default function HomePage({navigation, addRecipe}) {
 
   const [clicked,click] = useState(false)
   const [recipe, setRecipe] = useState({})
+  const [swipeDir, setSwipeDir] = useState("")
 
   const translateX = new Animated.Value(0)
 
@@ -22,9 +23,9 @@ export default function HomePage({navigation, addRecipe}) {
   },[])
 
   useEffect(() =>{
-    translateX.setValue(500)
+    if(swipeDir) translateX.setValue(swipeDir === "left" ? 500 : -500)
     resetView.start()
-  })
+  },[recipe])
 
   const resetView = Animated.timing(translateX,{
     toValue:0,
@@ -49,18 +50,17 @@ export default function HomePage({navigation, addRecipe}) {
   
   const swipeRight = () =>{
     const oldRecipe = recipe
-    click(false)
-    setRecipe(nextRecipe)
-    findRecipe(setNext)
-
     addRecipe(prevRecipes =>{
       if(!prevRecipes.find(r => r.chef === oldRecipe.chef && r.title === oldRecipe.title)) return [...prevRecipes, oldRecipe]
       else return prevRecipes
     })
+    setSwipeDir("right")
+    setRecipe(nextRecipe)
+    findRecipe(setNext)
   }
 
   const swipeLeft = () =>{
-    click(false)
+    setSwipeDir("left")
     setRecipe(nextRecipe)
     findRecipe(setNext)
   }
@@ -73,8 +73,8 @@ export default function HomePage({navigation, addRecipe}) {
     const {state} = nativeEvent
 
     if(state===5){
-      if(nativeEvent.translationX > 225) swipeLeftAnimation.start( ()=> swipeLeft())
-      else if(nativeEvent.translationX < -225) swipeRightAnimation.start( ()=> swipeRight())
+      if(nativeEvent.translationX > 225) swipeRightAnimation.start( () => swipeRight())
+      else if(nativeEvent.translationX < -225) swipeLeftAnimation.start(()=> swipeLeft())
       else resetView.start()
     }
   }
