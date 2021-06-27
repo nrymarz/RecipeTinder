@@ -2,6 +2,7 @@
 Bottom Navbar
 recipeshowpage and MyRecipes page layouts
 added 'saved!' notfication after swiping right
+swipe left /right arrows in unused spce inside card recipeimage
 dont swipe unless finger is released. Delay nextRecipe change until after animation.
 
 enable swiping while loading but have loading notification for loading current recipe

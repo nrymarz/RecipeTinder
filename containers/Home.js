@@ -13,7 +13,6 @@ export default function HomePage({navigation, addRecipe}) {
   const [recipe, setRecipe] = useState({})
   const [loading, setLoading] = useState(true)
 
-  let newSwipe = false
   let translateX = new Animated.Value(0)
 
   useEffect(()=>{
@@ -21,9 +20,13 @@ export default function HomePage({navigation, addRecipe}) {
     findRecipe(setNext)
   },[])
 
+  useEffect(()=>{
+    resetView.start(({finished})=>console.log(finished))
+  },[recipe])
+
   const resetView = Animated.timing(translateX,{
     toValue:0,
-    duration:250,
+    duration:330,
     easing: Easing.linear,
     useNativeDriver:true
   })
@@ -44,7 +47,6 @@ export default function HomePage({navigation, addRecipe}) {
   
   const swipeRight = () =>{
     const oldRecipe = recipe
-    newSwipe = false
     click(false)
     setRecipe(nextRecipe)
     findRecipe(setNext,setLoading)
@@ -56,28 +58,28 @@ export default function HomePage({navigation, addRecipe}) {
   }
 
   const swipeLeft = () =>{
-    newSwipe = false
     click(false)
     setRecipe(nextRecipe)
-    
     findRecipe(setNext, setLoading)
+    translateX.setValue(350)
   }
 
-  const handleSwipe = ({nativeEvent}) =>{
-    if(nativeEvent.translationX === 0) newSwipe = true
-    translateX.setValue(nativeEvent.translationX)
-    if(nativeEvent.translationX > 225 && newSwipe) swipeLeft()
-
-    else if(nativeEvent.translationX < -225 && newSwipe) swipeRight()
-  }
+  const handleSwipe = Animated.event(
+    [{nativeEvent:{translationX:translateX}}],{useNativeDriver:true}
+  )
 
   const handlePanStateChange = ({nativeEvent}) =>{
     const {state} = nativeEvent
-    if(state === 5 && (nativeEvent.translationX > 225 || nativeEvent.translationX < -225)){
-      const swipeAnimation = nativeEvent.translationX < 0 ?  swipeLeftAnimation : swipeRightAnimation
-      swipeAnimation.start( ()=>{
-        const v = (nativeEvent.translationX)*-2
-        translateX.setValue(v)
+    if(state === 5 && nativeEvent.translationX < -225){
+      swipeLeftAnimation.start( ()=>{
+        swipeLeft()
+      })
+
+    }
+    else if(state === 5 && nativeEvent.translationX > 225){
+      swipeRightAnimation.start( ()=>{
+        translateX.setValue(-350)
+        //swipeRight()
         resetView.start()
       })
     }
@@ -89,7 +91,7 @@ export default function HomePage({navigation, addRecipe}) {
   return (
     <View style={styles.container} >
       <PanGestureHandler
-        enabled={!clicked}
+        enabled={!clicked && !loading}
         onHandlerStateChange={handlePanStateChange}
         onGestureEvent={handleSwipe}
       >
