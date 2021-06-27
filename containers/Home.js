@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, Button, Animated, Easing } from 'react-native';
 import findRecipe from '../scraper'
 import {PanGestureHandler} from 'react-native-gesture-handler';
@@ -13,19 +13,18 @@ export default function HomePage({navigation, addRecipe}) {
 
   const [clicked,click] = useState(false)
   const [recipe, setRecipe] = useState({})
-  const [loading, setLoading] = useState(true)
 
   const translateX = new Animated.Value(0)
 
   useEffect(()=>{
-    findRecipe(setRecipe, setLoading)
+    findRecipe(setRecipe)
     findRecipe(setNext)
   },[])
 
-  useEffect(()=>{
+  useEffect(() =>{
     translateX.setValue(500)
-    resetView.start(({finished})=>console.log(finished))
-  },[recipe])
+    resetView.start()
+  })
 
   const resetView = Animated.timing(translateX,{
     toValue:0,
@@ -52,7 +51,7 @@ export default function HomePage({navigation, addRecipe}) {
     const oldRecipe = recipe
     click(false)
     setRecipe(nextRecipe)
-    findRecipe(setNext,setLoading)
+    findRecipe(setNext)
 
     addRecipe(prevRecipes =>{
       if(!prevRecipes.find(r => r.chef === oldRecipe.chef && r.title === oldRecipe.title)) return [...prevRecipes, oldRecipe]
@@ -72,28 +71,18 @@ export default function HomePage({navigation, addRecipe}) {
 
   const handlePanStateChange = ({nativeEvent}) =>{
     const {state} = nativeEvent
-    if(state === 5 && nativeEvent.translationX < -225){
-      swipeLeftAnimation.start( ()=>{
-        swipeLeft()
-      })
 
-    }
-    else if(state === 5 && nativeEvent.translationX > 225){
-      swipeRightAnimation.start( ()=>{
-        translateX.setValue(-350)
-        //swipeRight()
-        resetView.start()
-      })
-    }
-    else if(state===5){
-      resetView.start()
+    if(state===5){
+      if(nativeEvent.translationX > 225) swipeLeftAnimation.start( ()=> swipeLeft())
+      else if(nativeEvent.translationX < -225) swipeRightAnimation.start( ()=> swipeRight())
+      else resetView.start()
     }
   }
 
   return (
     <View style={styles.container} >
       <PanGestureHandler
-        enabled={!clicked && !loading}
+        enabled={!clicked}
         onHandlerStateChange={handlePanStateChange}
         onGestureEvent={handleSwipe}
       >
