@@ -15,7 +15,7 @@ export default function HomePage({navigation, addRecipe}) {
   const [recipe, setRecipe] = useState({})
 
   const translateX = new Animated.Value(0)
-  const opacity = new Animated.Value(0)
+  const opacity = new Animated.Value(1)
 
   useEffect(()=>{
     findRecipe(setRecipe)
@@ -23,6 +23,7 @@ export default function HomePage({navigation, addRecipe}) {
   },[])
 
   useEffect(() =>{
+    opacity.setValue(0)
     Animated.timing(opacity,{
       toValue:1,
       duration:1000,
