@@ -39,14 +39,14 @@ export default function HomePage({navigation, addRecipe}) {
   })
 
   const swipeRightAnimation = Animated.timing(translateX,{
-    toValue: 500,
+    toValue: -500,
     duration: 250,
     easing: Easing.linear,
     useNativeDriver:true
   })
 
   const swipeLeftAnimation = Animated.timing(translateX,{
-    toValue: -500,
+    toValue: 500,
     duration: 250,
     easing: Easing.linear,
     useNativeDriver:true
@@ -74,8 +74,8 @@ export default function HomePage({navigation, addRecipe}) {
   const handlePanStateChange = ({nativeEvent}) =>{
     const {state} = nativeEvent
     if(state===5){
-      if(nativeEvent.translationX > 225) swipeRightAnimation.start( () => swipeRight())
-      else if(nativeEvent.translationX < -225) swipeLeftAnimation.start(()=>swipeLeft())
+      if(nativeEvent.translationX < -225) swipeRightAnimation.start( () => swipeRight())
+      else if(nativeEvent.translationX > 225) swipeLeftAnimation.start(()=>swipeLeft())
       else resetView.start()
     }
   }
