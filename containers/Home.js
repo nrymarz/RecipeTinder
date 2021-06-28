@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect,useRef} from 'react';
 import { StyleSheet, Text, View, Button, Animated, Easing } from 'react-native';
 import findRecipe from '../scraper'
 import {PanGestureHandler} from 'react-native-gesture-handler';
@@ -13,9 +13,9 @@ export default function HomePage({navigation, addRecipe}) {
 
   const [clicked,click] = useState(false)
   const [recipe, setRecipe] = useState({})
-  const [swipeDir, setSwipeDir] = useState("")
 
   const translateX = new Animated.Value(0)
+  const opacity = new Animated.Value(0)
 
   useEffect(()=>{
     findRecipe(setRecipe)
@@ -23,8 +23,11 @@ export default function HomePage({navigation, addRecipe}) {
   },[])
 
   useEffect(() =>{
-    if(swipeDir) translateX.setValue(swipeDir === "left" ? 500 : -500)
-    resetView.start()
+    Animated.timing(opacity,{
+      toValue:1,
+      duration:1000,
+      useNativeDriver:true
+    }).start()
   },[recipe])
 
   const resetView = Animated.timing(translateX,{
@@ -54,27 +57,24 @@ export default function HomePage({navigation, addRecipe}) {
       if(!prevRecipes.find(r => r.chef === oldRecipe.chef && r.title === oldRecipe.title)) return [...prevRecipes, oldRecipe]
       else return prevRecipes
     })
-    setSwipeDir("right")
     setRecipe(nextRecipe)
     findRecipe(setNext)
   }
 
   const swipeLeft = () =>{
-    setSwipeDir("left")
     setRecipe(nextRecipe)
     findRecipe(setNext)
   }
 
   const handleSwipe = Animated.event(
-    [{nativeEvent:{translationX:translateX}}],{useNativeDriver:true}
+    [{nativeEvent:{translationX:translateX}}],{useNativeDriver:true},{listener: (event) => console.log(translateX)}
   )
 
   const handlePanStateChange = ({nativeEvent}) =>{
     const {state} = nativeEvent
-
     if(state===5){
       if(nativeEvent.translationX > 225) swipeRightAnimation.start( () => swipeRight())
-      else if(nativeEvent.translationX < -225) swipeLeftAnimation.start(()=> swipeLeft())
+      else if(nativeEvent.translationX < -225) swipeLeftAnimation.start(()=>swipeLeft())
       else resetView.start()
     }
   }
@@ -86,7 +86,7 @@ export default function HomePage({navigation, addRecipe}) {
         onHandlerStateChange={handlePanStateChange}
         onGestureEvent={handleSwipe}
       >
-        <Animated.View style={[styles.recipeContainer,{transform:[{translateX}]}]}>
+        <Animated.View style={[styles.recipeContainer,{opacity,transform:[{translateX}]}]}>
             {clicked ? <Recipe recipe={recipe} click={click} /> : <RecipeImage click={click} recipe={recipe}/>}
         </Animated.View>
       </PanGestureHandler>
