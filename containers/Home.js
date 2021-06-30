@@ -5,8 +5,7 @@ import {PanGestureHandler} from 'react-native-gesture-handler';
 import RecipeImage from '../components/RecipeImage'
 import Recipe from '../components/Recipe'
 
-let nextRecipe = {}
-const setNext = (obj) => nextRecipe = obj
+const nextRecipes = new Array(5).fill(null)
 
 export default function HomePage({navigation, addRecipe}) {
 
@@ -19,7 +18,7 @@ export default function HomePage({navigation, addRecipe}) {
 
   useEffect(()=>{
     findRecipe(setRecipe)
-    findRecipe(setNext)
+    nextRecipes.forEach(r => findRecipe((obj)=>r=obj))
   },[])
 
   useEffect(() =>{
@@ -59,22 +58,20 @@ export default function HomePage({navigation, addRecipe}) {
       else return prevRecipes
     })
     setRecipe(nextRecipe)
-    findRecipe(setNext)
   }
 
   const swipeLeft = () =>{
     setRecipe(nextRecipe)
-    findRecipe(setNext)
   }
 
   const handleSwipe = Animated.event(
-    [{nativeEvent:{translationX:translateX}}],{useNativeDriver:true},{listener: (event) => console.log(translateX)}
+    [{nativeEvent:{translationX:translateX}}],{useNativeDriver:true}
   )
 
   const handlePanStateChange = ({nativeEvent}) =>{
     const {state} = nativeEvent
     if(state===5){
-      if(nativeEvent.translationX < -225) swipeRightAnimation.start( () => swipeRight())
+      if(nativeEvent.translationX < -225) swipeRightAnimation.start(() => swipeRight())
       else if(nativeEvent.translationX > 225) swipeLeftAnimation.start(()=>swipeLeft())
       else resetView.start()
     }
@@ -107,7 +104,7 @@ const styles = StyleSheet.create({
   },
   recipeContainer:{
     flex:1,
-    backgroundColor: 'rgb(240,240,240)',
+    backgroundColor: 'rgb(235,235,235)',
     width:"96%",
     borderRadius: 5,
     borderWidth:1.5,
