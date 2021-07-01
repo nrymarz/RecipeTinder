@@ -3,22 +3,27 @@ import { StyleSheet, Text, View, Button, Animated, Easing } from 'react-native';
 import findRecipe from '../scraper'
 import {PanGestureHandler} from 'react-native-gesture-handler';
 import RecipeImage from '../components/RecipeImage'
+import Queue from '../Queue'
 import Recipe from '../components/Recipe'
 
-const nextRecipes = new Array(5).fill(null)
+const recipes = new Queue()
 
 export default function HomePage({navigation, addRecipe}) {
 
 
   const [clicked,click] = useState(false)
   const [recipe, setRecipe] = useState({})
+  const [nextRecipe, setNext] = useState({})
 
   const translateX = new Animated.Value(0)
   const opacity = new Animated.Value(1)
 
   useEffect(()=>{
+    findRecipe(setNext)
     findRecipe(setRecipe)
-    nextRecipes.forEach(r => findRecipe((obj)=>r=obj))
+    for(let i=0;i<5;i++){
+      findRecipe((obj)=>recipes.enqueue(obj))
+    }
   },[])
 
   useEffect(() =>{
@@ -62,6 +67,8 @@ export default function HomePage({navigation, addRecipe}) {
 
   const swipeLeft = () =>{
     setRecipe(nextRecipe)
+    setNext(recipes.dequeue())
+    findRecipe((obj)=>recipes.enqueue(obj))
   }
 
   const handleSwipe = Animated.event(
@@ -76,6 +83,8 @@ export default function HomePage({navigation, addRecipe}) {
       else resetView.start()
     }
   }
+
+  console.log(recipes.length)
 
   return (
     <View style={styles.container} >

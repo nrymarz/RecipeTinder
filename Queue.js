@@ -33,6 +33,6 @@ export default class Queue{
         temp = this.first
         if(this.length === 0) this.last = null
         this.first = temp.next
-        return temp
+        return temp.val
     }
 }
