@@ -84,22 +84,22 @@ export default function HomePage({navigation, addRecipe}) {
     }
   }
 
-  console.log(recipes.length)
-
   return (
     <View style={styles.container} >
-      <View style={styles.recipeContainer}>
-          {nextRecipe ? <RecipeImage recipe={nextRecipe} /> : null}
+      <View style={styles.cardContainer}>
+        <View style={styles.recipeCard}>
+            {nextRecipe ? <RecipeImage recipe={nextRecipe} /> : null}
+        </View>
+        <PanGestureHandler
+          enabled={!clicked && recipes.length > 0}
+          onHandlerStateChange={handlePanStateChange}
+          onGestureEvent={handleSwipe}
+        >
+          <Animated.View style={[styles.recipeCard,{opacity,transform:[{translateX}]}]}>
+              {clicked ? <Recipe recipe={recipe} click={click} /> : <RecipeImage click={click} recipe={recipe}/>}
+          </Animated.View>
+        </PanGestureHandler>
       </View>
-      <PanGestureHandler
-        enabled={!clicked && recipes.length > 0}
-        onHandlerStateChange={handlePanStateChange}
-        onGestureEvent={handleSwipe}
-      >
-        <Animated.View style={[styles.recipeContainer,{opacity,transform:[{translateX}]}]}>
-            {clicked ? <Recipe recipe={recipe} click={click} /> : <RecipeImage click={click} recipe={recipe}/>}
-        </Animated.View>
-      </PanGestureHandler>
       <View style={styles.bottomNav}>
         <Button title ="My Recipes" onPress={()=>navigation.navigate('My Recipes')} color={"silver"}></Button>
       </View>
@@ -111,15 +111,20 @@ const styles = StyleSheet.create({
   container:{
     flex:1,
     backgroundColor: 'white',
+    alignItems:"center"
+  },
+  cardContainer:{
+    flex:1,
+    width:"100%",
     alignItems: 'center',
     justifyContent: 'center',
   },
-  recipeContainer:{
-    flex:1,
+  recipeCard:{
     backgroundColor: 'rgb(235,235,235)',
     width:"96%",
-    position:'absolute',
+    height:"100%",
     borderRadius: 5,
+    position:'absolute',
     borderWidth:1.5,
     borderColor:'black',
     marginTop:5
