@@ -16,8 +16,9 @@ export default function HomePage({navigation, addRecipe}) {
   const [nextRecipe, setNext] = useState({})
 
   const translateX = new Animated.Value(0)
-  const opacity = new Animated.Value(1)
+  const scale = new Animated.Value(.65)
 
+  
   useEffect(()=>{
     findRecipe(setNext)
     findRecipe(setRecipe)
@@ -29,12 +30,6 @@ export default function HomePage({navigation, addRecipe}) {
   useEffect(() =>{
     setNext(recipes.dequeue())
     findRecipe((obj)=>recipes.enqueue(obj))
-    opacity.setValue(0)
-    Animated.timing(opacity,{
-      toValue:1,
-      duration:1000,
-      useNativeDriver:true
-    }).start()
   },[recipe])
 
   const resetView = Animated.timing(translateX,{
@@ -87,15 +82,15 @@ export default function HomePage({navigation, addRecipe}) {
   return (
     <View style={styles.container} >
       <View style={styles.cardContainer}>
-        <View style={styles.recipeCard}>
+        <Animated.View style={[styles.recipeCard,{transform:[{scale:translateX.interpolate({inputRange:[-500,0,500],outputRange:[1,0.65,1]})}]}]}>
             {nextRecipe ? <RecipeImage recipe={nextRecipe} /> : null}
-        </View>
+        </Animated.View>
         <PanGestureHandler
           enabled={!clicked && recipes.length > 0}
           onHandlerStateChange={handlePanStateChange}
           onGestureEvent={handleSwipe}
         >
-          <Animated.View style={[styles.recipeCard,{opacity,transform:[{translateX}]}]}>
+          <Animated.View style={[styles.recipeCard,{transform:[{translateX}]}]}>
               {clicked ? <Recipe recipe={recipe} click={click} /> : <RecipeImage click={click} recipe={recipe}/>}
           </Animated.View>
         </PanGestureHandler>
