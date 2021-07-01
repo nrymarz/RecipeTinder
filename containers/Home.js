@@ -27,6 +27,8 @@ export default function HomePage({navigation, addRecipe}) {
   },[])
 
   useEffect(() =>{
+    setNext(recipes.dequeue())
+    findRecipe((obj)=>recipes.enqueue(obj))
     opacity.setValue(0)
     Animated.timing(opacity,{
       toValue:1,
@@ -67,8 +69,6 @@ export default function HomePage({navigation, addRecipe}) {
 
   const swipeLeft = () =>{
     setRecipe(nextRecipe)
-    setNext(recipes.dequeue())
-    findRecipe((obj)=>recipes.enqueue(obj))
   }
 
   const handleSwipe = Animated.event(
