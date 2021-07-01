@@ -88,8 +88,11 @@ export default function HomePage({navigation, addRecipe}) {
 
   return (
     <View style={styles.container} >
+      <View style={styles.recipeContainer}>
+          {nextRecipe ? <RecipeImage recipe={nextRecipe} /> : null}
+      </View>
       <PanGestureHandler
-        enabled={!clicked}
+        enabled={!clicked && recipes.length > 0}
         onHandlerStateChange={handlePanStateChange}
         onGestureEvent={handleSwipe}
       >
@@ -115,6 +118,7 @@ const styles = StyleSheet.create({
     flex:1,
     backgroundColor: 'rgb(235,235,235)',
     width:"96%",
+    position:'absolute',
     borderRadius: 5,
     borderWidth:1.5,
     borderColor:'black',
