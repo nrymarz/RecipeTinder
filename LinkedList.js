@@ -1,38 +1,38 @@
 class Node {
     constructor(val){
         this.val = val
-        this.next = undefined
+        this.next = null
     }
 }
 
 
-export default class LinkedList{
+export default class Queue{
     constructor(){
-        this.head = undefined
-        this.tail = undefined
+        this.first = null
+        this.last = null
         this.length = 0
     }
 
-    push(val){
+    enqueue(val){
         node = new Node(val)
         this.length++
         if(this.length === 1){
-            this.head = node
-            this.tail = node
+            this.first = node
+            this.last = node
         }
         else{
-            this.tail.next = node
-            this.tail = node
+            this.last.next = node
+            this.last = node
         }
         return val
     }
 
-    shift(){
+    dequeue(){
         if(this.length === 0) return undefined
         this.length--
-        temp = this.head
-        if(this.length === 0) this.tail = undefined
-        this.head = temp.next
+        temp = this.first
+        if(this.length === 0) this.last = null
+        this.first = temp.next
         return temp
     }
 }
