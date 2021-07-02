@@ -5,8 +5,8 @@ let dom = ''
 let recipeObj
 export default function findRecipe(setRecipe, setLoading){
     if(setLoading) setLoading(true)
-    const pageNum = Math.floor(Math.random()*7000)
-    const recipeIndex = `https://www.foodnetwork.com/search/p/${pageNum}/CUSTOM_FACET:RECIPE_FACET` 
+    const pageNum = Math.floor(Math.random()*500)
+    const recipeIndex = `https://www.foodnetwork.com/search/p/${pageNum}/CUSTOM_FACET:RECIPE_FACET/rating` 
     axios.get(recipeIndex)
         .then(res => dom = parse(res.data))
         .then(() => openRecipe(setRecipe, setLoading))
