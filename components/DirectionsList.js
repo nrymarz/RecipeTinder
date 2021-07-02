@@ -27,7 +27,7 @@ export default function DirectionsList({directions}){
 
     return(
         <FlatList 
-            style={{backgroundColor:"pink", maxHeight:"42%"}} 
+            style={{backgroundColor:"rgb(250,220,100)", maxHeight:"42%"}} 
             ItemSeparatorComponent={directionSeperator} 
             data={directions} 
             renderItem={renderDirections}

@@ -9,7 +9,7 @@ export default function IngredientsList({ingredients}){
     return(
         <FlatList
             data={ingredients} 
-            style={{backgroundColor:'lightgreen', maxHeight:"41%"}} 
+            style={{backgroundColor:"rgb(180,180,250)", maxHeight:"41%"}} 
             renderItem={renderIngredients}
             keyExtractor={(item,idx) => item + idx}
         />

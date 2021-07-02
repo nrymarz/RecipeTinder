@@ -83,7 +83,7 @@ export default function HomePage({navigation, addRecipe}) {
     return (
       <View style={styles.container}>
         <View style={styles.cardContainer}>
-          <Text style={{fontSize:25, fontWeight:"900"}}>Loading...</Text>
+          <Text style={{fontSize:25}}>Loading...</Text>
         </View>
       </View>
 
@@ -107,7 +107,7 @@ export default function HomePage({navigation, addRecipe}) {
         </PanGestureHandler>
       </View>
       <View style={styles.bottomNav}>
-        <Button title ="My Recipes" onPress={()=>navigation.navigate('My Recipes')} color={"silver"}></Button>
+        <Button title ="Saved Recipes" onPress={()=>navigation.navigate('My Recipes')} color={"silver"}></Button>
       </View>
     </View>
   );
