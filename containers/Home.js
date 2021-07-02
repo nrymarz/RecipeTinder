@@ -14,14 +14,14 @@ export default function HomePage({navigation, addRecipe}) {
   const [clicked,click] = useState(false)
   const [recipe, setRecipe] = useState({})
   const [nextRecipe, setNext] = useState({})
+  const [loading, setLoading] = useState(false)
 
   const translateX = new Animated.Value(0)
-  const scale = new Animated.Value(.65)
 
   
   useEffect(()=>{
     findRecipe(setNext)
-    findRecipe(setRecipe)
+    findRecipe(setRecipe, setLoading)
     for(let i=0;i<5;i++){
       findRecipe((obj)=>recipes.enqueue(obj))
     }
@@ -79,6 +79,17 @@ export default function HomePage({navigation, addRecipe}) {
     }
   }
 
+  if(loading){
+    return (
+      <View style={styles.container}>
+        <View style={styles.cardContainer}>
+          <Text style={{fontSize:25, fontWeight:"900"}}>Loading...</Text>
+        </View>
+      </View>
+
+    )
+  }
+
   return (
     <View style={styles.container} >
       <View style={styles.cardContainer}>
@@ -86,7 +97,7 @@ export default function HomePage({navigation, addRecipe}) {
             {nextRecipe ? <RecipeImage recipe={nextRecipe} /> : null}
         </Animated.View>
         <PanGestureHandler
-          enabled={!clicked && recipes.length > 0}
+          enabled={!clicked}
           onHandlerStateChange={handlePanStateChange}
           onGestureEvent={handleSwipe}
         >
