@@ -7,7 +7,7 @@ export default function RecipeImage({click, recipe, first}){
   const {image, title, chef} = recipe
   return(
     <>
-      <TouchableHighlight onPress={() => click(true)}>
+      <TouchableHighlight onPress={() =>click ? click(true) : null}>
         <Image
           source={{uri: image}}
           style={{height:400,width:"100%", resizeMode:'cover'}}

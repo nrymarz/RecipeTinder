@@ -13,7 +13,6 @@ export default function MyRecipes({navigation, recipes}){
 
     return(
         <View>
-            <Button title="Find New Recipes" onPress={() => navigation.navigate("Find Recipes")}></Button>
             <FlatList 
                 data={recipes}
                 renderItem={renderRecipe}
