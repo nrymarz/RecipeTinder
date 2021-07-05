@@ -20,8 +20,14 @@ export default function RecipeImage({click, recipe, first}){
       {first ?
         <>
           <View style={{marginTop:75, flexDirection:'row', marginHorizontal:20}}>
-            <Image source={left} style={{width:80, height:50}}/>
-            <Image source={right} style={{width:80, height:50, marginLeft:'auto'}}/>
+            <View>
+              <Text>Swipe Left</Text>
+              <Image source={left} style={{width:80, height:50}}/>
+            </View>
+            <View style={{marginLeft:'auto'}}>
+              <Text>Swipe Right</Text>
+              <Image source={right} style={{width:80, height:50}}/>
+            </View>
           </View>
           <View style={{marginTop:5, flexDirection:'row', marginHorizontal:35}}>
             <Text>Discard</Text>
