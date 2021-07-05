@@ -85,6 +85,9 @@ export default function HomePage({navigation, addRecipe}) {
         <View style={styles.cardContainer}>
           <Text style={{fontSize:25}}>Loading...</Text>
         </View>
+        <View style={styles.bottomNav}>
+          <Button title ="Saved Recipes" onPress={()=>navigation.navigate('My Recipes')} color={"rgb(75,75,75)"}></Button>
+        </View>
       </View>
 
     )
@@ -107,7 +110,7 @@ export default function HomePage({navigation, addRecipe}) {
         </PanGestureHandler>
       </View>
       <View style={styles.bottomNav}>
-        <Button title ="Saved Recipes" onPress={()=>navigation.navigate('My Recipes')} color={"silver"}></Button>
+        <Button title ="Saved Recipes" onPress={()=>navigation.navigate('My Recipes')} color={"rgb(75,75,75)"}></Button>
       </View>
     </View>
   );
@@ -124,6 +127,7 @@ const styles = StyleSheet.create({
     width:"100%",
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop:5
   },
   recipeCard:{
     backgroundColor: 'rgb(235,235,235)',
@@ -132,12 +136,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     position:'absolute',
     borderWidth:1.5,
-    borderColor:'black',
-    marginTop:5
+    borderColor:'black'
   },
   bottomNav:{
-    width:"50%",
-    height:50,
+    width:"96%",
+    height:40,
     marginTop:5
   }
   

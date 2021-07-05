@@ -1,11 +1,13 @@
 
 Bottom Navbar
 recipeshowpage and MyRecipes page layouts
+    add remove button for list
 added 'saved!' notfication after swiping right
 
 disable swiping and add visual feedback when loading more recipes inside queue
 
 webscraper -- foodnetwork/custom JS Class
+    add category selection
     fetch different sites?
     
 
