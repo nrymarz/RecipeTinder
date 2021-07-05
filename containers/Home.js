@@ -10,11 +10,11 @@ const recipes = new Queue()
 
 export default function HomePage({navigation, addRecipe}) {
 
-
   const [clicked,click] = useState(false)
   const [recipe, setRecipe] = useState({})
   const [nextRecipe, setNext] = useState({})
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [first, setFirst] = useState(true)
 
   const translateX = new Animated.Value(0)
 
@@ -59,10 +59,11 @@ export default function HomePage({navigation, addRecipe}) {
       if(!prevRecipes.find(r => r.chef === oldRecipe.chef && r.title === oldRecipe.title)) return [...prevRecipes, oldRecipe]
       else return prevRecipes
     })
-    setRecipe(nextRecipe)
+    swipeLeft()
   }
 
   const swipeLeft = () =>{
+    setFirst(false)
     setRecipe(nextRecipe)
   }
 
@@ -105,7 +106,7 @@ export default function HomePage({navigation, addRecipe}) {
           onGestureEvent={handleSwipe}
         >
           <Animated.View style={[styles.recipeCard,{transform:[{translateX}]}]}>
-              {clicked ? <Recipe recipe={recipe} click={click} /> : <RecipeImage click={click} recipe={recipe}/>}
+              {clicked ? <Recipe recipe={recipe} click={click} /> : <RecipeImage click={click} recipe={recipe} first={first}/>}
           </Animated.View>
         </PanGestureHandler>
       </View>
