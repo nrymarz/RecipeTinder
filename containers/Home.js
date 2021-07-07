@@ -1,4 +1,4 @@
-import React, {useState, useEffect,useRef} from 'react';
+import React, {useState, useEffect, AsyncStorage } from 'react';
 import { StyleSheet, Text, View, Button, Animated, Easing } from 'react-native';
 import findRecipe from '../scraper'
 import {PanGestureHandler} from 'react-native-gesture-handler';
