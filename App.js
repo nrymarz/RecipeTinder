@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar'
-import React,{useState, useEffect, AsyncStorage} from 'react';
+import React,{useState, useEffect} from 'react';
 import HomePage from "./containers/Home"
 import MyRecipes from './containers/MyRecipes'
 import RecipePage from './containers/RecipePage'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationContainer} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack'
 
@@ -23,7 +24,7 @@ export default function App() {
 
   const load = async () =>{
     try{
-      recipes = await AsyncStorage.getItem("recipes")
+      let recipes = await AsyncStorage.getItem("recipes")
 
       if(recipes!==null) setRecipes(JSON.parse(recipes))
     } catch(e){
@@ -33,7 +34,8 @@ export default function App() {
 
   const update = async () =>{
     try{
-      await AsyncStorage.setItem("recipes", recipes)
+      const json = JSON.stringify(recipes)
+      await AsyncStorage.setItem("recipes", json)
     } catch(e){
       alert(e)
     }
