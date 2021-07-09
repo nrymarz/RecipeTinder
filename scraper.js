@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {parse} from 'node-html-parser'
+import {v4 as uuidv4} from 'uuid'
 
 let dom = ''
 let recipeObj
@@ -24,6 +25,7 @@ function openRecipe(setRecipe, setLoading){
 }
 
 function createRecipeObj(recipe){
+    const id = uuidv4()
     let title = recipe.querySelector(".o-AssetTitle__a-HeadlineText")
     title = title ? title.innerHTML : "Recipe Title Unavailable"
     let chef = recipe.querySelector(".o-Attribution__a-Name a")
@@ -34,6 +36,7 @@ function createRecipeObj(recipe){
     directions = directions.length>0 ? directions.map(d => d.innerHTML.trim()) : ["Directions Unavailable"]
     const image = "https:" +  recipe.querySelector(".m-MediaBlock__a-Image").attrs.src
     return {
+        id,
         title,
         chef,
         ingredients,

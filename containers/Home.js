@@ -56,7 +56,7 @@ export default function HomePage({navigation, addRecipe}) {
   const swipeRight = () =>{
     const oldRecipe = recipe
     addRecipe(prevRecipes =>{
-      if(!prevRecipes.find(r => r.chef === oldRecipe.chef && r.title === oldRecipe.title)) return [...prevRecipes, oldRecipe]
+      if(!prevRecipes.find(r => r.id === oldRecipe.id)) return [...prevRecipes, oldRecipe]
       else return prevRecipes
     })
     swipeLeft()

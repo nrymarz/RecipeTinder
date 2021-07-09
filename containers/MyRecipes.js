@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Button, FlatList, Image, TouchableOpacity, Anim
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 
-export default function MyRecipes({navigation, recipes}){
+export default function MyRecipes({navigation, recipes, setRecipes}){
     const renderLeftSwipe = (progress, dragX) =>{
         const translateX = dragX.interpolate({
             inputRange:[0,110],
@@ -46,6 +46,7 @@ export default function MyRecipes({navigation, recipes}){
 
 const styles = StyleSheet.create({
     recipeWrapper:{
+        marginHorizontal:2,
         marginVertical: 2
     }
 })

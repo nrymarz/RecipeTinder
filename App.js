@@ -49,7 +49,7 @@ export default function App() {
         </Stack.Screen>
 
         <Stack.Screen name="My Recipes">
-          {props => <MyRecipes {...props} recipes={recipes}/>}
+          {props => <MyRecipes {...props} setRecipes={setRecipes} recipes={recipes}/>}
         </Stack.Screen>
 
         <Stack.Screen name="Recipe Page" component={RecipePage} />
