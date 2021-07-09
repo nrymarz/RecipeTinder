@@ -87,7 +87,7 @@ export default function HomePage({navigation, addRecipe}) {
           <Text style={{fontSize:25}}>Loading...</Text>
         </View>
         <View style={styles.bottomNav}>
-          <Button title ="Saved Recipes" onPress={()=>navigation.navigate('My Recipes')} color={"rgb(75,75,75)"}></Button>
+          <Button title ="View Saved Recipes" onPress={()=>navigation.navigate('My Recipes')} color={"rgb(75,75,75)"}></Button>
         </View>
       </View>
 
@@ -111,7 +111,7 @@ export default function HomePage({navigation, addRecipe}) {
         </PanGestureHandler>
       </View>
       <View style={styles.bottomNav}>
-        <Button title ="Saved Recipes" onPress={()=>navigation.navigate('My Recipes')} color={"rgb(75,75,75)"}></Button>
+        <Button title ="View Saved Recipes" onPress={()=>navigation.navigate('My Recipes')} color={"rgb(75,75,75)"}></Button>
       </View>
     </View>
   );
