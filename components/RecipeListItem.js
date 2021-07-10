@@ -14,12 +14,13 @@ export default function RecipeListItem({navigation, recipe, index, deleteRecipe}
         }).start(()=> deleteRecipe(recipe.id))
     }
 
-    const renderLeftSwipe = (progress, dragX) =>{
+    const renderRightSwipe = (progress, dragX) =>{
         const translateX = dragX.interpolate({
-            inputRange:[0,106],
-            outputRange:[-100,0],
+            inputRange:[-108,0],
+            outputRange:[0,108],
             extrapolate:'clamp'
         })
+        console.log(dragX)
         return(
             <Animated.View style={[{backgroundColor:'rgb(250,0,0)',transform:[{translateX}]}]}>
                 <Text onPress={animatedDelete} style={{paddingHorizontal:5,fontWeight:'bold',marginTop:'auto',marginBottom:'auto'}}>Delete Recipe</Text>
@@ -28,7 +29,7 @@ export default function RecipeListItem({navigation, recipe, index, deleteRecipe}
     }
 
     return(
-        <Swipeable renderLeftActions={renderLeftSwipe} friction={1.75}>
+        <Swipeable renderRightActions={renderRightSwipe} friction={1.75}>
             <TouchableOpacity style={[styles.recipeWrapper, {backgroundColor: index%2===0 ? "rgb(210,210,210)" : "rgb(225,225,225)"}]} onPress={ () => navigation.navigate('Recipe Page',{recipe})} >
                 <Image source={{uri: recipe.image}} style={{width:70, height:70, marginRight:10}}/>
                 <View style={{alignContent:'center',justifyContent:"center", width:"82%"}}>
@@ -45,7 +46,6 @@ const styles = StyleSheet.create({
     recipeWrapper:{
         flex:1,
         flexDirection:'row',
-        height:70,
         marginVertical: 1
     }
 })
