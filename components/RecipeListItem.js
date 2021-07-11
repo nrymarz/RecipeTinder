@@ -25,9 +25,9 @@ export default function RecipeListItem({navigation, recipe, deleteRecipe}){
         })
         return(
             <Animated.View style={[{width:'100%',marginVertical:1,backgroundColor:'rgb(250,100,100)', height,overflow:'hidden'}]}>
-                <TouchableOpacity style={styles.deleteText} onPress={animatedDelete}>
+                <View style={styles.deleteText}>
                     <Animated.Image source={deleteIcon} style={{height:40,width:40, transform:[{scale}]}}></Animated.Image>
-                </TouchableOpacity>
+                </View>
             </Animated.View>
         )
     }
