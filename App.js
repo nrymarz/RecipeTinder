@@ -5,11 +5,10 @@ import MyRecipes from './containers/MyRecipes'
 import RecipePage from './containers/RecipePage'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationContainer} from '@react-navigation/native'
-import {createStackNavigator} from '@react-navigation/stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+const Tab = createBottomTabNavigator()
 
-
-const Stack = createStackNavigator()
 
 export default function App() {
   const [recipes,setRecipes] = useState([])
@@ -43,17 +42,15 @@ export default function App() {
   
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Find Recipes">
+      <Tab.Navigator>
+        <Tab.Screen name="Find Recipes">
           {props => <HomePage {...props} addRecipe = {setRecipes}/>}
-        </Stack.Screen>
+        </Tab.Screen>
 
-        <Stack.Screen name="My Recipes">
+        <Tab.Screen name="My Recipes">
           {props => <MyRecipes {...props} setRecipes={setRecipes} recipes={recipes}/>}
-        </Stack.Screen>
-
-        <Stack.Screen name="Recipe Page" component={RecipePage} />
-      </Stack.Navigator>
+        </Tab.Screen>
+      </Tab.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>
   );

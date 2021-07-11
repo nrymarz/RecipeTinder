@@ -110,9 +110,6 @@ export default function HomePage({navigation, addRecipe}) {
           </Animated.View>
         </PanGestureHandler>
       </View>
-      <View style={styles.bottomNav}>
-        <Button title ="View Saved Recipes" onPress={()=>navigation.navigate('My Recipes')} color={"rgb(75,75,75)"}></Button>
-      </View>
     </View>
   );
 }
