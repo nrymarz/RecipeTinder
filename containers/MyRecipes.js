@@ -13,7 +13,7 @@ export default function MyRecipes({navigation, recipes, setRecipes}){
     }
 
     return(
-        <View>
+        <View style={{marginHorizontal:5}}>
             <FlatList 
                 data={recipes}
                 renderItem={renderRecipe}
