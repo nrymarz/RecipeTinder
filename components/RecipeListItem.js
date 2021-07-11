@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useMemo} from 'react';
 import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, Animated, Dimensions } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import deleteIcon from '../assets/delete.png'
@@ -8,6 +8,7 @@ export default function RecipeListItem({navigation, recipe, deleteRecipe}){
     const windowWidth = Dimensions.get('window').width
 
     const [height,setHeight] = useState(new Animated.Value(70))
+    const rotate = new Animated.Value(0)
 
     const animatedDelete=() => {
         Animated.timing(height,{
@@ -17,7 +18,31 @@ export default function RecipeListItem({navigation, recipe, deleteRecipe}){
         }).start(()=> deleteRecipe(recipe.id))
     }
 
+    const shakeIcon = function(){
+        Animated.sequence([
+            Animated.timing(rotate,{
+                toValue:15,
+                duration:100,
+                useNativeDriver:true
+            }),
+            Animated.timing(rotate,{
+                toValue:-15,
+                duration:100,
+                useNativeDriver:true
+            }),
+            Animated.timing(rotate,{
+                toValue:0,
+                duration:100,
+                useNativeDriver:true
+            })
+        ]).start()
+    }   
+
     const renderRightSwipe = (progress, dragX) =>{
+        const newRotate = rotate.interpolate({
+            inputRange:[-15,15],
+            outputRange:[`-15deg`,`15deg`]
+        })
         const scale = dragX.interpolate({
             inputRange:[-100,0],
             outputRange:[1,0.65],
@@ -25,15 +50,15 @@ export default function RecipeListItem({navigation, recipe, deleteRecipe}){
         })
         return(
             <Animated.View style={[{width:'100%',marginVertical:1,backgroundColor:'rgb(250,100,100)', height,overflow:'hidden'}]}>
-                <View style={styles.deleteText}>
-                    <Animated.Image source={deleteIcon} style={{height:40,width:40, transform:[{scale}]}}></Animated.Image>
+                <View style={styles.deleteIconView}>
+                    <Animated.Image source={deleteIcon} style={{height:40,width:40, transform:[{scale},{rotate:newRotate}]}} />
                 </View>
             </Animated.View>
         )
     }
 
     return(
-        <Swipeable renderRightActions={renderRightSwipe} rightThreshold={100} onSwipeableOpen={animatedDelete} friction={1.75}>
+        <Swipeable renderRightActions={renderRightSwipe} rightThreshold={100} onSwipeableWillOpen={() =>shakeIcon()}  onSwipeableOpen={animatedDelete} friction={1.75}>
             <TouchableHighlight onPress={()=>navigation.navigate('Recipe Page',{recipe})} >
                 <Animated.View style={[styles.recipeWrapper, {height, backgroundColor:"rgb(225,225,225)"}]}>
                     <Image source={{uri: recipe.image}} style={{width:70, height:70, marginRight:10}}/>
@@ -58,7 +83,7 @@ const styles = StyleSheet.create({
         borderRadius:2,
         borderColor: "rgb(225,225,225)"
     },
-    deleteText:{
+    deleteIconView:{
         marginLeft:'auto',
         marginRight:5,
         marginTop:'auto',
