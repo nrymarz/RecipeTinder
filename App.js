@@ -1,8 +1,9 @@
-import { StatusBar } from 'expo-status-bar'
+import { StatusBar } from 'expo-status-bar';
+import {View} from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context';
 import React,{useState, useEffect} from 'react';
 import HomePage from "./containers/Home"
 import MyRecipes from './containers/MyRecipes'
-import RecipePage from './containers/RecipePage'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationContainer} from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -46,12 +47,10 @@ export default function App() {
         <Tab.Screen name="Find Recipes">
           {props => <HomePage {...props} addRecipe = {setRecipes}/>}
         </Tab.Screen>
-
         <Tab.Screen name="My Recipes">
           {props => <MyRecipes {...props} setRecipes={setRecipes} recipes={recipes}/>}
         </Tab.Screen>
       </Tab.Navigator>
-      <StatusBar style="auto" />
     </NavigationContainer>
   );
 }

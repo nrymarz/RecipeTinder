@@ -1,5 +1,6 @@
 import React,{useState} from 'react';
-import { StyleSheet, View, FlatList, Animated} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { StyleSheet, View, FlatList} from 'react-native';
 import RecipeListItem from '../components/RecipeListItem'
 
 export default function MyRecipes({navigation, recipes, setRecipes}){
@@ -13,11 +14,11 @@ export default function MyRecipes({navigation, recipes, setRecipes}){
     }
 
     return(
-        <View style={{marginHorizontal:5}}>
+        <SafeAreaView style={{marginHorizontal:5}}>
             <FlatList 
                 data={recipes}
                 renderItem={renderRecipe}
             />
-        </View>
+        </SafeAreaView>
     )
 }

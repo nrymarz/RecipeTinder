@@ -1,4 +1,5 @@
 import React, {useState, useEffect } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, Text, View, Button, Animated, Easing } from 'react-native';
 import findRecipe from '../scraper'
 import {PanGestureHandler} from 'react-native-gesture-handler';
@@ -40,14 +41,14 @@ export default function HomePage({navigation, addRecipe}) {
   })
 
   const swipeRightAnimation = Animated.timing(translateX,{
-    toValue: -400,
+    toValue: -500,
     duration: 250,
     easing: Easing.linear,
     useNativeDriver:true
   })
 
   const swipeLeftAnimation = Animated.timing(translateX,{
-    toValue: 400,
+    toValue: 500,
     duration: 250,
     easing: Easing.linear,
     useNativeDriver:true
@@ -86,18 +87,14 @@ export default function HomePage({navigation, addRecipe}) {
         <View style={styles.cardContainer}>
           <Text style={{fontSize:25}}>Loading...</Text>
         </View>
-        <View style={styles.bottomNav}>
-          <Button title ="View Saved Recipes" onPress={()=>navigation.navigate('My Recipes')} color={"rgb(75,75,75)"}></Button>
-        </View>
       </View>
-
     )
   }
 
   return (
-    <View style={styles.container} >
+    <SafeAreaView style={styles.container} >
       <View style={styles.cardContainer}>
-        <Animated.View style={[styles.recipeCard,{transform:[{scale:translateX.interpolate({inputRange:[-400,0,400],outputRange:[1,0.4,1]})}]}]}>
+        <Animated.View style={[styles.recipeCard,{transform:[{scale:translateX.interpolate({inputRange:[-400,0,400],outputRange:[1,0.4,1],extrapolate:'clamp'})}]}]}>
             {nextRecipe ? <RecipeImage recipe={nextRecipe} /> : null}
         </Animated.View>
         <PanGestureHandler
@@ -110,7 +107,7 @@ export default function HomePage({navigation, addRecipe}) {
           </Animated.View>
         </PanGestureHandler>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
   
@@ -135,11 +132,5 @@ const styles = StyleSheet.create({
     position:'absolute',
     borderWidth:1.5,
     borderColor:'black'
-  },
-  bottomNav:{
-    width:"96%",
-    height:40,
-    marginTop:5
   }
-  
 });
