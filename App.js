@@ -41,15 +41,8 @@ export default function App() {
     }
   }
 
-  function SavedRecipes(){
-    return(
-      <Stack.Navigator>
-        <Stack.Screen name="Saved Recipes">
-          {props => <MyRecipes {...props} setRecipes={setRecipes} recipes={recipes}/>}
-        </Stack.Screen>
-        <Stack.Screen name="Recipe Page" component={RecipePage} />
-      </Stack.Navigator>
-    )
+  function EmptyTab(){
+    return <></>
   }
   
   return (
@@ -58,7 +51,10 @@ export default function App() {
         <Tab.Screen name="Find Recipes">
           {props => <HomePage {...props} addRecipe = {setRecipes}/>}
         </Tab.Screen>
-        <Tab.Screen name="Saved Recipes" component={SavedRecipes}/>
+        <Tab.Screen name="Saved Recipes">
+          {props => <MyRecipes {...props} setRecipes={setRecipes} recipes={recipes}/>}
+        </Tab.Screen>
+        <Tab.Screen name="Recipe Page" component={RecipePage} options={{tabBarButton:EmptyTab}}/>
       </Tab.Navigator>
     </NavigationContainer>
   );
