@@ -18,6 +18,12 @@ export default function HomePage({navigation, addRecipe}) {
   const [first, setFirst] = useState(true)
 
   const translateX = new Animated.Value(0)
+  const translateY = new Animated.Value(0)
+  const rotate = translateX.interpolate({
+    inputRange:[-800,800],
+    outputRange:[`-60deg`,`60deg`],
+    extrapolate:'clamp'
+  })
 
   
   useEffect(()=>{
@@ -33,23 +39,31 @@ export default function HomePage({navigation, addRecipe}) {
     findRecipe((obj)=>recipes.enqueue(obj))
   },[recipe])
 
-  const resetView = Animated.timing(translateX,{
-    toValue:0,
-    duration:330,
+  const resetView = Animated.parallel([
+      Animated.timing(translateX,{
+      toValue:0,
+      duration:200,
+      easing: Easing.linear,
+      useNativeDriver:true
+    }),
+    Animated.timing(translateY,{
+      toValue:0,
+      duration:200,
+      easing: Easing.linear,
+      useNativeDriver:true
+    })
+  ])
+
+  const swipeLeftAnimation = Animated.timing(translateX,{
+    toValue: -650,
+    duration: 300,
     easing: Easing.linear,
     useNativeDriver:true
   })
 
   const swipeRightAnimation = Animated.timing(translateX,{
-    toValue: -500,
-    duration: 250,
-    easing: Easing.linear,
-    useNativeDriver:true
-  })
-
-  const swipeLeftAnimation = Animated.timing(translateX,{
-    toValue: 500,
-    duration: 250,
+    toValue: 650,
+    duration: 300,
     easing: Easing.linear,
     useNativeDriver:true
   })
@@ -69,14 +83,14 @@ export default function HomePage({navigation, addRecipe}) {
   }
 
   const handleSwipe = Animated.event(
-    [{nativeEvent:{translationX:translateX}}],{useNativeDriver:true}
+    [{nativeEvent:{translationX:translateX,translationY:translateY}}],{useNativeDriver:true}
   )
 
   const handlePanStateChange = ({nativeEvent}) =>{
     const {state} = nativeEvent
     if(state===5){
-      if(nativeEvent.translationX < -225) swipeRightAnimation.start(() => swipeRight())
-      else if(nativeEvent.translationX > 225) swipeLeftAnimation.start(()=>swipeLeft())
+      if(nativeEvent.translationX < -225) swipeLeftAnimation.start(() => swipeRight())
+      else if(nativeEvent.translationX > 225) swipeRightAnimation.start(()=>swipeLeft())
       else resetView.start()
     }
   }
@@ -102,7 +116,7 @@ export default function HomePage({navigation, addRecipe}) {
           onHandlerStateChange={handlePanStateChange}
           onGestureEvent={handleSwipe}
         >
-          <Animated.View style={[styles.recipeCard,{transform:[{translateX}]}]}>
+          <Animated.View style={[styles.recipeCard,{transform:[{translateX},{translateY},{rotate}]}]}>
               {clicked ? <Recipe recipe={recipe} click={click} /> : <RecipeImage click={click} recipe={recipe} first={first}/>}
           </Animated.View>
         </PanGestureHandler>
@@ -114,19 +128,18 @@ export default function HomePage({navigation, addRecipe}) {
 const styles = StyleSheet.create({
   container:{
     flex:1,
-    backgroundColor: 'white',
-    alignItems:"center"
+    alignItems:"center",
+    margin:10
   },
   cardContainer:{
     flex:1,
     width:"100%",
     alignItems: 'center',
-    justifyContent: 'center',
-    marginTop:5
+    justifyContent: 'center'
   },
   recipeCard:{
     backgroundColor: 'rgb(235,235,235)',
-    width:"96%",
+    width:"100%",
     height:"100%",
     borderRadius: 5,
     position:'absolute',
