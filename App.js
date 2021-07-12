@@ -1,15 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
-import {View} from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import React,{useState, useEffect} from 'react';
 import HomePage from "./containers/Home"
 import MyRecipes from './containers/MyRecipes'
+import RecipePage from './containers/RecipePage'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationContainer} from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const Tab = createBottomTabNavigator()
-
+const Stack = createStackNavigator()
 
 export default function App() {
   const [recipes,setRecipes] = useState([])
@@ -25,7 +26,6 @@ export default function App() {
   const load = async () =>{
     try{
       let recipes = await AsyncStorage.getItem("recipes")
-
       if(recipes!==null) setRecipes(JSON.parse(recipes))
     } catch(e){
       alert(e)
@@ -40,6 +40,17 @@ export default function App() {
       alert(e)
     }
   }
+
+  function SavedRecipes(){
+    return(
+      <Stack.Navigator>
+        <Stack.Screen name="Saved Recipes">
+          {props => <MyRecipes {...props} setRecipes={setRecipes} recipes={recipes}/>}
+        </Stack.Screen>
+        <Stack.Screen name="Recipe Page" component={RecipePage} />
+      </Stack.Navigator>
+    )
+  }
   
   return (
     <NavigationContainer>
@@ -47,9 +58,7 @@ export default function App() {
         <Tab.Screen name="Find Recipes">
           {props => <HomePage {...props} addRecipe = {setRecipes}/>}
         </Tab.Screen>
-        <Tab.Screen name="My Recipes">
-          {props => <MyRecipes {...props} setRecipes={setRecipes} recipes={recipes}/>}
-        </Tab.Screen>
+        <Tab.Screen name="Saved Recipes" component={SavedRecipes}/>
       </Tab.Navigator>
     </NavigationContainer>
   );
