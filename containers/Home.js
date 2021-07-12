@@ -1,11 +1,13 @@
 import React, {useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StyleSheet, Text, View, Button, Animated, Easing } from 'react-native';
+import { StyleSheet, Text, View, Button, Animated, Easing, Dimensions } from 'react-native';
 import findRecipe from '../scraper'
 import {PanGestureHandler} from 'react-native-gesture-handler';
 import RecipeImage from '../components/RecipeImage'
 import Queue from '../Queue'
 import Recipe from '../components/Recipe'
+
+const windowWidth = Dimensions.get('window').width
 
 const recipes = new Queue()
 
@@ -25,7 +27,7 @@ export default function HomePage({navigation, addRecipe}) {
     extrapolate:'clamp'
   })
   const likeOpacity = translateX.interpolate({
-    inputRange:[0,150,225],
+    inputRange:[0,50,150],
     outputRange:[0,0,1]
   })
 
@@ -93,8 +95,8 @@ export default function HomePage({navigation, addRecipe}) {
   const handlePanStateChange = ({nativeEvent}) =>{
     const {state} = nativeEvent
     if(state===5){
-      if(nativeEvent.translationX < -225) swipeLeftAnimation.start(() => swipeLeft())
-      else if(nativeEvent.translationX > 225) swipeRightAnimation.start(()=>swipeRight())
+      if(nativeEvent.translationX < -150) swipeLeftAnimation.start(() => swipeLeft())
+      else if(nativeEvent.translationX > 150) swipeRightAnimation.start(()=>swipeRight())
       else resetView.start()
     }
   }
@@ -121,11 +123,11 @@ export default function HomePage({navigation, addRecipe}) {
           onGestureEvent={handleSwipe}
         >
           <Animated.View style={[styles.recipeCard,{transform:[{translateX},{translateY},{rotate}]}]}>
-              {clicked ? <Recipe recipe={recipe} click={click} /> : <RecipeImage click={click} recipe={recipe} first={first}/>}
+            <Animated.Text style={[styles.likeLabel,{opacity:likeOpacity}]}>Like</Animated.Text>
+            {clicked ? <Recipe recipe={recipe} click={click} /> : <RecipeImage click={click} recipe={recipe} first={first}/>}
           </Animated.View>
         </PanGestureHandler>
       </View>
-      <Animated.Text style={[styles.likeLabel,{opacity:likeOpacity}]}>Like</Animated.Text>
     </SafeAreaView>
   );
 }
@@ -152,18 +154,17 @@ const styles = StyleSheet.create({
     borderColor:'black'
   },
   likeLabel:{
+    borderColor:'rgb(0,255,200)',
     position:'absolute',
-    borderColor:'rgb(0,200,0)',
+    zIndex:1,
     borderWidth:3,
-    fontSize:30,
-    padding:10,
+    fontSize:40,
+    padding:5,
     borderRadius:5,
-    color:'rgb(0,200,0)',
+    color:'rgb(0,255,200)',
+    top:100,
+    left:20,
     fontWeight:'bold',
-    marginTop:30,
-    marginLeft:'auto',
-    marginRight:50,
-    backgroundColor:'rgb(0,50,0)'
+    transform:[{rotate:'-30deg'}]
   }
-
 });

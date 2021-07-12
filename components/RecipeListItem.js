@@ -7,13 +7,13 @@ import deleteIcon from '../assets/delete.png'
 export default function RecipeListItem({navigation, recipe, deleteRecipe}){
     const windowWidth = Dimensions.get('window').width
 
-    const [height,setHeight] = useState(new Animated.Value(70))
+    const height = new Animated.Value(70)
     const rotate = new Animated.Value(0)
 
     const animatedDelete=() => {
         Animated.timing(height,{
             toValue: 0,
-            duration: 200,
+            duration: 350,
             useNativeDriver:false
         }).start(()=> deleteRecipe(recipe.id))
     }
@@ -77,11 +77,9 @@ const styles = StyleSheet.create({
     recipeWrapper:{
         flex:1,
         flexDirection:'row',
-        marginVertical: 1,
         overflow:'hidden',
-        borderWidth:1,
-        borderRadius:5,
-        borderColor: "rgb(225,225,225)"
+        borderWidth:0,
+        borderRadius:5
     },
     deleteIconView:{
         marginLeft:'auto',
