@@ -1,11 +1,11 @@
 
-Bottom Navbar
-added 'saved!' notfication after swiping right
+
+like/nope labels
 
 disable swiping and add visual feedback when loading more recipes inside queue
 
 webscraper -- foodnetwork/custom JS Class
-    add category selection
+    add category selection/tags to recipes
     fetch different sites?
     
 

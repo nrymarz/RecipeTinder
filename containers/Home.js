@@ -24,6 +24,10 @@ export default function HomePage({navigation, addRecipe}) {
     outputRange:[`-40deg`,`40deg`],
     extrapolate:'clamp'
   })
+  const likeOpacity = translateX.interpolate({
+    inputRange:[0,150,225],
+    outputRange:[0,0,1]
+  })
 
   
   useEffect(()=>{
@@ -56,14 +60,14 @@ export default function HomePage({navigation, addRecipe}) {
 
   const swipeLeftAnimation = Animated.timing(translateX,{
     toValue: -650,
-    duration: 100,
+    duration: 150,
     easing: Easing.linear,
     useNativeDriver:true
   })
 
   const swipeRightAnimation = Animated.timing(translateX,{
     toValue: 650,
-    duration: 100,
+    duration: 150,
     easing: Easing.linear,
     useNativeDriver:true
   })
@@ -89,8 +93,8 @@ export default function HomePage({navigation, addRecipe}) {
   const handlePanStateChange = ({nativeEvent}) =>{
     const {state} = nativeEvent
     if(state===5){
-      if(nativeEvent.translationX < -225) swipeLeftAnimation.start(() => swipeRight())
-      else if(nativeEvent.translationX > 225) swipeRightAnimation.start(()=>swipeLeft())
+      if(nativeEvent.translationX < -225) swipeLeftAnimation.start(() => swipeLeft())
+      else if(nativeEvent.translationX > 225) swipeRightAnimation.start(()=>swipeRight())
       else resetView.start()
     }
   }
@@ -108,9 +112,9 @@ export default function HomePage({navigation, addRecipe}) {
   return (
     <SafeAreaView style={styles.container} >
       <View style={styles.cardContainer}>
-        <Animated.View style={[styles.recipeCard]}>
+        <View style={[styles.recipeCard]}>
             {nextRecipe ? <RecipeImage recipe={nextRecipe} /> : null}
-        </Animated.View>
+        </View>
         <PanGestureHandler
           enabled={!clicked}
           onHandlerStateChange={handlePanStateChange}
@@ -121,6 +125,7 @@ export default function HomePage({navigation, addRecipe}) {
           </Animated.View>
         </PanGestureHandler>
       </View>
+      <Animated.Text style={[styles.likeLabel,{opacity:likeOpacity}]}>Like</Animated.Text>
     </SafeAreaView>
   );
 }
@@ -145,5 +150,20 @@ const styles = StyleSheet.create({
     position:'absolute',
     borderWidth:1.5,
     borderColor:'black'
+  },
+  likeLabel:{
+    position:'absolute',
+    borderColor:'rgb(0,200,0)',
+    borderWidth:3,
+    fontSize:30,
+    padding:10,
+    borderRadius:5,
+    color:'rgb(0,200,0)',
+    fontWeight:'bold',
+    marginTop:30,
+    marginLeft:'auto',
+    marginRight:50,
+    backgroundColor:'rgb(0,50,0)'
   }
+
 });
