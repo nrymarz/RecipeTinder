@@ -47,7 +47,7 @@ export default function App() {
   
   return (
     <NavigationContainer>
-      <Tab.Navigator>
+      <Tab.Navigator tabBarOptions={{activeBackgroundColor:'rgb(230,230,230)',labelStyle:{fontSize:13,marginBottom:'auto',marginTop:'auto'}}}>
         <Tab.Screen name="Find Recipes">
           {props => <HomePage {...props} addRecipe = {setRecipes}/>}
         </Tab.Screen>
