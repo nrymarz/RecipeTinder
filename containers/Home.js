@@ -20,8 +20,8 @@ export default function HomePage({navigation, addRecipe}) {
   const translateX = new Animated.Value(0)
   const translateY = new Animated.Value(0)
   const rotate = translateX.interpolate({
-    inputRange:[-800,800],
-    outputRange:[`-60deg`,`60deg`],
+    inputRange:[-500,500],
+    outputRange:[`-40deg`,`40deg`],
     extrapolate:'clamp'
   })
 
@@ -56,14 +56,14 @@ export default function HomePage({navigation, addRecipe}) {
 
   const swipeLeftAnimation = Animated.timing(translateX,{
     toValue: -650,
-    duration: 300,
+    duration: 100,
     easing: Easing.linear,
     useNativeDriver:true
   })
 
   const swipeRightAnimation = Animated.timing(translateX,{
     toValue: 650,
-    duration: 300,
+    duration: 100,
     easing: Easing.linear,
     useNativeDriver:true
   })
@@ -108,7 +108,7 @@ export default function HomePage({navigation, addRecipe}) {
   return (
     <SafeAreaView style={styles.container} >
       <View style={styles.cardContainer}>
-        <Animated.View style={[styles.recipeCard,{transform:[{scale:translateX.interpolate({inputRange:[-400,0,400],outputRange:[1,0.4,1],extrapolate:'clamp'})}]}]}>
+        <Animated.View style={[styles.recipeCard]}>
             {nextRecipe ? <RecipeImage recipe={nextRecipe} /> : null}
         </Animated.View>
         <PanGestureHandler
