@@ -127,7 +127,7 @@ export default function HomePage({addRecipe}) {
           <Animated.View style={[styles.recipeCard,{transform:[{translateX},{translateY},{rotate}]}]}>
             <Animated.Text style={[styles.likeLabel,{opacity:likeOpacity}]}>Like</Animated.Text>
             <Animated.Text style={[styles.nopeLabel,{opacity:nopeOpacity}]}>Nope</Animated.Text>
-            {clicked ? <Recipe recipe={recipe} click={click} /> : <RecipeImage click={click} recipe={recipe} first={first}/>}
+            {clicked ? <Recipe recipe={recipe} click={click} /> : <RecipeImage click={click} recipe={recipe}/>}
           </Animated.View>
         </PanGestureHandler>
       </View>
