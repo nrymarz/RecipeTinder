@@ -7,11 +7,9 @@ import RecipeImage from '../components/RecipeImage'
 import Queue from '../Queue'
 import Recipe from '../components/Recipe'
 
-const windowWidth = Dimensions.get('window').width
-
 const recipes = new Queue()
 
-export default function HomePage({navigation, addRecipe}) {
+export default function HomePage({addRecipe}) {
 
   const [clicked,click] = useState(false)
   const [recipe, setRecipe] = useState({})
@@ -29,6 +27,10 @@ export default function HomePage({navigation, addRecipe}) {
   const likeOpacity = translateX.interpolate({
     inputRange:[0,50,150],
     outputRange:[0,0,1]
+  })
+  const nopeOpacity = translateX.interpolate({
+    inputRange:[-150,-50,0],
+    outputRange:[1,0,0]
   })
 
   
@@ -124,6 +126,7 @@ export default function HomePage({navigation, addRecipe}) {
         >
           <Animated.View style={[styles.recipeCard,{transform:[{translateX},{translateY},{rotate}]}]}>
             <Animated.Text style={[styles.likeLabel,{opacity:likeOpacity}]}>Like</Animated.Text>
+            <Animated.Text style={[styles.nopeLabel,{opacity:nopeOpacity}]}>Nope</Animated.Text>
             {clicked ? <Recipe recipe={recipe} click={click} /> : <RecipeImage click={click} recipe={recipe} first={first}/>}
           </Animated.View>
         </PanGestureHandler>
@@ -158,13 +161,27 @@ const styles = StyleSheet.create({
     position:'absolute',
     zIndex:1,
     borderWidth:3,
-    fontSize:40,
+    fontSize:50,
     padding:5,
     borderRadius:5,
     color:'rgb(0,255,200)',
-    top:100,
+    bottom:120,
     left:20,
     fontWeight:'bold',
     transform:[{rotate:'-30deg'}]
+  },
+  nopeLabel:{
+    borderColor:'rgb(255,50,50)',
+    position:'absolute',
+    zIndex:1,
+    borderWidth:3,
+    fontSize:50,
+    padding:5,
+    borderRadius:5,
+    color:'rgb(255,50,50)',
+    bottom:120,
+    right:20,
+    fontWeight:'bold',
+    transform:[{rotate:'30deg'}]
   }
 });

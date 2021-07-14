@@ -9,8 +9,8 @@ export default function MyRecipes({navigation, recipes, setRecipes}){
         setRecipes(recipes.filter(r => r.id !== id))
     }
 
-    const renderRecipe = ({item, index}) =>{
-        return <RecipeListItem navigation={navigation} recipe={item} index={index} deleteRecipe={deleteRecipe}/>
+    const renderRecipe = ({item}) =>{
+        return <RecipeListItem navigation={navigation} recipe={item} deleteRecipe={deleteRecipe}/>
     }
 
     return(
