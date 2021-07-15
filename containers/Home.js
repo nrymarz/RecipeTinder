@@ -44,7 +44,7 @@ export default function HomePage({addRecipe}) {
   useEffect(()=>{
     findRecipe(setNext)
     findRecipe(setRecipe, setLoading)
-    for(let i=0;i<5;i++){
+    for(let i=0;i<20;i++){
       findRecipe((obj)=>recipes.enqueue(obj))
     }
   },[])
@@ -85,13 +85,13 @@ export default function HomePage({addRecipe}) {
   
   const swipeRight = () =>{
     const oldRecipe = recipe
+    setSwipedRecipe(recipe)
+    setRecipe(nextRecipe)
+    swipeRightAnimation.start(()=>setSwipedRecipe(null))
     addRecipe(prevRecipes =>{
       if(!prevRecipes.find(r => r.id === oldRecipe.id)) return [...prevRecipes, oldRecipe]
       else return prevRecipes
     })
-    setSwipedRecipe(recipe)
-    setRecipe(nextRecipe)
-    swipeRightAnimation.start(()=>setSwipedRecipe(null))
   }
 
   const swipeLeft = () =>{
@@ -107,16 +107,10 @@ export default function HomePage({addRecipe}) {
   const handlePanStateChange = ({nativeEvent}) =>{
     const {state} = nativeEvent
     if(state===5){
-      if(nativeEvent.translationX < -150){
-        swipeY.current.setValue(nativeEvent.translationY)
-        swipeX.current.setValue(nativeEvent.translationX)
-        swipeLeft()
-      }
-      else if(nativeEvent.translationX > 150) {
-        swipeY.current.setValue(nativeEvent.translationY)
-        swipeX.current.setValue(nativeEvent.translationX)
-        swipeRight()
-      }
+      swipeY.current.setValue(nativeEvent.translationY)
+      swipeX.current.setValue(nativeEvent.translationX)
+      if(nativeEvent.translationX < -150) swipeLeft()
+      else if(nativeEvent.translationX > 150) swipeRight()
       else resetView.start()
     }
   }
