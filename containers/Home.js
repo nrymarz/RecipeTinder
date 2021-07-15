@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from 'react';
+import React, {useState, useEffect, useRef } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, Text, View, Button, Animated, Easing, Dimensions } from 'react-native';
 import findRecipe from '../scraper'
@@ -14,11 +14,13 @@ export default function HomePage({addRecipe}) {
   const [clicked,click] = useState(false)
   const [recipe, setRecipe] = useState({})
   const [nextRecipe, setNext] = useState({})
+  const [swipedRecipe,setSwipedRecipe] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [first, setFirst] = useState(true)
 
   const translateX = new Animated.Value(0)
   const translateY = new Animated.Value(0)
+  const swipeX = useRef(new Animated.Value(0))
+  const swipeY = useRef(new Animated.Value(0))
   const rotate = translateX.interpolate({
     inputRange:[-500,500],
     outputRange:[`-40deg`,`40deg`],
@@ -62,14 +64,14 @@ export default function HomePage({addRecipe}) {
     })
   ])
 
-  const swipeLeftAnimation = Animated.timing(translateX,{
+  const swipeLeftAnimation = Animated.timing(swipeX.current,{
     toValue: -650,
-    duration: 150,
+    duration: 500,
     easing: Easing.linear,
     useNativeDriver:true
   })
 
-  const swipeRightAnimation = Animated.timing(translateX,{
+  const swipeRightAnimation = Animated.timing(swipeX.current,{
     toValue: 650,
     duration: 150,
     easing: Easing.linear,
@@ -86,8 +88,10 @@ export default function HomePage({addRecipe}) {
   }
 
   const swipeLeft = () =>{
-    setFirst(false)
+    swipeX.current = translateX._value
+    setSwipedRecipe(recipe)
     setRecipe(nextRecipe)
+    swipeLeftAnimation.start(()=>setSwipedRecipe(null))
   }
 
   const handleSwipe = Animated.event(
@@ -97,12 +101,12 @@ export default function HomePage({addRecipe}) {
   const handlePanStateChange = ({nativeEvent}) =>{
     const {state} = nativeEvent
     if(state===5){
-      if(nativeEvent.translationX < -150) swipeLeftAnimation.start(() => swipeLeft())
+      if(nativeEvent.translationX < -150)swipeLeft()
       else if(nativeEvent.translationX > 150) swipeRightAnimation.start(()=>swipeRight())
       else resetView.start()
     }
   }
-
+ 
   if(loading){
     return (
       <View style={styles.container}>
@@ -117,7 +121,7 @@ export default function HomePage({addRecipe}) {
     <SafeAreaView style={styles.container} >
       <View style={styles.cardContainer}>
         <View style={[styles.recipeCard]}>
-            {nextRecipe ? <RecipeImage recipe={nextRecipe} /> : null}
+            <RecipeImage recipe={nextRecipe} />
         </View>
         <PanGestureHandler
           enabled={!clicked}
@@ -130,6 +134,13 @@ export default function HomePage({addRecipe}) {
             {clicked ? <Recipe recipe={recipe} click={click} /> : <RecipeImage click={click} recipe={recipe}/>}
           </Animated.View>
         </PanGestureHandler>
+        {swipedRecipe ?
+          <Animated.View style={[styles.recipeCard,{transform:[{translateX:swipeX.current},{translateY:swipeY.current},{rotate}]}]}>
+            <Animated.Text style={[styles.likeLabel,{opacity:likeOpacity}]}>Like</Animated.Text>
+            <Animated.Text style={[styles.nopeLabel,{opacity:nopeOpacity}]}>Nope</Animated.Text>
+            <RecipeImage recipe={swipedRecipe}/>
+          </Animated.View>
+        : null}
       </View>
     </SafeAreaView>
   );

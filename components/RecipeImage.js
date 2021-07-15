@@ -1,9 +1,10 @@
-import React,{useState} from 'react'
+import React from 'react'
 import { StyleSheet, Text, View,  Image, TouchableHighlight } from 'react-native';
 import left from '../assets/left-arrow.png'
 import right from '../assets/right-arrow.png'
 
 export default function RecipeImage({click, recipe}){
+  if(!recipe) return null
   const {image, title, chef} = recipe
   return(
     <>
