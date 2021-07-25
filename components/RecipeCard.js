@@ -1,8 +1,18 @@
 import React from 'react'
-import { StyleSheet, Text, View,  Image, TouchableHighlight, Animated } from 'react-native';
+import { StyleSheet, Animated } from 'react-native';
+import RecipeImage from '../components/RecipeImage'
 
 
 export default function RecipeCard({recipe,rotate,translateY,translateX}){
+    const likeOpacity = translateX.interpolate({
+        inputRange:[0,50,150],
+        outputRange:[0,0,1]
+    })
+    const nopeOpacity = translateX.interpolate({
+        inputRange:[-150,-50,0],
+        outputRange:[1,0,0]
+    })
+
     return(
         <Animated.View style={[styles.recipeCard,{transform:[{translateX},{translateY},{rotate}]}]}>
             <Animated.Text style={[styles.likeLabel,{opacity:likeOpacity}]}>Like</Animated.Text>
