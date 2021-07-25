@@ -1,12 +1,14 @@
 import React, {useState, useEffect, useRef } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StyleSheet, Text, View, Button, Animated, Easing, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Animated, Dimensions } from 'react-native';
 import findRecipe from '../scraper'
 import {PanGestureHandler} from 'react-native-gesture-handler';
 import RecipeImage from '../components/RecipeImage'
 import Queue from '../Queue'
 import Recipe from '../components/Recipe'
 
+
+const screenHeight = Dimensions.get('screen').height
 const recipes = new Queue()
 
 export default function HomePage({addRecipe}) {
@@ -19,16 +21,19 @@ export default function HomePage({addRecipe}) {
 
   const translateX = new Animated.Value(0)
   const translateY = new Animated.Value(0)
+  const y = new Animated.Value(0)
+  const ydiff = useRef(y.interpolate({inputRange:[0,screenHeight/2-1,screenHeight/2],outputRange:[1,1,-1],extrapolate:'clamp'})).current
   const swipeX = useRef(new Animated.Value(0))
   const swipeY = useRef(new Animated.Value(0))
-  const swipeRotate = swipeX.current.interpolate({
+  const swipeRotate = useRef(new Animated.Value(0))
+  const rotate = Animated.multiply(translateX,ydiff).interpolate({
     inputRange:[-500,500],
-    outputRange:[`-40deg`,`40deg`],
+    outputRange:[`-30deg`,`30deg`],
     extrapolate:'clamp'
   })
-  const rotate = translateX.interpolate({
+  swipeRotate.current = Animated.multiply(swipeX.current,ydiff).interpolate({
     inputRange:[-500,500],
-    outputRange:[`-40deg`,`40deg`],
+    outputRange:[`-30deg`,`30deg`],
     extrapolate:'clamp'
   })
   const likeOpacity = translateX.interpolate({
@@ -39,14 +44,10 @@ export default function HomePage({addRecipe}) {
     inputRange:[-150,-50,0],
     outputRange:[1,0,0]
   })
-
-  
   useEffect(()=>{
     findRecipe(setNext)
     findRecipe(setRecipe, setLoading)
-    for(let i=0;i<20;i++){
-      findRecipe((obj)=>recipes.enqueue(obj))
-    }
+    for(let i=0;i<10;i++) findRecipe((obj)=>recipes.enqueue(obj)) 
   },[])
 
   useEffect(() =>{
@@ -58,13 +59,11 @@ export default function HomePage({addRecipe}) {
       Animated.timing(translateX,{
       toValue:0,
       duration:200,
-      easing: Easing.linear,
       useNativeDriver:true
     }),
     Animated.timing(translateY,{
       toValue:0,
       duration:200,
-      easing: Easing.linear,
       useNativeDriver:true
     })
   ])
@@ -72,14 +71,12 @@ export default function HomePage({addRecipe}) {
   const swipeLeftAnimation = Animated.timing(swipeX.current,{
     toValue: -650,
     duration: 150,
-    easing: Easing.linear,
     useNativeDriver:true
   })
 
   const swipeRightAnimation = Animated.timing(swipeX.current,{
     toValue: 650,
     duration: 150,
-    easing: Easing.linear,
     useNativeDriver:true
   })
   
@@ -101,16 +98,16 @@ export default function HomePage({addRecipe}) {
   }
 
   const handleSwipe = Animated.event(
-    [{nativeEvent:{translationX:translateX,translationY:translateY}}],{useNativeDriver:true}
+    [{nativeEvent:{translationX:translateX,translationY:translateY,y}}],{useNativeDriver:true}
   )
 
   const handlePanStateChange = ({nativeEvent}) =>{
-    const {state} = nativeEvent
+    const {state, translationX, translationY} = nativeEvent
     if(state===5){
-      swipeY.current.setValue(nativeEvent.translationY)
-      swipeX.current.setValue(nativeEvent.translationX)
-      if(nativeEvent.translationX < -150) swipeLeft()
-      else if(nativeEvent.translationX > 150) swipeRight()
+      swipeY.current.setValue(translationY)
+      swipeX.current.setValue(translationX)
+      if(translationX < -150) swipeLeft()
+      else if(translationX > 150) swipeRight()
       else resetView.start()
     }
   }
@@ -143,7 +140,7 @@ export default function HomePage({addRecipe}) {
           </Animated.View>
         </PanGestureHandler>
         {swipedRecipe ?
-          <Animated.View style={[styles.recipeCard,{transform:[{translateX:swipeX.current},{translateY:swipeY.current},{rotate:swipeRotate}]}]}>
+          <Animated.View style={[styles.recipeCard,{transform:[{translateX:swipeX.current},{translateY:swipeY.current},{rotate:swipeRotate.current}]}]}>
             <Animated.Text style={[styles.likeLabel,{opacity:likeOpacity}]}>Like</Animated.Text>
             <Animated.Text style={[styles.nopeLabel,{opacity:nopeOpacity}]}>Nope</Animated.Text>
             <RecipeImage recipe={swipedRecipe}/>

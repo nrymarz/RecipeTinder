@@ -14,7 +14,7 @@ export default class Queue{
     }
 
     enqueue(val){
-        node = new Node(val)
+        const node = new Node(val)
         this.length++
         if(this.length === 1){
             this.first = node
@@ -30,7 +30,7 @@ export default class Queue{
     dequeue(){
         if(this.length === 0) return undefined
         this.length--
-        temp = this.first
+        const temp = this.first
         if(this.length === 0) this.last = null
         this.first = temp.next
         return temp.val

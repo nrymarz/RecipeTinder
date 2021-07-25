@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef} from 'react';
 import { StyleSheet, Text, View, Image, TouchableHighlight, Animated, Dimensions } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import deleteIcon from '../assets/delete.png'
@@ -13,7 +13,7 @@ export default function RecipeListItem({navigation, recipe, deleteRecipe}){
     const animatedDelete=() => {
         Animated.timing(height,{
             toValue: 0,
-            duration: 350,
+            duration: 200,
             useNativeDriver:false
         }).start(()=> deleteRecipe(recipe.id))
     }
