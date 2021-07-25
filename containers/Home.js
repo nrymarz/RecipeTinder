@@ -23,6 +23,7 @@ export default function HomePage({addRecipe}) {
   const translateY = new Animated.Value(0)
   const y = new Animated.Value(0)
   const ydiff = y.interpolate({inputRange:[0,screenHeight/2-1,screenHeight/2],outputRange:[1,1,-1],extrapolate:'clamp'})
+
   const swipeX = useRef(new Animated.Value(0)).current
   const swipeY = useRef(new Animated.Value(0)).current
   const swipedY = useRef(new Animated.Value(0)).current
@@ -46,6 +47,7 @@ export default function HomePage({addRecipe}) {
     inputRange:[-150,-50,0],
     outputRange:[1,0,0]
   })
+  
   useEffect(()=>{
     findRecipe(setNext)
     findRecipe(setRecipe, setLoading)
