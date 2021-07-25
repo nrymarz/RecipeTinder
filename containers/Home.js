@@ -23,17 +23,17 @@ export default function HomePage({addRecipe}) {
   const translateY = new Animated.Value(0)
   const y = new Animated.Value(0)
   const ydiff = y.interpolate({inputRange:[0,screenHeight/2-1,screenHeight/2],outputRange:[1,1,-1],extrapolate:'clamp'})
-  const swipeX = useRef(new Animated.Value(0))
-  const swipeY = useRef(new Animated.Value(0))
-  const swipeRotate = useRef(new Animated.Value(0))
-  const oldY = useRef(new Animated.Value(0))
-  const swipedYDiff = oldY.current.interpolate({inputRange:[0,screenHeight/2-1,screenHeight/2],outputRange:[1,1,-1],extrapolate:'clamp'})
+  const swipeX = useRef(new Animated.Value(0)).current
+  const swipeY = useRef(new Animated.Value(0)).current
+  const swipedY = useRef(new Animated.Value(0)).current
+  const swipedYDiff = swipedY.interpolate({inputRange:[0,screenHeight/2-1,screenHeight/2],outputRange:[1,1,-1],extrapolate:'clamp'})
+
   const rotate = Animated.multiply(translateX,ydiff).interpolate({
     inputRange:[-500,500],
     outputRange:[`-30deg`,`30deg`],
     extrapolate:'clamp'
   })
-  swipeRotate.current = Animated.multiply(swipeX.current,swipedYDiff).interpolate({
+  const swipeRotate = Animated.multiply(swipeX,swipedYDiff).interpolate({
     inputRange:[-500,500],
     outputRange:[`-30deg`,`30deg`],
     extrapolate:'clamp'
@@ -70,13 +70,13 @@ export default function HomePage({addRecipe}) {
     })
   ])
 
-  const swipeLeftAnimation = Animated.timing(swipeX.current,{
+  const swipeLeftAnimation = Animated.timing(swipeX,{
     toValue: -650,
     duration: 150,
     useNativeDriver:true
   })
 
-  const swipeRightAnimation = Animated.timing(swipeX.current,{
+  const swipeRightAnimation = Animated.timing(swipeX,{
     toValue: 650,
     duration: 150,
     useNativeDriver:true
@@ -106,9 +106,9 @@ export default function HomePage({addRecipe}) {
   const handlePanStateChange = ({nativeEvent}) =>{
     const {state, translationX, translationY, y} = nativeEvent
     if(state===5){
-      swipeY.current.setValue(translationY)
-      swipeX.current.setValue(translationX)
-      oldY.current.setValue(y)
+      swipeY.setValue(translationY)
+      swipeX.setValue(translationX)
+      swipedY.setValue(y)
       if(translationX < -150) swipeLeft()
       else if(translationX > 150) swipeRight()
       else resetView.start()
@@ -143,7 +143,7 @@ export default function HomePage({addRecipe}) {
           </Animated.View>
         </PanGestureHandler>
         {swipedRecipe ?
-          <Animated.View style={[styles.recipeCard,{transform:[{translateX:swipeX.current},{translateY:swipeY.current},{rotate:swipeRotate.current}]}]}>
+          <Animated.View style={[styles.recipeCard,{transform:[{translateX:swipeX},{translateY:swipeY},{rotate:swipeRotate}]}]}>
             <Animated.Text style={[styles.likeLabel,{opacity:likeOpacity}]}>Like</Animated.Text>
             <Animated.Text style={[styles.nopeLabel,{opacity:nopeOpacity}]}>Nope</Animated.Text>
             <RecipeImage recipe={swipedRecipe}/>
