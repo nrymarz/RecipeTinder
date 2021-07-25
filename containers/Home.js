@@ -22,16 +22,18 @@ export default function HomePage({addRecipe}) {
   const translateX = new Animated.Value(0)
   const translateY = new Animated.Value(0)
   const y = new Animated.Value(0)
-  const ydiff = useRef(y.interpolate({inputRange:[0,screenHeight/2-1,screenHeight/2],outputRange:[1,1,-1],extrapolate:'clamp'})).current
+  const ydiff = y.interpolate({inputRange:[0,screenHeight/2-1,screenHeight/2],outputRange:[1,1,-1],extrapolate:'clamp'})
   const swipeX = useRef(new Animated.Value(0))
   const swipeY = useRef(new Animated.Value(0))
   const swipeRotate = useRef(new Animated.Value(0))
+  const oldY = useRef(new Animated.Value(0))
+  const swipedYDiff = oldY.current.interpolate({inputRange:[0,screenHeight/2-1,screenHeight/2],outputRange:[1,1,-1],extrapolate:'clamp'})
   const rotate = Animated.multiply(translateX,ydiff).interpolate({
     inputRange:[-500,500],
     outputRange:[`-30deg`,`30deg`],
     extrapolate:'clamp'
   })
-  swipeRotate.current = Animated.multiply(swipeX.current,ydiff).interpolate({
+  swipeRotate.current = Animated.multiply(swipeX.current,swipedYDiff).interpolate({
     inputRange:[-500,500],
     outputRange:[`-30deg`,`30deg`],
     extrapolate:'clamp'
@@ -102,10 +104,11 @@ export default function HomePage({addRecipe}) {
   )
 
   const handlePanStateChange = ({nativeEvent}) =>{
-    const {state, translationX, translationY} = nativeEvent
+    const {state, translationX, translationY, y} = nativeEvent
     if(state===5){
       swipeY.current.setValue(translationY)
       swipeX.current.setValue(translationX)
+      oldY.current.setValue(y)
       if(translationX < -150) swipeLeft()
       else if(translationX > 150) swipeRight()
       else resetView.start()
