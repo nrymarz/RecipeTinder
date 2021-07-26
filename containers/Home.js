@@ -1,6 +1,6 @@
-import React, {useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StyleSheet, Text, View, Animated} from 'react-native';
+import { StyleSheet, Text, View} from 'react-native';
 import findRecipe from '../scraper'
 import RecipeCard from '../components/RecipeCard';
 import Queue from '../Queue'
@@ -41,7 +41,7 @@ export default function HomePage({addRecipe}) {
   return (
     <SafeAreaView style={styles.container} >
       <View style={styles.cardContainer}>
-        <RecipeCard recipe={nextRecipe} translateX={new Animated.Value(0)} translateY={0} rotate={'0deg'} />
+        <RecipeCard recipe={nextRecipe} />
         <SwipeableRecipeCard recipe={recipe} swipedRecipe={swipedRecipe} setRecipe={setRecipe} setSwipedRecipe={setSwipedRecipe} addRecipe={addRecipe}/>
       </View>
     </SafeAreaView>

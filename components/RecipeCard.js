@@ -1,25 +1,35 @@
 import React from 'react'
-import { StyleSheet, Animated } from 'react-native';
+import { StyleSheet, Animated, View } from 'react-native';
 import RecipeImage from '../components/RecipeImage'
 
 
-export default function RecipeCard({recipe,rotate,translateY,translateX, clicked, click}){
-    const likeOpacity = translateX.interpolate({
-        inputRange:[0,50,150],
-        outputRange:[0,0,1]
-    })
-    const nopeOpacity = translateX.interpolate({
-        inputRange:[-150,-50,0],
-        outputRange:[1,0,0]
-    })
+export default function AnimatedRecipeCard({recipe,rotate,translateY,translateX, clicked, click, animated=true}){
+    if(animated){
+        const likeOpacity = translateX.interpolate({
+            inputRange:[0,50,150],
+            outputRange:[0,0,1]
+        })
+        const nopeOpacity = translateX.interpolate({
+            inputRange:[-150,-50,0],
+            outputRange:[1,0,0]
+        })
 
-    return(
-        <Animated.View style={[styles.recipeCard,{transform:[{translateX},{translateY},{rotate}]}]}>
-            <Animated.Text style={[styles.likeLabel,{opacity:likeOpacity}]}>Like</Animated.Text>
-            <Animated.Text style={[styles.nopeLabel,{opacity:nopeOpacity}]}>Nope</Animated.Text>
-            {clicked ? <Recipe recipe={recipe} click={click} /> : <RecipeImage click={click} recipe={recipe}/>}
-        </Animated.View>
-    )
+        return(
+            <Animated.View style={[styles.recipeCard,{transform:[{translateX},{translateY},{rotate}]}]}>
+                <Animated.Text style={[styles.likeLabel,{opacity:likeOpacity}]}>Like</Animated.Text>
+                <Animated.Text style={[styles.nopeLabel,{opacity:nopeOpacity}]}>Nope</Animated.Text>
+                {clicked ? <Recipe recipe={recipe} click={click} /> : <RecipeImage click={click} recipe={recipe}/>}
+            </Animated.View>
+        )
+    }
+    else{
+        return(
+            <View style={styles.recipeCard}>
+                <RecipeImage recipe={recipe} />
+            </View>
+        )
+    }
+
 }
 
 const styles = StyleSheet.create({
