@@ -1,15 +1,14 @@
 import React,{useState,useRef} from 'react'
 import { StyleSheet, Animated, Dimensions, View} from 'react-native';
-import RecipeCard from './RecipeCard';
 import RecipeImage from '../components/RecipeImage'
 import {PanGestureHandler} from 'react-native-gesture-handler';
 
 const screenHeight = Dimensions.get('screen').height
-export default function SwipeableRecipeCard({recipe,swipedRecipe,setSwipedRecipe,setRecipe,addRecipe}){
+export default function SwipeableRecipeCard({recipe,swipedRecipe,setSwipedRecipe,setRecipe,addRecipe,nextRecipe}){
   const [clicked,click] = useState(false)
 
-  const translateX = new Animated.Value(0)
-  const translateY = new Animated.Value(0)
+  const translationX = new Animated.Value(0)
+  const translationY = new Animated.Value(0)
   const y = new Animated.Value(0)
   const ydiff = y.interpolate({inputRange:[0,screenHeight/2-1,screenHeight/2],outputRange:[1,1,-1],extrapolate:'clamp'})
 
@@ -17,6 +16,13 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,setSwipedRecipe
   const swipeY = useRef(new Animated.Value(0)).current
   const swipedY = useRef(new Animated.Value(0)).current
   const swipedYDiff = swipedY.interpolate({inputRange:[0,screenHeight/2-1,screenHeight/2],outputRange:[1,1,-1],extrapolate:'clamp'})
+
+  const translateX = translationX.interpolate({
+    inputRange:[-500,500],
+    outputRange:[-400,400]
+  })
+
+  const translateY = new Animated.Value(0)
 
   const rotate = Animated.multiply(translateX,ydiff).interpolate({
     inputRange:[-500,500],
@@ -52,7 +58,7 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,setSwipedRecipe
   })
 
   const resetView = Animated.parallel([
-    Animated.timing(translateX,{
+    Animated.timing(translationX,{
     toValue:0,
     duration:200,
     useNativeDriver:true
@@ -65,7 +71,7 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,setSwipedRecipe
   ])
 
   const handleSwipe = Animated.event(
-    [{nativeEvent:{translationX:translateX,translationY:translateY,y}}],{useNativeDriver:true}
+    [{nativeEvent:{translationX,translationY:translateY,y}}],{useNativeDriver:true}
   )
   
   const handlePanStateChange = ({nativeEvent}) =>{
@@ -99,6 +105,9 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,setSwipedRecipe
 
   return(
     <>
+      <View style={styles.recipeCard}>
+        <RecipeImage recipe={nextRecipe}/>
+      </View>
       <PanGestureHandler enabled={!clicked} onHandlerStateChange={handlePanStateChange} onGestureEvent={handleSwipe} >
         <Animated.View style={[styles.recipeCard, {transform:[{translateX},{translateY},{rotate}]}]}>
             <Animated.Text style={[styles.likeLabel,{opacity:likeOpacity}]}>Like</Animated.Text>
