@@ -1,5 +1,7 @@
-import React,{useState} from 'react'
-import { StyleSheet, Animated, Dimensions } from 'react-native';
+import React,{useState,useRef} from 'react'
+import { StyleSheet, Animated, Dimensions} from 'react-native';
+import RecipeCard from './RecipeCard';
+import {PanGestureHandler} from 'react-native-gesture-handler';
 
 const screenHeight = Dimensions.get('screen').height
 export default function SwipeableRecipeCard({recipe,swipedRecipe,setSwipedRecipe,setRecipe,addRecipe}){
@@ -74,13 +76,10 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,setSwipedRecipe
   return(
     <>
       <PanGestureHandler enabled={!clicked} onHandlerStateChange={handlePanStateChange} onGestureEvent={handleSwipe} >
-        <Animated.View style={[styles.recipeCard,{transform:[{translateX},{translateY},{rotate}]}]}>
-          <Animated.Text style={[styles.likeLabel,{opacity:likeOpacity}]}>Like</Animated.Text>
-          <Animated.Text style={[styles.nopeLabel,{opacity:nopeOpacity}]}>Nope</Animated.Text>
-          {clicked ? <Recipe recipe={recipe} click={click} /> : <RecipeImage click={click} recipe={recipe}/>}
-        </Animated.View>
+        <RecipeCard recipe={recipe} translateX={translateX} translateY={translateY} rotate={rotate} clicked={clicked} click={click} />
       </PanGestureHandler>
       {swipedRecipe ? <RecipeCard recipe={swipedRecipe} translateX={swipeX} translateY={swipeY} rotate={swipeRotate} /> : null}
     </>
   )
 }
+

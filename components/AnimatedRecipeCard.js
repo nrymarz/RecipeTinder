@@ -3,7 +3,7 @@ import { StyleSheet, Animated } from 'react-native';
 import RecipeImage from '../components/RecipeImage'
 
 
-export default function RecipeCard({recipe,rotate,translateY,translateX, clicked, click}){
+export default function AnimatedRecipeCard({recipe,rotate,translateY,translateX, clicked, click}){
     const likeOpacity = translateX.interpolate({
         inputRange:[0,50,150],
         outputRange:[0,0,1]
