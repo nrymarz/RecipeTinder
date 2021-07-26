@@ -41,8 +41,7 @@ export default function HomePage({addRecipe}) {
   return (
     <SafeAreaView style={styles.container} >
       <View style={styles.cardContainer}>
-        <RecipeCard recipe={nextRecipe} />
-        <SwipeableRecipeCard recipe={recipe} swipedRecipe={swipedRecipe} setRecipe={setRecipe} setSwipedRecipe={setSwipedRecipe} addRecipe={addRecipe}/>
+        <SwipeableRecipeCard recipe={recipe} swipedRecipe={swipedRecipe} setRecipe={setRecipe} setSwipedRecipe={setSwipedRecipe} addRecipe={addRecipe} />
       </View>
     </SafeAreaView>
   );

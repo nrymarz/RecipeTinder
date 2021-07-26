@@ -1,6 +1,7 @@
 import React,{useState,useRef} from 'react'
-import { StyleSheet, Animated, Dimensions} from 'react-native';
+import { StyleSheet, Animated, Dimensions, View} from 'react-native';
 import RecipeCard from './RecipeCard';
+import RecipeImage from '../components/RecipeImage'
 import {PanGestureHandler} from 'react-native-gesture-handler';
 
 const screenHeight = Dimensions.get('screen').height
@@ -28,6 +29,16 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,setSwipedRecipe
     extrapolate:'clamp'
   })
 
+  const likeOpacity = translateX.interpolate({
+    inputRange:[0,50,150],
+    outputRange:[0,0,1]
+  })
+  const nopeOpacity = translateX.interpolate({
+      inputRange:[-150,-50,0],
+      outputRange:[1,0,0]
+  })
+  
+
   const swipeLeftAnimation = Animated.timing(swipeX,{
     toValue: -650,
     duration: 150,
@@ -40,9 +51,22 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,setSwipedRecipe
     useNativeDriver:true
   })
 
+  const resetView = Animated.parallel([
+    Animated.timing(translateX,{
+    toValue:0,
+    duration:200,
+    useNativeDriver:true
+    }),
+    Animated.timing(translateY,{
+      toValue:0,
+      duration:200,
+      useNativeDriver:true
+    })
+  ])
+
   const handleSwipe = Animated.event(
-      [{nativeEvent:{translationX:translateX,translationY:translateY,y}}],{useNativeDriver:true}
-    )
+    [{nativeEvent:{translationX:translateX,translationY:translateY,y}}],{useNativeDriver:true}
+  )
   
   const handlePanStateChange = ({nativeEvent}) =>{
     const {state, translationX, translationY, y} = nativeEvent
@@ -76,10 +100,60 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,setSwipedRecipe
   return(
     <>
       <PanGestureHandler enabled={!clicked} onHandlerStateChange={handlePanStateChange} onGestureEvent={handleSwipe} >
-        <RecipeCard recipe={recipe} translateX={translateX} translateY={translateY} rotate={rotate} clicked={clicked} click={click} />
+        <Animated.View style={[styles.recipeCard, {transform:[{translateX},{translateY},{rotate}]}]}>
+            <Animated.Text style={[styles.likeLabel,{opacity:likeOpacity}]}>Like</Animated.Text>
+            <Animated.Text style={[styles.nopeLabel,{opacity:nopeOpacity}]}>Nope</Animated.Text>
+            {clicked ? <Recipe recipe={recipe} click={click} /> : <RecipeImage click={click} recipe={recipe}/>}
+        </Animated.View>
       </PanGestureHandler>
-      {swipedRecipe ? <RecipeCard recipe={swipedRecipe} translateX={swipeX} translateY={swipeY} rotate={swipeRotate} /> : null}
+      {swipedRecipe ?
+        <Animated.View style={[styles.recipeCard,{transform:[{translateX:swipeX},{translateY:swipeY},{rotate:swipeRotate}]}]}>
+          <Animated.Text style={[styles.likeLabel,{opacity:likeOpacity}]}>Like</Animated.Text>
+          <Animated.Text style={[styles.nopeLabel,{opacity:nopeOpacity}]}>Nope</Animated.Text>
+          <RecipeImage recipe={swipedRecipe}/>
+        </Animated.View>
+      : null}
     </>
   )
 }
+
+const styles = StyleSheet.create({
+  recipeCard:{
+    backgroundColor: 'rgb(235,235,235)',
+    width:"100%",
+    height:"100%",
+    borderRadius: 5,
+    position:'absolute',
+    borderWidth:1.5,
+    borderColor:'black'
+  },
+  likeLabel:{
+    borderColor:'rgb(0,255,200)',
+    position:'absolute',
+    zIndex:1,
+    borderWidth:3,
+    fontSize:50,
+    padding:5,
+    borderRadius:5,
+    color:'rgb(0,255,200)',
+    bottom:120,
+    left:20,
+    fontWeight:'bold',
+    transform:[{rotate:'-30deg'}]
+  },
+  nopeLabel:{
+    borderColor:'rgb(255,50,50)',
+    position:'absolute',
+    zIndex:1,
+    borderWidth:3,
+    fontSize:50,
+    padding:5,
+    borderRadius:5,
+    color:'rgb(255,50,50)',
+    bottom:120,
+    right:20,
+    fontWeight:'bold',
+    transform:[{rotate:'30deg'}]
+  }
+});
 
