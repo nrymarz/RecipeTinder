@@ -8,7 +8,7 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,setSwipedRecipe
   const [clicked,click] = useState(false)
 
   const translationX = new Animated.Value(0)
-  const translationY = new Animated.Value(0)
+  const translateY = new Animated.Value(0)
   const y = new Animated.Value(0)
   const ydiff = y.interpolate({inputRange:[0,screenHeight/2-1,screenHeight/2],outputRange:[1,1,-1],extrapolate:'clamp'})
 
@@ -19,10 +19,8 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,setSwipedRecipe
 
   const translateX = translationX.interpolate({
     inputRange:[-500,500],
-    outputRange:[-400,400]
+    outputRange:[-375,375]
   })
-
-  const translateY = new Animated.Value(0)
 
   const rotate = Animated.multiply(translateX,ydiff).interpolate({
     inputRange:[-500,500],
