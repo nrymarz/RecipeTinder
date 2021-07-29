@@ -25,12 +25,12 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,setSwipedRecipe
 
   const rotate = Animated.multiply(translateX,ydiff).interpolate({
     inputRange:[-500,500],
-    outputRange:[`-40deg`,`40deg`],
+    outputRange:[`-35deg`,`35deg`],
     extrapolate:'clamp'
   })
   const swipeRotate = Animated.multiply(swipeX,swipedYDiff).interpolate({
     inputRange:[-500,500],
-    outputRange:[`-40deg`,`40deg`],
+    outputRange:[`-35deg`,`35deg`],
     extrapolate:'clamp'
   })
 
