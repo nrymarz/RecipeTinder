@@ -27,6 +27,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "An app for finding random recipes from the FoodNetwork Website.",
+    "githubUrl": "https://github.com/nrymarz/RecipeTinder"
   }
 }

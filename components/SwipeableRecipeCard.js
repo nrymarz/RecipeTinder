@@ -3,19 +3,20 @@ import { StyleSheet, Animated, Dimensions, View} from 'react-native';
 import RecipeImage from '../components/RecipeImage'
 import {PanGestureHandler} from 'react-native-gesture-handler';
 
-const screenHeight = Dimensions.get('screen').height
+const windowHeight = Dimensions.get('window').height
+const cardHeight = windowHeight - 70 
 export default function SwipeableRecipeCard({recipe,swipedRecipe,setSwipedRecipe,setRecipe,addRecipe,nextRecipe}){
   const [clicked,click] = useState(false)
 
   const translationX = new Animated.Value(0)
   const translateY = new Animated.Value(0)
   const y = new Animated.Value(0)
-  const ydiff = y.interpolate({inputRange:[0,screenHeight/2-1,screenHeight/2],outputRange:[1,1,-1],extrapolate:'clamp'})
+  const ydiff = y.interpolate({inputRange:[0,cardHeight/3,2*cardHeight/3,cardHeight],outputRange:[1,.75,-.75,-1],extrapolate:'clamp'})
 
   const swipeX = useRef(new Animated.Value(0)).current
   const swipeY = useRef(new Animated.Value(0)).current
   const swipedY = useRef(new Animated.Value(0)).current
-  const swipedYDiff = swipedY.interpolate({inputRange:[0,screenHeight/2-1,screenHeight/2],outputRange:[1,1,-1],extrapolate:'clamp'})
+  const swipedYDiff = swipedY.interpolate({inputRange:[0,cardHeight/3,2*cardHeight/3,cardHeight],outputRange:[1,.75,-.75,-1],extrapolate:'clamp'})
 
   const translateX = translationX.interpolate({
     inputRange:[-500,500],
@@ -24,12 +25,12 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,setSwipedRecipe
 
   const rotate = Animated.multiply(translateX,ydiff).interpolate({
     inputRange:[-500,500],
-    outputRange:[`-30deg`,`30deg`],
+    outputRange:[`-40deg`,`40deg`],
     extrapolate:'clamp'
   })
   const swipeRotate = Animated.multiply(swipeX,swipedYDiff).interpolate({
     inputRange:[-500,500],
-    outputRange:[`-30deg`,`30deg`],
+    outputRange:[`-40deg`,`40deg`],
     extrapolate:'clamp'
   })
 
@@ -41,7 +42,6 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,setSwipedRecipe
       inputRange:[-150,-50,0],
       outputRange:[1,0,0]
   })
-  
 
   const swipeLeftAnimation = Animated.timing(swipeX,{
     toValue: -650,
@@ -74,6 +74,7 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,setSwipedRecipe
   
   const handlePanStateChange = ({nativeEvent}) =>{
     const {state, translationX, translationY, y} = nativeEvent
+
     if(state===5){
       swipeY.setValue(translationY)
       swipeX.setValue(translationX)
@@ -84,15 +85,12 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,setSwipedRecipe
     }
   }
 
-  const swipeRight = () =>{
+  const swipeRight = () => {
     const oldRecipe = recipe
     setSwipedRecipe(recipe)
     setRecipe(nextRecipe)
     swipeRightAnimation.start(()=>setSwipedRecipe(null))
-    addRecipe(prevRecipes =>{
-      if(!prevRecipes.find(r => r.id === oldRecipe.id)) return [...prevRecipes, oldRecipe]
-      else return prevRecipes
-    })
+    addRecipe(prevRecipes => prevRecipes.find(r => r.id === oldRecipe.id) ? prevRecipes : [...prevRecipes, oldRecipe])
   }
 
   const swipeLeft = () =>{
