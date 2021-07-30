@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, Button, ActivityIndicator} from 'react-native';
 import findRecipe from '../scraper'
 import Queue from '../Queue'
 import SwipeableRecipeCard from '../components/SwipeableRecipeCard';
+import CourseMenu from './CourseMenu'
 
 const recipes = new Queue()
 
@@ -32,48 +33,23 @@ export default function HomePage({addRecipe}) {
     findRecipe(setRecipe,course, setLoading)
     for(let i=0;i<10;i++) findRecipe((obj)=>recipes.enqueue(obj),course) 
   },[course])
- 
-  if(loading){
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={[styles.cardContainer]}>
-          <ActivityIndicator size={100} color='black'/>
-        </View>
-      </SafeAreaView>
-    )
-  }
 
   return (
     <SafeAreaView style={styles.container} >
-      <View style={{flexDirection:'row',justifyContent:'space-between', width:"100%",margin:5}}>
-        <Button 
-          color={course === "All" ? "rgb(100,100,100)" : "rgb(165,165,165)"} 
-          style={styles.courseButton} title="All" 
-          onPress={() => setCourse("All")}>
-        </Button>
-        <Button 
-          color={course === "Entrees" ? "rgb(100,100,100)" : "rgb(165,165,165)"} 
-          style={styles.courseButton} title="Entrees" 
-          onPress={() => setCourse("Entrees")}>
-        </Button>
-        <Button 
-          color={course === "Desserts" ? "rgb(100,100,100)" : "rgb(165,165,165)"} 
-          style={styles.courseButton} title="Desserts" 
-          onPress={() => setCourse("Desserts")}>
-        </Button>
-        <Button 
-          color={course === "Sides" ? "rgb(100,100,100)" : "rgb(165,165,165)"} 
-          style={styles.courseButton} title="Sides" 
-          onPress={() => setCourse("Sides")}>
-        </Button>
-        <Button 
-          color={course === "Appetizers" ? "rgb(100,100,100)" : "rgb(165,165,165)"} 
-          style={styles.courseButton} title="Appetizers" 
-          onPress={() => setCourse("Appetizers")}>
-        </Button>
-      </View>
+      <CourseMenu activeCourse={course} setCourse={setCourse} />
       <View style={styles.cardContainer}>
-        <SwipeableRecipeCard recipe={recipe} swipedRecipe={swipedRecipe} setRecipe={setRecipe} setSwipedRecipe={setSwipedRecipe} addRecipe={addRecipe} nextRecipe={nextRecipe} />
+        {loading ?
+          <ActivityIndicator size={100} color='black'/>
+        :
+          <SwipeableRecipeCard 
+            recipe={recipe} 
+            swipedRecipe={swipedRecipe} 
+            setRecipe={setRecipe} 
+            setSwipedRecipe={setSwipedRecipe} 
+            addRecipe={addRecipe} 
+            nextRecipe={nextRecipe} 
+          />
+        }
       </View>
     </SafeAreaView>
   );
