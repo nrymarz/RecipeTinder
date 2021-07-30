@@ -37,8 +37,9 @@ export default class Queue{
     }
 
     clear(){
-        this.head = null
-        this.tail = null
+        this.first= null
+        this.last = null
+        this.length = 0
         return this
     }
 }

@@ -17,19 +17,18 @@ export default function HomePage({addRecipe}) {
   const [course, setCourse] = useState('All')
   
   useEffect(()=>{
-    findRecipe(setNext,course)
-    findRecipe(setRecipe,course, setLoading)
+    findRecipe(setRecipe,course,setLoading)
     for(let i=0;i<10;i++) findRecipe((obj)=>recipes.enqueue(obj),course) 
   },[])
 
   useEffect(() =>{
-    setNext(recipes.dequeue())
+    const r = recipes.dequeue()
+    r ? setNext(r) : findRecipe(setNext,course)
     findRecipe((obj)=>recipes.enqueue(obj),course)
   },[recipe])
 
   useEffect(()=>{
     recipes.clear()
-    findRecipe(setNext,course)
     findRecipe(setRecipe,course, setLoading)
     for(let i=0;i<10;i++) findRecipe((obj)=>recipes.enqueue(obj),course) 
   },[course])

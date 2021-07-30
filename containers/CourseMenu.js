@@ -17,6 +17,7 @@ export default function CourseMenu({activeCourse, setCourse}){
 
 const styles = StyleSheet.create({
     courseButtonContainer:{
+        zIndex:0,
         flexDirection:'row',
         justifyContent:'space-between',
         width:'100%',
