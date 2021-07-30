@@ -1,6 +1,6 @@
 import React, {useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View, Button} from 'react-native';
 import findRecipe from '../scraper'
 import Queue from '../Queue'
 import SwipeableRecipeCard from '../components/SwipeableRecipeCard';
@@ -13,6 +13,7 @@ export default function HomePage({addRecipe}) {
   const [nextRecipe, setNext] = useState({})
   const [swipedRecipe,setSwipedRecipe] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [course, setCourse] = useState('ALL')
   
   useEffect(()=>{
     findRecipe(setNext)
@@ -27,16 +28,23 @@ export default function HomePage({addRecipe}) {
  
   if(loading){
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <View style={styles.cardContainer}>
           <Text style={{fontSize:25}}>Loading...</Text>
         </View>
-      </View>
+      </SafeAreaView>
     )
   }
 
   return (
     <SafeAreaView style={styles.container} >
+      <View style={{flexDirection:'row',justifyContent:'space-between', width:"100%",margin:5}}>
+        <Button style={styles.courseButton} title="All"></Button>
+        <Button style={styles.courseButton} title="Entrees"></Button>
+        <Button style={styles.courseButton} title="Desserts"></Button>
+        <Button style={styles.courseButton} title="Sides"></Button>
+        <Button style={styles.courseButton} title="Appetizers"></Button>
+      </View>
       <View style={styles.cardContainer}>
         <SwipeableRecipeCard recipe={recipe} swipedRecipe={swipedRecipe} setRecipe={setRecipe} setSwipedRecipe={setSwipedRecipe} addRecipe={addRecipe} nextRecipe={nextRecipe} />
       </View>
@@ -55,5 +63,8 @@ const styles = StyleSheet.create({
     width:"100%",
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  courseButton:{
+    borderRadius:3
   }
 });
