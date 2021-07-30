@@ -39,11 +39,11 @@ export default function HomePage({addRecipe}) {
   return (
     <SafeAreaView style={styles.container} >
       <View style={{flexDirection:'row',justifyContent:'space-between', width:"100%",margin:5}}>
-        <Button style={styles.courseButton} title="All"></Button>
-        <Button style={styles.courseButton} title="Entrees"></Button>
-        <Button style={styles.courseButton} title="Desserts"></Button>
-        <Button style={styles.courseButton} title="Sides"></Button>
-        <Button style={styles.courseButton} title="Appetizers"></Button>
+        <Button style={styles.courseButton} title="All" onPress={() => setCourse("All")}></Button>
+        <Button style={styles.courseButton} title="Entrees" onPress={() => setCourse("Entrees")}></Button>
+        <Button style={styles.courseButton} title="Desserts" onPress={() => setCourse("Desserts")}></Button>
+        <Button style={styles.courseButton} title="Sides" onPress={() => setCourse("Sides")}></Button>
+        <Button style={styles.courseButton} title="Appetizers" onPress={() => setCourse("Appetizers")}></Button>
       </View>
       <View style={styles.cardContainer}>
         <SwipeableRecipeCard recipe={recipe} swipedRecipe={swipedRecipe} setRecipe={setRecipe} setSwipedRecipe={setSwipedRecipe} addRecipe={addRecipe} nextRecipe={nextRecipe} />
