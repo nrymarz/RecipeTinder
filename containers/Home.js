@@ -13,17 +13,17 @@ export default function HomePage({addRecipe}) {
   const [nextRecipe, setNext] = useState({})
   const [swipedRecipe,setSwipedRecipe] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [course, setCourse] = useState('ALL')
+  const [course, setCourse] = useState('All')
   
   useEffect(()=>{
-    findRecipe(setNext)
-    findRecipe(setRecipe, setLoading)
-    for(let i=0;i<10;i++) findRecipe((obj)=>recipes.enqueue(obj)) 
+    findRecipe(setNext,course)
+    findRecipe(setRecipe,course, setLoading)
+    for(let i=0;i<10;i++) findRecipe((obj)=>recipes.enqueue(obj),course) 
   },[])
 
   useEffect(() =>{
     setNext(recipes.dequeue())
-    findRecipe((obj)=>recipes.enqueue(obj))
+    findRecipe((obj)=>recipes.enqueue(obj),course)
   },[recipe])
  
   if(loading){
@@ -35,6 +35,8 @@ export default function HomePage({addRecipe}) {
       </SafeAreaView>
     )
   }
+
+  console.log(course)
 
   return (
     <SafeAreaView style={styles.container} >

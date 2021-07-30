@@ -24,8 +24,6 @@ export default function findRecipe(setRecipe, course, setLoading){
         case 'Appetizers':
             recipeIndex = `https://www.foodnetwork.com/search/p/${pageNum}/7D/CUSTOM_FACET:RECIPE_FACET/COURSE_DFACET:0/tag%23meal-part:appetizer/rating`
     }
-
-    }
     axios.get(recipeIndex)
         .then(res => dom = parse(res.data))
         .then(() => openRecipe(setRecipe, setLoading))
