@@ -36,16 +36,34 @@ export default function HomePage({addRecipe}) {
     )
   }
 
-  console.log(course)
-
   return (
     <SafeAreaView style={styles.container} >
       <View style={{flexDirection:'row',justifyContent:'space-between', width:"100%",margin:5}}>
-        <Button style={styles.courseButton} title="All" onPress={() => setCourse("All")}></Button>
-        <Button style={styles.courseButton} title="Entrees" onPress={() => setCourse("Entrees")}></Button>
-        <Button style={styles.courseButton} title="Desserts" onPress={() => setCourse("Desserts")}></Button>
-        <Button style={styles.courseButton} title="Sides" onPress={() => setCourse("Sides")}></Button>
-        <Button style={styles.courseButton} title="Appetizers" onPress={() => setCourse("Appetizers")}></Button>
+        <Button 
+          color={course === "All" ? "rgb(100,100,100)" : "rgb(165,165,165)"} 
+          style={styles.courseButton} title="All" 
+          onPress={() => setCourse("All")}>
+        </Button>
+        <Button 
+          color={course === "Entrees" ? "rgb(100,100,100)" : "rgb(165,165,165)"} 
+          style={styles.courseButton} title="Entrees" 
+          onPress={() => setCourse("Entrees")}>
+        </Button>
+        <Button 
+          color={course === "Desserts" ? "rgb(100,100,100)" : "rgb(165,165,165)"} 
+          style={styles.courseButton} title="Desserts" 
+          onPress={() => setCourse("Desserts")}>
+        </Button>
+        <Button 
+          color={course === "Sides" ? "rgb(100,100,100)" : "rgb(165,165,165)"} 
+          style={styles.courseButton} title="Sides" 
+          onPress={() => setCourse("Sides")}>
+        </Button>
+        <Button 
+          color={course === "Appetizers" ? "rgb(100,100,100)" : "rgb(165,165,165)"} 
+          style={styles.courseButton} title="Appetizers" 
+          onPress={() => setCourse("Appetizers")}>
+        </Button>
       </View>
       <View style={styles.cardContainer}>
         <SwipeableRecipeCard recipe={recipe} swipedRecipe={swipedRecipe} setRecipe={setRecipe} setSwipedRecipe={setSwipedRecipe} addRecipe={addRecipe} nextRecipe={nextRecipe} />
@@ -61,12 +79,13 @@ const styles = StyleSheet.create({
     margin:10
   },
   cardContainer:{
+    zIndex:1,
     flex:1,
     width:"100%",
     alignItems: 'center',
     justifyContent: 'center'
   },
   courseButton:{
-    borderRadius:3
+    borderRadius:3,
   }
 });
