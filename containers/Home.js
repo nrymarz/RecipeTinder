@@ -1,6 +1,6 @@
 import React, {useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StyleSheet, Text, View, Button} from 'react-native';
+import { StyleSheet, Text, View, Button, ActivityIndicator} from 'react-native';
 import findRecipe from '../scraper'
 import Queue from '../Queue'
 import SwipeableRecipeCard from '../components/SwipeableRecipeCard';
@@ -36,8 +36,8 @@ export default function HomePage({addRecipe}) {
   if(loading){
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.cardContainer}>
-          <Text style={{fontSize:25}}>Loading...</Text>
+        <View style={[styles.cardContainer]}>
+          <ActivityIndicator size={100} color='black'/>
         </View>
       </SafeAreaView>
     )
@@ -93,6 +93,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   courseButton:{
-    borderRadius:3,
+    borderRadius:3
   }
 });
