@@ -25,6 +25,13 @@ export default function HomePage({addRecipe}) {
     setNext(recipes.dequeue())
     findRecipe((obj)=>recipes.enqueue(obj),course)
   },[recipe])
+
+  useEffect(()=>{
+    recipes.clear()
+    findRecipe(setNext,course)
+    findRecipe(setRecipe,course, setLoading)
+    for(let i=0;i<10;i++) findRecipe((obj)=>recipes.enqueue(obj),course) 
+  },[course])
  
   if(loading){
     return (

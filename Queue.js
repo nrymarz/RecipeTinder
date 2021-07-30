@@ -35,4 +35,10 @@ export default class Queue{
         this.first = temp.next
         return temp.val
     }
+
+    clear(){
+        this.head = null
+        this.tail = null
+        return this
+    }
 }
