@@ -1,6 +1,6 @@
 import React, {useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StyleSheet, Text, View, Button, ActivityIndicator} from 'react-native';
+import { StyleSheet, View, ActivityIndicator} from 'react-native';
 import findRecipe from '../scraper'
 import Queue from '../Queue'
 import SwipeableRecipeCard from '../components/SwipeableRecipeCard';
@@ -19,19 +19,13 @@ export default function HomePage({addRecipe}) {
   useEffect(()=>{
     findRecipe(setRecipe,course,setLoading)
     for(let i=0;i<10;i++) findRecipe((obj)=>recipes.enqueue(obj),course) 
-  },[])
+  },[course])
 
   useEffect(() =>{
     const r = recipes.dequeue()
     r ? setNext(r) : findRecipe(setNext,course)
     findRecipe((obj)=>recipes.enqueue(obj),course)
   },[recipe])
-
-  useEffect(()=>{
-    recipes.clear()
-    findRecipe(setRecipe,course, setLoading)
-    for(let i=0;i<10;i++) findRecipe((obj)=>recipes.enqueue(obj),course) 
-  },[course])
 
   return (
     <SafeAreaView style={styles.container} >
