@@ -6,7 +6,7 @@ import {PanGestureHandler} from 'react-native-gesture-handler';
 
 const windowHeight = Dimensions.get('window').height
 const cardHeight = windowHeight - 70 
-export default function SwipeableRecipeCard({recipe,swipedRecipe,setSwipedRecipe,setRecipe,addRecipe,nextRecipe}){
+export default function SwipeableRecipeCard({recipe,swipedRecipe,swipe,addRecipe,nextRecipe}){
   const [clicked,click] = useState(false)
 
   const translationX = new Animated.Value(0)
@@ -77,27 +77,26 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,setSwipedRecipe
     const {state, translationX, translationY, y} = nativeEvent
 
     if(state===5){
-      swipeY.setValue(translationY)
-      swipeX.setValue(translationX)
-      swipedY.setValue(y)
-      if(translationX < -150) swipeLeft()
-      else if(translationX > 150) swipeRight()
+      if( translationX > 150 || translationX < 150){
+        swipeY.setValue(translationY)
+        swipeX.setValue(translationX)
+        swipedY.setValue(y)
+        translationX > 150 ? swipeRight() : swipeLeft()
+      }
       else resetView.start()
     }
   }
 
   const swipeRight = () => {
     const oldRecipe = recipe
-    setSwipedRecipe(recipe)
-    setRecipe(nextRecipe)
-    swipeRightAnimation.start(()=>setSwipedRecipe(null))
+    swipe()
+    swipeRightAnimation.start()
     addRecipe(prevRecipes => prevRecipes.find(r => r.id === oldRecipe.id) ? prevRecipes : [...prevRecipes, oldRecipe])
   }
 
   const swipeLeft = () =>{
-    setSwipedRecipe(recipe)
-    setRecipe(nextRecipe)
-    swipeLeftAnimation.start(()=>setSwipedRecipe(null))
+    swipe()
+    swipeLeftAnimation.start()
   }
 
   return(

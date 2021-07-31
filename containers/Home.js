@@ -17,15 +17,19 @@ export default function HomePage({addRecipe}) {
   const [course, setCourse] = useState('All')
   
   useEffect(()=>{
+    recipes.clear()
+    setSwipedRecipe(null)
+    findRecipe(setNext,course)
     findRecipe(setRecipe,course,setLoading)
     for(let i=0;i<10;i++) findRecipe((obj)=>recipes.enqueue(obj),course) 
   },[course])
 
-  useEffect(() =>{
-    const r = recipes.dequeue()
-    r ? setNext(r) : findRecipe(setNext,course)
+  const swipe = () =>{
+    setSwipedRecipe(recipe)
+    setRecipe(nextRecipe)
+    setNext(recipes.dequeue())
     findRecipe((obj)=>recipes.enqueue(obj),course)
-  },[recipe])
+  }
 
   return (
     <SafeAreaView style={styles.container} >
@@ -37,10 +41,9 @@ export default function HomePage({addRecipe}) {
           <SwipeableRecipeCard 
             recipe={recipe} 
             swipedRecipe={swipedRecipe} 
-            setRecipe={setRecipe} 
-            setSwipedRecipe={setSwipedRecipe} 
+            swipe={swipe}
             addRecipe={addRecipe} 
-            nextRecipe={nextRecipe} 
+            nextRecipe={nextRecipe}
           />
         }
       </View>
