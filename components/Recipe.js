@@ -17,7 +17,7 @@ export default function Recipe({recipe, click}){
     }
 
     return(
-        <>
+        <View style={styles.recipeCardBack}>
             {renderBackButton()}
             <Text style={{textAlign:'center', fontWeight:"700", fontSize:15}}>{recipe.title}</Text>
             <Text style={{textAlign:'center', paddingTop:5}}>{recipe.chef}</Text>
@@ -25,6 +25,13 @@ export default function Recipe({recipe, click}){
             <IngredientsList ingredients={recipe.ingredients}/>
             <Text style={{paddingTop:5,paddingLeft:5, fontWeight:"bold"}}>Directions</Text>
             <DirectionsList directions={recipe.directions} />
-        </>
+        </View>
     )
 }
+
+const styles = StyleSheet.create({
+    recipeCardBack:{
+        backgroundColor:"floralwhite",
+        flex:1
+    }
+})

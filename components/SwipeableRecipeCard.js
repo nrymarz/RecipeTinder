@@ -124,7 +124,6 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,swipe,addRecipe
 
 const styles = StyleSheet.create({
   recipeCard:{
-    backgroundColor: 'rgb(235,235,235)',
     width:"100%",
     height:"100%",
     borderRadius: 5,
