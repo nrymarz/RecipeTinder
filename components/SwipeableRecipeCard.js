@@ -5,7 +5,7 @@ import Recipe from '../components/Recipe'
 import {PanGestureHandler} from 'react-native-gesture-handler';
 
 const windowHeight = Dimensions.get('window').height
-const cardHeight = windowHeight - 70 
+const cardHeight = windowHeight - 105
 export default function SwipeableRecipeCard({recipe,swipedRecipe,swipe,addRecipe,nextRecipe}){
   const [clicked,click] = useState(false)
 
