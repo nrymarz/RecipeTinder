@@ -1,7 +1,14 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 
 export default function DirectionsList({directions}){
+    const [displayFooter, setDisplayFooter] = useState(true)
+
+
+    const renderFooter = () =>{
+        if(displayFooter) return <Text style={{fontWeight:'bold', paddingLeft:5}}>Scroll down to see more directions.</Text>
+    }
+
     const renderDirections = ({item,index}) =>{
         return(
         <Text style={{paddingLeft:5,paddingTop:3}}>
@@ -26,13 +33,16 @@ export default function DirectionsList({directions}){
     }
 
     return(
-        <FlatList 
-            style={{backgroundColor:"thistle", maxHeight:"42%"}} 
-            ItemSeparatorComponent={directionSeperator} 
-            data={directions} 
-            renderItem={renderDirections}
-            keyExtractor={(item,idx) => item + idx}
-        />
+        <View style={{backgroundColor:"antiquewhite", maxHeight:"38%"}} >
+            <FlatList 
+                ItemSeparatorComponent={directionSeperator} 
+                data={directions} 
+                renderItem={renderDirections}
+                keyExtractor={(item,idx) => item + idx}
+                onEndReached={() => setDisplayFooter(false)}
+                onEndReachedThreshold={0.1}
+            />
+            {renderFooter()}
+        </View>
     )
-
 }

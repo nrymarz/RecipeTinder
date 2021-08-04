@@ -14,7 +14,7 @@ export default function IngredientsList({ingredients}){
     }
 
     return(
-        <View style={{backgroundColor:"lightyellow", maxHeight:"41%"}} >
+        <View style={{backgroundColor:"antiquewhite", maxHeight:"38%"}} >
             <FlatList
                 data={ingredients} 
                 renderItem={renderIngredients}
