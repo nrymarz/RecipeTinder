@@ -77,7 +77,7 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,swipe,addRecipe
     const {state, translationX, translationY, y} = nativeEvent
 
     if(state===5){
-      if( translationX > 150 || translationX < 150){
+      if( translationX > 150 || translationX < -150){
         swipeY.setValue(translationY)
         swipeX.setValue(translationX)
         swipedY.setValue(y)
