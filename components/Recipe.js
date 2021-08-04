@@ -10,7 +10,7 @@ export default function Recipe({recipe, click}){
         if(click !== undefined){
             return(
                 <TouchableWithoutFeedback onPress={() => click(false)}>
-                    <Image source={back} style={{marginLeft:8,height:25,width:25}}/>
+                    <Image source={back} style={{marginLeft:8,height:35,width:35}}/>
                 </TouchableWithoutFeedback>
             )
         }
