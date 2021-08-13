@@ -31,6 +31,8 @@ export default function HomePage({addRecipe}) {
     findRecipe((obj)=>recipes.enqueue(obj),course)
   }
 
+  console.log(recipe.tags)
+
   return (
     <SafeAreaView style={styles.container} >
       <CourseMenu activeCourse={course} setCourse={setCourse} />
