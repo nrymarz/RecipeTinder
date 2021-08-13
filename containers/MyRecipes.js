@@ -27,7 +27,7 @@ export default function MyRecipes({navigation, recipes, setRecipes}){
     }
 
     return(
-        <SafeAreaView style={{marginHorizontal:5}}>
+        <SafeAreaView style={{margin:10, alignItems:'center',flex:1}}>
             <CourseMenu activeCourse={course} setCourse={setCourse} />
             <FlatList 
                 data={filteredRecipes()}
