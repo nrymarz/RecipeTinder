@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View, Image, TouchableWithoutFeedback } from 'react-native';
-import back from "/home/nrymarz/RecipeTinder/assets/back-arrow.png"
+import back from "../assets/back-arrow.png"
 import DirectionsList from './DirectionsList'
 import IngredientsList from './IngredientsList'
 
