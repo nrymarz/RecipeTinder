@@ -1,11 +1,12 @@
-Card flip animation
-
 disable swiping and add visual feedback when loading more recipes inside queue
-
+fix directions not taking full space if not many ingredients
+Use empty space in bottom of card
+make the Nopes/Likes labels pop out more
+Combine label css objects so not redundant
 
 webscraper -- foodnetwork/custom JS Class
-    add category selection/tags to recipes
     fetch different sites?
     
 
 convert scraper to async function
+

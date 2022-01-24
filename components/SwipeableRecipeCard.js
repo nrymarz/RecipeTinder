@@ -106,15 +106,15 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,swipe,addRecipe
       </View>
       <PanGestureHandler enabled={!clicked} onHandlerStateChange={handlePanStateChange} onGestureEvent={handleSwipe} >
         <Animated.View style={[styles.recipeCard, {transform:[{translateX},{translateY},{rotate}]}]}>
-            <Animated.Text style={[styles.likeLabel,{opacity:likeOpacity}]}>Like</Animated.Text>
-            <Animated.Text style={[styles.nopeLabel,{opacity:nopeOpacity}]}>Nope</Animated.Text>
+            <Animated.Text style={[styles.label,styles.likeLabel,{opacity:likeOpacity}]}>Like</Animated.Text>
+            <Animated.Text style={[styles.label,styles.nopeLabel,{opacity:nopeOpacity}]}>Nope</Animated.Text>
             {clicked ? <Recipe recipe={recipe} click={click} /> : <RecipeImage click={click} recipe={recipe}/>}
         </Animated.View>
       </PanGestureHandler>
       {swipedRecipe ?
         <Animated.View style={[styles.recipeCard,{transform:[{translateX:swipeX},{translateY:swipeY},{rotate:swipeRotate}]}]}>
-          <Animated.Text style={[styles.likeLabel,{opacity:likeOpacity}]}>Like</Animated.Text>
-          <Animated.Text style={[styles.nopeLabel,{opacity:nopeOpacity}]}>Nope</Animated.Text>
+          <Animated.Text style={[styles.label,styles.likeLabel,{opacity:likeOpacity}]}>Like</Animated.Text>
+          <Animated.Text style={[styles.label,styles.nopeLabel,{opacity:nopeOpacity}]}>Nope</Animated.Text>
           <RecipeImage recipe={swipedRecipe}/>
         </Animated.View>
       : null}
@@ -131,32 +131,31 @@ const styles = StyleSheet.create({
     borderWidth:1.5,
     borderColor:'black'
   },
-  likeLabel:{
-    borderColor:'rgb(0,255,200)',
+  label:{
     position:'absolute',
     zIndex:1,
     borderWidth:3,
     fontSize:50,
-    padding:5,
+    paddingHorizontal:12,
+    paddingVertical:6,
     borderRadius:5,
-    color:'rgb(0,255,200)',
+    fontWeight:'bold'
+  },
+  likeLabel:{
+    borderColor:'rgb(0,255,0)',
+    backgroundColor:'rgb(0,50,0)',
+    color:'rgb(0,255,0)',
     bottom:120,
     left:20,
-    fontWeight:'bold',
     transform:[{rotate:'-30deg'}]
   },
   nopeLabel:{
     borderColor:'rgb(255,50,50)',
+    backgroundColor:'rgb(50,0,0)',
     position:'absolute',
-    zIndex:1,
-    borderWidth:3,
-    fontSize:50,
-    padding:5,
-    borderRadius:5,
     color:'rgb(255,50,50)',
     bottom:120,
     right:20,
-    fontWeight:'bold',
     transform:[{rotate:'30deg'}]
   }
 });
