@@ -1,5 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {GestureHandlerRootView} from 'react-native-gesture-handler'
 import React,{useState, useEffect} from 'react';
 import HomePage from "./containers/Home"
 import MyRecipes from './containers/MyRecipes'
@@ -45,16 +44,18 @@ export default function App() {
   }
   
   return (
-    <NavigationContainer>
-      <Tab.Navigator tabBarOptions={{activeBackgroundColor:'rgb(230,230,230)',style:{height:50},labelStyle:{fontSize:13,marginBottom:'auto',marginTop:'auto'}}}>
-        <Tab.Screen name="Find Recipes">
-          {props => <HomePage {...props} addRecipe = {setRecipes}/>}
-        </Tab.Screen>
-        <Tab.Screen name="Saved Recipes">
-          {props => <MyRecipes {...props} setRecipes={setRecipes} recipes={recipes}/>}
-        </Tab.Screen>
-        <Tab.Screen name="Recipe Page" component={RecipePage} options={{tabBarButton:EmptyTab}}/>
-      </Tab.Navigator>
-    </NavigationContainer>
+    <GestureHandlerRootView style={{flex:1}}>
+      <NavigationContainer>
+        <Tab.Navigator tabBarOptions={{activeBackgroundColor:'rgb(230,230,230)',style:{height:50},labelStyle:{fontSize:13,marginBottom:'auto',marginTop:'auto'}}}>
+          <Tab.Screen name="Find Recipes">
+            {props => <HomePage {...props} addRecipe = {setRecipes}/>}
+          </Tab.Screen>
+          <Tab.Screen name="Saved Recipes">
+            {props => <MyRecipes {...props} setRecipes={setRecipes} recipes={recipes}/>}
+          </Tab.Screen>
+          <Tab.Screen name="Recipe Page" component={RecipePage} options={{tabBarButton:EmptyTab}}/>
+        </Tab.Navigator>
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }

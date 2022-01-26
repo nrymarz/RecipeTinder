@@ -1,102 +1,126 @@
 import React,{useState,useRef} from 'react'
-import { Animated, StyleSheet, Dimensions, View} from 'react-native';
+import { StyleSheet, Dimensions, View} from 'react-native';
+import Animated, {useSharedValue,useAnimatedStyle, useAnimatedGestureHandler} from 'react-native-reanimated'
 import RecipeImage from '../components/RecipeImage'
 import Recipe from '../components/Recipe'
-import {PanGestureHandler} from 'react-native-gesture-handler';
+import {GestureDetector, Gesture} from 'react-native-gesture-handler';
 
 const windowHeight = Dimensions.get('window').height
 const cardHeight = windowHeight - 105
 export default function SwipeableRecipeCard({recipe,swipedRecipe,swipe,addRecipe,nextRecipe}){
   const [clicked,click] = useState(false)
 
-  const translationX = new Animated.Value(0)
-  const translateY = new Animated.Value(0)
-  const y = new Animated.Value(0)
-  const ydiff = y.interpolate({inputRange:[0,cardHeight/3,2*cardHeight/3,cardHeight],outputRange:[1,.75,-.75,-1],extrapolate:'clamp'})
+  const translationX = useSharedValue(0)
+  const translationY = useSharedValue(0)
 
-  const swipeX = useRef(new Animated.Value(0)).current
-  const swipeY = useRef(new Animated.Value(0)).current
-  const swipedY = useRef(new Animated.Value(0)).current
-  const swipedYDiff = swipedY.interpolate({inputRange:[0,cardHeight/3,2*cardHeight/3,cardHeight],outputRange:[1,.75,-.75,-1],extrapolate:'clamp'})
+  // const translationX = new Animated.Value(0)
+  // const translateY = new Animated.Value(0)
+  // const y = new Animated.Value(0)
+  // const ydiff = y.interpolate({inputRange:[0,cardHeight/3,2*cardHeight/3,cardHeight],outputRange:[1,.75,-.75,-1],extrapolate:'clamp'})
 
-  const translateX = translationX.interpolate({
-    inputRange:[-500,500],
-    outputRange:[-375,375]
+  // const swipeX = useRef(new Animated.Value(0)).current
+  // const swipeY = useRef(new Animated.Value(0)).current
+  // const swipedY = useRef(new Animated.Value(0)).current
+  // const swipedYDiff = swipedY.interpolate({inputRange:[0,cardHeight/3,2*cardHeight/3,cardHeight],outputRange:[1,.75,-.75,-1],extrapolate:'clamp'})
+
+  // const translateX = translationX.interpolate({
+  //   inputRange:[-500,500],
+  //   outputRange:[-375,375]
+  // })
+
+  // const rotate = Animated.multiply(translateX,ydiff).interpolate({
+  //   inputRange:[-500,500],
+  //   outputRange:[`-35deg`,`35deg`],
+  //   extrapolate:'clamp'
+  // })
+  // const swipeRotate = Animated.multiply(swipeX,swipedYDiff).interpolate({
+  //   inputRange:[-500,500],
+  //   outputRange:[`-35deg`,`35deg`],
+  //   extrapolate:'clamp'
+  // })
+
+  // const likeOpacity = translateX.interpolate({
+  //   inputRange:[0,50,150],
+  //   outputRange:[0,0,1]
+  // })
+  // const nopeOpacity = translateX.interpolate({
+  //     inputRange:[-150,-50,0],
+  //     outputRange:[1,0,0]
+  // })
+
+  // const swipeLeftAnimation = Animated.timing(swipeX,{
+  //   toValue: -650,
+  //   duration: 150,
+  //   useNativeDriver:true
+  // })
+
+  // const swipeRightAnimation = Animated.timing(swipeX,{
+  //   toValue: 650,
+  //   duration: 150,
+  //   useNativeDriver:true
+  // })
+
+  // const resetView = Animated.parallel([
+  //   Animated.timing(translationX,{
+  //   toValue:0,
+  //   duration:200,
+  //   useNativeDriver:true
+  //   }),
+  //   Animated.timing(translateY,{
+  //     toValue:0,
+  //     duration:200,
+  //     useNativeDriver:true
+  //   })
+  // ])
+
+  const handleSwipe = useAnimatedGestureHandler({
+    onStart:(event) => console.log(event),
+    onActive:(event,ctx) =>{
+      translationX.value = event.translationX
+      translationY.value = event.translationY
+    }
   })
 
-  const rotate = Animated.multiply(translateX,ydiff).interpolate({
-    inputRange:[-500,500],
-    outputRange:[`-35deg`,`35deg`],
-    extrapolate:'clamp'
-  })
-  const swipeRotate = Animated.multiply(swipeX,swipedYDiff).interpolate({
-    inputRange:[-500,500],
-    outputRange:[`-35deg`,`35deg`],
-    extrapolate:'clamp'
-  })
-
-  const likeOpacity = translateX.interpolate({
-    inputRange:[0,50,150],
-    outputRange:[0,0,1]
-  })
-  const nopeOpacity = translateX.interpolate({
-      inputRange:[-150,-50,0],
-      outputRange:[1,0,0]
-  })
-
-  const swipeLeftAnimation = Animated.timing(swipeX,{
-    toValue: -650,
-    duration: 150,
-    useNativeDriver:true
-  })
-
-  const swipeRightAnimation = Animated.timing(swipeX,{
-    toValue: 650,
-    duration: 150,
-    useNativeDriver:true
-  })
-
-  const resetView = Animated.parallel([
-    Animated.timing(translationX,{
-    toValue:0,
-    duration:200,
-    useNativeDriver:true
-    }),
-    Animated.timing(translateY,{
-      toValue:0,
-      duration:200,
-      useNativeDriver:true
+  const panGesture = Gesture.Pan()
+    .onBegin(()=>console.log('touched'))
+    .onStart(()=>console.log('touched'))
+    .onUpdate((e) =>{
+      translationX.value = e.translationX
+      translationY.value = e.translationY
     })
-  ])
 
-  const handleSwipe = Animated.event(
-    [{nativeEvent:{translationX,translationY:translateY,y}}],{useNativeDriver:true}
-  )
+  const animatedRecipeStyle= useAnimatedStyle(()=>{
+    return{
+      transform:[{translateX:translationX.value},{translateY:translationY.value}]
+    }
+  })
   
   const handlePanStateChange = ({nativeEvent}) =>{
     const {state, translationX, translationY, y} = nativeEvent
 
     if(state===5){
       if( translationX > 150 || translationX < -150){
-        swipeY.setValue(translationY)
-        swipeX.setValue(translationX)
-        swipedY.setValue(y)
+        // swipeY.setValue(translationY)
+        // swipeX.setValue(translationX)
+        // swipedY.setValue(y)
         translationX > 150 ? swipeRight() : swipeLeft()
       }
-      else resetView.start()
+      else {
+
+      }
     }
   }
 
   const swipeRight = () => {
     const oldRecipe = recipe
     swipe()
-    swipeRightAnimation.start()
+    //swipeRightAnimation.start()
     addRecipe(prevRecipes => prevRecipes.find(r => r.id === oldRecipe.id) ? prevRecipes : [...prevRecipes, oldRecipe])
   }
 
   const swipeLeft = () =>{
     swipe()
-    swipeLeftAnimation.start()
+    //swipeLeftAnimation.start()
   }
 
   return(
@@ -104,17 +128,17 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,swipe,addRecipe
       <View style={styles.recipeCard}>
         <RecipeImage recipe={nextRecipe}/>
       </View>
-      <PanGestureHandler enabled={!clicked} onHandlerStateChange={handlePanStateChange} onGestureEvent={handleSwipe} >
-        <Animated.View style={[styles.recipeCard, {transform:[{translateX},{translateY},{rotate}]}]}>
-            <Animated.Text style={[styles.label,styles.likeLabel,{opacity:likeOpacity}]}>Like</Animated.Text>
-            <Animated.Text style={[styles.label,styles.nopeLabel,{opacity:nopeOpacity}]}>Nope</Animated.Text>
-            {clicked ? <Recipe recipe={recipe} click={click} /> : <RecipeImage click={click} recipe={recipe}/>}
+      <GestureDetector enabled={!clicked} gesture={panGesture} >
+        <Animated.View style={[styles.recipeCard, animatedRecipeStyle]}>
+          <Animated.Text style={[styles.label,styles.likeLabel]}>Like</Animated.Text>
+          <Animated.Text style={[styles.label,styles.nopeLabel]}>Nope</Animated.Text>
+          {clicked ? <Recipe recipe={recipe} click={click} /> : <RecipeImage click={click} recipe={recipe}/>}
         </Animated.View>
-      </PanGestureHandler>
-      {swipedRecipe ?
-        <Animated.View style={[styles.recipeCard,{transform:[{translateX:swipeX},{translateY:swipeY},{rotate:swipeRotate}]}]}>
-          <Animated.Text style={[styles.label,styles.likeLabel,{opacity:likeOpacity}]}>Like</Animated.Text>
-          <Animated.Text style={[styles.label,styles.nopeLabel,{opacity:nopeOpacity}]}>Nope</Animated.Text>
+      </GestureDetector>
+      {false ?
+        <Animated.View style={[styles.recipeCard]}>
+          <Animated.Text style={[styles.label,styles.likeLabel]}>Like</Animated.Text>
+          <Animated.Text style={[styles.label,styles.nopeLabel]}>Nope</Animated.Text>
           <RecipeImage recipe={swipedRecipe}/>
         </Animated.View>
       : null}
