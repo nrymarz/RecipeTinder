@@ -1,5 +1,5 @@
 import React,{useState,useRef} from 'react'
-import { StyleSheet, Animated, Dimensions, View} from 'react-native';
+import { Animated, StyleSheet, Dimensions, View} from 'react-native';
 import RecipeImage from '../components/RecipeImage'
 import Recipe from '../components/Recipe'
 import {PanGestureHandler} from 'react-native-gesture-handler';
