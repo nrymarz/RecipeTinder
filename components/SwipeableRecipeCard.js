@@ -1,6 +1,6 @@
 import React,{useState,useRef} from 'react'
 import { StyleSheet, Dimensions, View} from 'react-native';
-import Animated, {useSharedValue,useAnimatedStyle, useAnimatedGestureHandler} from 'react-native-reanimated'
+import Animated, {useSharedValue,useAnimatedStyle, useDerivedValue, withTiming} from 'react-native-reanimated'
 import RecipeImage from '../components/RecipeImage'
 import Recipe from '../components/Recipe'
 import {GestureDetector, Gesture} from 'react-native-gesture-handler';
@@ -12,6 +12,10 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,swipe,addRecipe
 
   const translationX = useSharedValue(0)
   const translationY = useSharedValue(0)
+  const y = useSharedValue(0)
+  const rotate = useDerivedValue(()=>{
+    return `${((y.value-275)*translationX.value*-1)/2000}deg`
+  })
 
   // const translationX = new Animated.Value(0)
   // const translateY = new Animated.Value(0)
@@ -73,25 +77,21 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,swipe,addRecipe
   //   })
   // ])
 
-  const handleSwipe = useAnimatedGestureHandler({
-    onStart:(event) => console.log(event),
-    onActive:(event,ctx) =>{
-      translationX.value = event.translationX
-      translationY.value = event.translationY
-    }
-  })
-
   const panGesture = Gesture.Pan()
-    .onBegin(()=>console.log('touched'))
-    .onStart(()=>console.log('touched'))
     .onUpdate((e) =>{
       translationX.value = e.translationX
       translationY.value = e.translationY
+      y.value = e.y
+      console.log(rotate.value)
+    })
+    .onEnd(()=>{
+      translationX.value = withTiming(0)
+      translationY.value = withTiming(0)
     })
 
   const animatedRecipeStyle= useAnimatedStyle(()=>{
     return{
-      transform:[{translateX:translationX.value},{translateY:translationY.value}]
+      transform:[{translateX:translationX.value},{translateY:translationY.value},{rotate:rotate.value}]
     }
   })
   
