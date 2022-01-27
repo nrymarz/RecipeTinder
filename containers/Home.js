@@ -25,6 +25,7 @@ export default function HomePage({addRecipe}) {
   },[course])
 
   const swipe = () =>{
+    console.log('swiped')
     setSwipedRecipe(recipe)
     setRecipe(nextRecipe)
     setNext(recipes.dequeue())
