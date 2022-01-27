@@ -52,6 +52,9 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,swipe,addRecipe
   //     outputRange:[1,0,0]
   // })
 
+  const labelOpacity = useDerivedValue(()=>(translationX.value)/135)
+  
+
   // const swipeLeftAnimation = Animated.timing(swipeX,{
   //   toValue: -650,
   //   duration: 150,
@@ -79,10 +82,10 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,swipe,addRecipe
 
   const panGesture = Gesture.Pan()
     .onUpdate((e) =>{
-      translationX.value = e.translationX
+      translationX.value = e.translationX*0.8
       translationY.value = e.translationY
       y.value = e.y
-      console.log(rotate.value)
+      
     })
     .onEnd(()=>{
       translationX.value = withTiming(0)
@@ -94,6 +97,12 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,swipe,addRecipe
       transform:[{translateX:translationX.value},{translateY:translationY.value},{rotate:rotate.value}]
     }
   })
+
+  const likeOpacityStyle = useAnimatedStyle(()=>{
+    return {opacity:labelOpacity.value}
+  })
+
+  const nopeOpacityStyle = useAnimatedStyle(()=>({opacity:-1*labelOpacity.value}))
   
   const handlePanStateChange = ({nativeEvent}) =>{
     const {state, translationX, translationY, y} = nativeEvent
@@ -130,8 +139,8 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,swipe,addRecipe
       </View>
       <GestureDetector enabled={!clicked} gesture={panGesture} >
         <Animated.View style={[styles.recipeCard, animatedRecipeStyle]}>
-          <Animated.Text style={[styles.label,styles.likeLabel]}>Like</Animated.Text>
-          <Animated.Text style={[styles.label,styles.nopeLabel]}>Nope</Animated.Text>
+          <Animated.Text style={[styles.label,styles.likeLabel,likeOpacityStyle]}>Like</Animated.Text>
+          <Animated.Text style={[styles.label,styles.nopeLabel,nopeOpacityStyle]}>Nope</Animated.Text>
           {clicked ? <Recipe recipe={recipe} click={click} /> : <RecipeImage click={click} recipe={recipe}/>}
         </Animated.View>
       </GestureDetector>
