@@ -9,26 +9,25 @@ import CourseMenu from './CourseMenu'
 const recipes = new Queue()
 
 export default function HomePage({addRecipe}) {
-
-  const [recipe, setRecipe] = useState({})
-  const [nextRecipe, setNext] = useState({})
-  const [swipedRecipe,setSwipedRecipe] = useState(null)
+  const [visibleRecipes,setVisibleRecipes] = useState({next:{},current:{},swiped:null})
   const [loading, setLoading] = useState(true)
   const [course, setCourse] = useState('All')
+
+  const setNext = (recipe)=> setVisibileRecipes(prevRecipes => ({...prevRecipes,next: recipe}))
+  const setCurrent = (recipe) => setVisibileRecipes(prevRecipes => ({...prevRecipes,current: recipe}))
   
   useEffect(()=>{
     recipes.clear()
-    setSwipedRecipe(null)
+    setVisibleRecipes({next:{},current:{},swiped:null})
     findRecipe(setNext,course)
-    findRecipe(setRecipe,course,setLoading)
+    findRecipe(setCurrent,course,setLoading)
     for(let i=0;i<10;i++) findRecipe((obj)=>recipes.enqueue(obj),course) 
   },[course])
 
   const swipe = () =>{
-    console.log('swiped')
-    setSwipedRecipe(recipe)
-    setRecipe(nextRecipe)
-    setNext(recipes.dequeue())
+    setVisibileRecipes(prevRecipes =>{
+      return {current:prevRecipes.next,swiped:prevRecipes.current,next:recipes.dequeue()}
+    })
     findRecipe((obj)=>recipes.enqueue(obj),course)
   }
 
@@ -41,11 +40,11 @@ export default function HomePage({addRecipe}) {
           <ActivityIndicator size={100} color='black'/>
         :
           <SwipeableRecipeCard 
-            recipe={recipe} 
-            swipedRecipe={swipedRecipe} 
+            recipe={visibleRecipes.current} 
+            swipedRecipe={visibleRecipes.swiped} 
             swipe={swipe}
             addRecipe={addRecipe} 
-            nextRecipe={nextRecipe}
+            nextRecipe={visibleRecipes.next}
           />
         }
       </View>
