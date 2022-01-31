@@ -50,7 +50,7 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,swipe,addRecipe
     const {state} = nativeEvent
     if(state===5){
       if(nativeEvent.translationX > 150) swipeRight()
-      else if(nativeEvent.translationX < -150) swipeLeft()
+      else if(nativeEvent.translationX < -150) swipe()
       else{
         translationX.value = withTiming(0)
         translationY.value = withTiming(0)
@@ -64,25 +64,21 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,swipe,addRecipe
     }
   })
 
-  const likeOpacityStyle = useAnimatedStyle(()=>({opacity:labelOpacity.value}))
-  const nopeOpacityStyle = useAnimatedStyle(()=>({opacity:-1*labelOpacity.value}))
-  const swipedLikeOpacityStyle = useAnimatedStyle(()=>({opacity:swipedLabelOpacity.value}))
-  const swipedNopeOpacityStyle = useAnimatedStyle(()=>({opacity:-1*swipedLabelOpacity.value}))
-
   const swipeAnimation = useAnimatedStyle(()=>{
     return{
       transform:[{translateX:swipedOnTranslationX.value},{translateY:swipedOnTranslationY.value},{rotate:swipedRecipeRotate.value}]
     }
   })
 
+  const likeOpacityStyle = useAnimatedStyle(()=>({opacity:labelOpacity.value}))
+  const nopeOpacityStyle = useAnimatedStyle(()=>({opacity:-1*labelOpacity.value}))
+  const swipedLikeOpacityStyle = useAnimatedStyle(()=>({opacity:swipedLabelOpacity.value}))
+  const swipedNopeOpacityStyle = useAnimatedStyle(()=>({opacity:-1*swipedLabelOpacity.value}))
+
   const swipeRight = () => {
     const oldRecipe = recipe
     swipe()
     addRecipe(prevRecipes => prevRecipes.find(r => r.id === oldRecipe.id) ? prevRecipes : [...prevRecipes, oldRecipe])
-  }
-
-  const swipeLeft = () =>{
-    swipe()
   }
 
   return(
