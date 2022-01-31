@@ -13,8 +13,8 @@ export default function HomePage({addRecipe}) {
   const [loading, setLoading] = useState(true)
   const [course, setCourse] = useState('All')
 
-  const setNext = (recipe)=> setVisibileRecipes(prevRecipes => ({...prevRecipes,next: recipe}))
-  const setCurrent = (recipe) => setVisibileRecipes(prevRecipes => ({...prevRecipes,current: recipe}))
+  const setNext = (recipe)=> setVisibleRecipes(prevRecipes => ({...prevRecipes,next: recipe}))
+  const setCurrent = (recipe) => setVisibleRecipes(prevRecipes => ({...prevRecipes,current: recipe}))
   
   useEffect(()=>{
     recipes.clear()
@@ -25,7 +25,7 @@ export default function HomePage({addRecipe}) {
   },[course])
 
   const swipe = () =>{
-    setVisibileRecipes(prevRecipes =>{
+    setVisibleRecipes(prevRecipes =>{
       return {current:prevRecipes.next,swiped:prevRecipes.current,next:recipes.dequeue()}
     })
     findRecipe((obj)=>recipes.enqueue(obj),course)
