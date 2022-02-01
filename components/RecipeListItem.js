@@ -7,20 +7,9 @@ import deleteIcon from '../assets/delete.png'
 
 export default function RecipeListItem({navigation, recipe, deleteRecipe}){
     const windowWidth = Dimensions.get('window').width
-
-    //const height = new Animated.Value(70)
-    //const rotate = new Animated.Value(0)
     const height = useSharedValue(70)
 
     const rotate = useSharedValue(0)
-
-    // const animatedDelete=() => {
-    //     Animated.timing(height,{
-    //         toValue: 0,
-    //         duration: 200,
-    //         useNativeDriver:false
-    //     }).start(()=> deleteRecipe(recipe.id))
-    // }
 
     const animatedDelete = () =>{
         height.value = withTiming(0,undefined,()=> runOnJS(deleteRecipe)(recipe.id))
@@ -33,7 +22,6 @@ export default function RecipeListItem({navigation, recipe, deleteRecipe}){
     })
 
     const renderRightSwipe = (progress, dragX) =>{
-
         return(
             <Animated.View style={[styles.recipeWrapper,{backgroundColor:'rgb(250,100,100)'},animatedHeight]}>
                 <View style={styles.deleteIconView}>
