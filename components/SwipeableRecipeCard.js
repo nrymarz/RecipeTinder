@@ -78,7 +78,7 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,swipe,addRecipe
   const swipeRight = () => {
     const oldRecipe = recipe
     swipe()
-    addRecipe(prevRecipes => prevRecipes.find(r => r.id === oldRecipe.id) ? prevRecipes : [...prevRecipes, oldRecipe])
+    addRecipe(prevRecipes => [...prevRecipes, oldRecipe])
   }
 
   return(

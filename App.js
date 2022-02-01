@@ -5,7 +5,6 @@ import MyRecipes from './containers/MyRecipes'
 import RecipePage from './containers/RecipePage'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationContainer} from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const Tab = createBottomTabNavigator()

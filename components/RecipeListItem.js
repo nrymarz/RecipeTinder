@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableHighlight, Dimensions } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue} from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming, runOnJS} from 'react-native-reanimated';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import deleteIcon from '../assets/delete.png'
 
@@ -23,10 +23,9 @@ export default function RecipeListItem({navigation, recipe, deleteRecipe}){
     // }
 
     const animatedDelete = () =>{
-        height.value = 0
-        deleteRecipe(recipe.id)
+        height.value = withTiming(0,undefined,()=> runOnJS(deleteRecipe)(recipe.id))
     }
-    
+
     const animatedHeight = useAnimatedStyle(() =>{
         return {
             height: height.value
@@ -36,7 +35,7 @@ export default function RecipeListItem({navigation, recipe, deleteRecipe}){
     const renderRightSwipe = (progress, dragX) =>{
 
         return(
-            <Animated.View style={[styles.recipeWrapper,{width:'100%',backgroundColor:'rgb(250,100,100)'}]}>
+            <Animated.View style={[styles.recipeWrapper,{backgroundColor:'rgb(250,100,100)'},animatedHeight]}>
                 <View style={styles.deleteIconView}>
                     <Animated.Image source={deleteIcon} style={{height:40,width:40}} />
                 </View>
@@ -47,7 +46,7 @@ export default function RecipeListItem({navigation, recipe, deleteRecipe}){
     return(
         <Swipeable renderRightActions={renderRightSwipe} rightThreshold={100} onSwipeableOpen={animatedDelete} friction={1.5}>
             <TouchableHighlight onPress={()=>navigation.navigate('Recipe Page',{recipe})} >
-                <Animated.View layout={Animated.Transition.Sequence}style={[styles.recipeWrapper, {backgroundColor:"rgb(225,225,225)"}, {height: height.value}]}>
+                <Animated.View style={[styles.recipeWrapper, {backgroundColor:"rgb(225,225,225)"}, animatedHeight]}>
                     <Image source={{uri: recipe.image}} style={{width:70, height:'100%', marginRight:10}}/>
                     <View style={{alignContent:'center',justifyContent:"center", width:windowWidth-90}}>
                         <Text>{recipe.title}</Text>
@@ -62,7 +61,7 @@ export default function RecipeListItem({navigation, recipe, deleteRecipe}){
 
 const styles = StyleSheet.create({
     recipeWrapper:{
-        flex:0,
+        flex:1,
         flexDirection:'row',
         overflow:'hidden',
         borderWidth:0,

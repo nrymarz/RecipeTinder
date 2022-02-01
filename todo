@@ -13,3 +13,4 @@ webscraper -- foodnetwork/custom JS Class
 
 convert scraper to async function
 
+update recipes state inside App.js to not rerender on adding recipes
