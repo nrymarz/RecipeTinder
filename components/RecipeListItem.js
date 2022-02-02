@@ -55,7 +55,7 @@ export default function RecipeListItem({navigation, recipe, deleteRecipe, listRe
     return(
         <>
             <Animated.Image source={deleteIcon} style={[styles.deleteIcon,{height:40,width:40},animatedIconStyle]} />
-            <PanGestureHandler onGestureEvent={handleSwipe} style={{flex:1}}>
+            <PanGestureHandler onGestureEvent={handleSwipe} minDist={20}>
                 <Animated.View style={[styles.recipeWrapper, {backgroundColor:"rgb(225,225,225)"}, animatedHeight]}>
                     <Image source={{uri: recipe.image}} style={{width:70, height:'100%', marginRight:10}}/>
                     <View style={{alignContent:'center',justifyContent:"center", width:windowWidth-90}}>
@@ -75,8 +75,7 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         overflow:'hidden',
         borderWidth:0,
-        borderRadius:5,
-        marginTop:5
+        borderRadius:5
     },
     deleteIcon:{
         right:20,

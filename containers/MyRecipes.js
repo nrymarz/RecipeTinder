@@ -1,4 +1,5 @@
 import React,{useState, useRef} from 'react';
+import { getNativeScrollRef } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import RecipeListItem from '../components/RecipeListItem'
