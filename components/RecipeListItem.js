@@ -1,18 +1,18 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableHighlight, Dimensions } from 'react-native';
+import React, { useRef } from 'react';
+import { StyleSheet, Text, View, Image, Dimensions, TouchableHighlight } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, useDerivedValue, withTiming, runOnJS, useAnimatedGestureHandler,interpolate, Extrapolation, withRepeat, withSequence} from 'react-native-reanimated';
 import {PanGestureHandler} from 'react-native-gesture-handler';
 import deleteIcon from '../assets/delete.png'
 
 const ITEM_HEIGHT = 70
 
-export default function RecipeListItem({navigation, recipe, deleteRecipe, listRef}){
+export default function RecipeListItem({navigation, recipe, deleteRecipe}){
     const windowWidth = Dimensions.get('window').width
     const height = useSharedValue(ITEM_HEIGHT)
     const translateX = useSharedValue(0)
     const rotation = useSharedValue(0)
     const scale = useDerivedValue(() => interpolate(translateX.value,[-100,0],[1,0.5],{extrapolateLeft: Extrapolation.CLAMP}))
-
+    const ref = useRef(null)
     const animatedDelete = () =>{
         'worklet'
         height.value = withTiming(0,undefined,()=> runOnJS(deleteRecipe)(recipe.id))
@@ -55,15 +55,17 @@ export default function RecipeListItem({navigation, recipe, deleteRecipe, listRe
     return(
         <>
             <Animated.Image source={deleteIcon} style={[styles.deleteIcon,{height:40,width:40},animatedIconStyle]} />
-            <PanGestureHandler onGestureEvent={handleSwipe} minDist={20}>
-                <Animated.View style={[styles.recipeWrapper, {backgroundColor:"rgb(225,225,225)"}, animatedHeight]}>
-                    <Image source={{uri: recipe.image}} style={{width:70, height:'100%', marginRight:10}}/>
-                    <View style={{alignContent:'center',justifyContent:"center", width:windowWidth-90}}>
-                        <Text>{recipe.title}</Text>
-                        <Text>by: {recipe.chef}</Text>
-                    </View>
-                </Animated.View>
-            </PanGestureHandler>
+            <TouchableHighlight ref={ref} onPress={()=>navigation.navigate('Recipe Page',{recipe})}>
+                <PanGestureHandler onGestureEvent={handleSwipe} minDist={20} simultaneousHandlers={ref}>
+                    <Animated.View style={[styles.recipeWrapper, {backgroundColor:"rgb(225,225,225)"}, animatedHeight]}>
+                        <Image source={{uri: recipe.image}} style={{width:70, height:'100%', marginRight:10}}/>
+                        <View style={{alignContent:'center',justifyContent:"center", width:windowWidth-90}}>
+                            <Text>{recipe.title}</Text>
+                            <Text>by: {recipe.chef}</Text>
+                        </View>
+                    </Animated.View>
+                </PanGestureHandler>
+            </TouchableHighlight>
         </>
     )
 }
