@@ -1,19 +1,20 @@
-import React,{useState, useEffect} from 'react';
+import React,{useState, useRef} from 'react';
+import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {FlatList} from 'react-native';
 import RecipeListItem from '../components/RecipeListItem'
 import CourseMenu from './CourseMenu'
 
 export default function MyRecipes({navigation, recipes, setRecipes}){
 
     const [course,setCourse] = useState('All')
+    const listRef = useRef(null)
 
     function deleteRecipe(id){
         setRecipes(recipes.filter(r => r.id !== id))
     }
 
     const renderRecipe = ({item}) =>{
-        return <RecipeListItem navigation={navigation} recipe={item} deleteRecipe={deleteRecipe}/>
+        return <RecipeListItem navigation={navigation} recipe={item} deleteRecipe={deleteRecipe} listRef={listRef}/>
     }
 
     const filteredRecipes = () =>{
@@ -30,6 +31,7 @@ export default function MyRecipes({navigation, recipes, setRecipes}){
         <SafeAreaView style={{margin:10, alignItems:'center',flex:1}}>
             <CourseMenu activeCourse={course} setCourse={setCourse} />
             <FlatList 
+                ref={listRef}
                 data={filteredRecipes()}
                 renderItem={renderRecipe}
             />

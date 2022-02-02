@@ -1,39 +1,61 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableHighlight, Dimensions } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming, runOnJS} from 'react-native-reanimated';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
+import Animated, { useAnimatedStyle, useSharedValue, useDerivedValue, withTiming, runOnJS, useAnimatedGestureHandler,interpolate, Extrapolation, withRepeat, withSequence} from 'react-native-reanimated';
+import {PanGestureHandler} from 'react-native-gesture-handler';
 import deleteIcon from '../assets/delete.png'
 
+const ITEM_HEIGHT = 70
 
-export default function RecipeListItem({navigation, recipe, deleteRecipe}){
+export default function RecipeListItem({navigation, recipe, deleteRecipe, listRef}){
     const windowWidth = Dimensions.get('window').width
-    const height = useSharedValue(70)
-
-    const rotate = useSharedValue(0)
+    const height = useSharedValue(ITEM_HEIGHT)
+    const translateX = useSharedValue(0)
+    const rotation = useSharedValue(0)
+    const scale = useDerivedValue(() => interpolate(translateX.value,[-100,0],[1,0.5],{extrapolateLeft: Extrapolation.CLAMP}))
 
     const animatedDelete = () =>{
+        'worklet'
         height.value = withTiming(0,undefined,()=> runOnJS(deleteRecipe)(recipe.id))
     }
 
     const animatedHeight = useAnimatedStyle(() =>{
         return {
-            height: height.value
+            height: height.value,
+            transform:[{translateX: translateX.value}]
         }
     })
 
-    const renderRightSwipe = (progress, dragX) =>{
-        return(
-            <Animated.View style={[styles.recipeWrapper,{backgroundColor:'rgb(250,100,100)'},animatedHeight]}>
-                <View style={styles.deleteIconView}>
-                    <Animated.Image source={deleteIcon} style={{height:40,width:40}} />
-                </View>
-            </Animated.View>
-        )
+    const jingleAnimation = () =>{
+        'worklet'
+        rotation.value = withRepeat(withSequence(withTiming(20),withTiming(-20)),1,undefined, ()=>rotation.value=withTiming(0))
     }
+
+    const animatedIconStyle = useAnimatedStyle(()=>({transform:[{scale: scale.value},{rotate: `${rotation.value} deg`}]}))
+    
+    const handleSwipe = useAnimatedGestureHandler({
+        onStart:(_,ctx) =>{
+            ctx.jingled = false
+        },
+        onActive: (e,ctx) =>{
+            if(e.translationX < 0) translateX.value = e.translationX
+            if(!ctx.jingled && e.translationX < -100){
+                ctx.jingled = true
+                jingleAnimation()
+            }
+        },
+        onEnd: e =>{
+            if(e.translationX < -100){
+                translateX.value = withTiming(-windowWidth)
+                animatedDelete()
+            }
+            else translateX.value = withTiming(0)
+        }
+    })
     
     return(
-        <Swipeable renderRightActions={renderRightSwipe} rightThreshold={100} onSwipeableOpen={animatedDelete} friction={1.5}>
-            <TouchableHighlight onPress={()=>navigation.navigate('Recipe Page',{recipe})} >
+        <>
+            <Animated.Image source={deleteIcon} style={[styles.deleteIcon,{height:40,width:40},animatedIconStyle]} />
+            <PanGestureHandler onGestureEvent={handleSwipe} style={{flex:1}}>
                 <Animated.View style={[styles.recipeWrapper, {backgroundColor:"rgb(225,225,225)"}, animatedHeight]}>
                     <Image source={{uri: recipe.image}} style={{width:70, height:'100%', marginRight:10}}/>
                     <View style={{alignContent:'center',justifyContent:"center", width:windowWidth-90}}>
@@ -41,8 +63,8 @@ export default function RecipeListItem({navigation, recipe, deleteRecipe}){
                         <Text>by: {recipe.chef}</Text>
                     </View>
                 </Animated.View>
-            </TouchableHighlight>
-        </Swipeable>
+            </PanGestureHandler>
+        </>
     )
 }
 
@@ -53,13 +75,12 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         overflow:'hidden',
         borderWidth:0,
-        borderRadius:5
+        borderRadius:5,
+        marginTop:5
     },
-    deleteIconView:{
-        marginLeft:'auto',
-        marginRight:5,
-        marginTop:'auto',
-        marginBottom:'auto',
-        paddingHorizontal:5,
+    deleteIcon:{
+        right:20,
+        top:(ITEM_HEIGHT-40)/2,
+        position:'absolute'
     }
 })
