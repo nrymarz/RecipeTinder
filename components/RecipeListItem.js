@@ -1,6 +1,18 @@
 import React, { useRef } from 'react';
 import { StyleSheet, Text, View, Image, Dimensions, TouchableHighlight } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, useDerivedValue, withTiming, runOnJS, useAnimatedGestureHandler,interpolate, Extrapolation, withRepeat, withSequence} from 'react-native-reanimated';
+import Animated, 
+    { 
+        useAnimatedStyle,
+        useSharedValue, 
+        useDerivedValue, 
+        withTiming, 
+        runOnJS, 
+        useAnimatedGestureHandler,
+        interpolate, 
+        Extrapolation, 
+        withRepeat, 
+        withSequence
+    } from 'react-native-reanimated';
 import {PanGestureHandler} from 'react-native-gesture-handler';
 import deleteIcon from '../assets/delete.png'
 
@@ -27,7 +39,7 @@ export default function RecipeListItem({navigation, recipe, deleteRecipe}){
 
     const jingleAnimation = () =>{
         'worklet'
-        rotation.value = withRepeat(withSequence(withTiming(20),withTiming(-20)),1,undefined, ()=>rotation.value=withTiming(0))
+        rotation.value = withSequence(withTiming(12),withTiming(-12),withTiming(0))
     }
 
     const animatedIconStyle = useAnimatedStyle(()=>({transform:[{scale: scale.value},{rotate: `${rotation.value} deg`}]}))
@@ -42,6 +54,7 @@ export default function RecipeListItem({navigation, recipe, deleteRecipe}){
                 ctx.jingled = true
                 jingleAnimation()
             }
+            else if(e.translationX > -100) ctx.jingled = false
         },
         onEnd: e =>{
             if(e.translationX < -100){
