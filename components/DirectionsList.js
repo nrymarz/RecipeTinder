@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { Text, View, FlatList } from 'react-native';
 
 export default function DirectionsList({directions}){
     const [displayFooter, setDisplayFooter] = useState(true)

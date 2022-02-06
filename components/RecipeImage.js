@@ -1,7 +1,5 @@
 import React from 'react'
 import { StyleSheet, Text, View,  Image, TouchableOpacity } from 'react-native';
-import left from '../assets/left-arrow.png'
-import right from '../assets/right-arrow.png'
 
 export default function RecipeImage({click, recipe}){
   if(!recipe) return null

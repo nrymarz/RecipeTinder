@@ -3,7 +3,6 @@ import React from 'react';
 import HomePage from "./containers/Home"
 import MyRecipes from './containers/MyRecipes'
 import RecipePage from './containers/RecipePage'
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationContainer} from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
