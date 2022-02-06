@@ -1,21 +1,46 @@
-import React,{useState, useRef} from 'react';
-import { getNativeScrollRef } from 'react-native'
+import React,{useState, useEffect} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import RecipeListItem from '../components/RecipeListItem'
 import CourseMenu from './CourseMenu'
 
-export default function MyRecipes({navigation, recipes, setRecipes}){
-
+export default function MyRecipes({navigation}){
     const [course,setCourse] = useState('All')
-    const listRef = useRef(null)
+    const [recipes,setRecipes] = useState([])
 
-    function deleteRecipe(id){
-        setRecipes(recipes.filter(r => r.id !== id))
+    useEffect( async ()=>{
+        loadStorage
+        const loadListener = navigation.addListener('focus',loadStorage)
+
+        return loadListener
+    },[])
+
+    const loadStorage = async ()=>{
+        try{
+            let recipes = await AsyncStorage.getItem("recipes")
+            setRecipes(JSON.parse(recipes))
+        } catch(e){
+            alert(e)
+        }
+    }
+
+    const updateStorage = async () =>{
+        try{
+            await AsyncStorage.setItem("recipes",JSON.stringify(recipes))
+        }
+        catch(e){
+            alert(e)
+        }
+    }
+
+    async function deleteRecipe(id){
+        await setRecipes(recipes.filter(r => r.id !== id))
+        updateStorage()
     }
 
     const renderRecipe = ({item}) =>{
-        return <RecipeListItem navigation={navigation} recipe={item} deleteRecipe={deleteRecipe} listRef={listRef}/>
+        return <RecipeListItem navigation={navigation} recipe={item} deleteRecipe={deleteRecipe}/>
     }
 
     const filteredRecipes = () =>{
@@ -32,7 +57,6 @@ export default function MyRecipes({navigation, recipes, setRecipes}){
         <SafeAreaView style={{margin:10, alignItems:'center',flex:1}}>
             <CourseMenu activeCourse={course} setCourse={setCourse} />
             <FlatList 
-                ref={listRef}
                 data={filteredRecipes()}
                 renderItem={renderRecipe}
             />

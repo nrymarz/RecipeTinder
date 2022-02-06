@@ -76,9 +76,8 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,swipe,addRecipe
   const swipedNopeOpacityStyle = useAnimatedStyle(()=>({opacity:-1*swipedLabelOpacity.value}))
 
   const swipeRight = () => {
-    const oldRecipe = recipe
+    addRecipe(recipe)
     swipe()
-    addRecipe(prevRecipes => [...prevRecipes, oldRecipe])
   }
 
   return(
