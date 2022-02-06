@@ -8,7 +8,7 @@ import CourseMenu from './CourseMenu'
 
 const recipes = new Queue()
 
-export default function HomePage({addRecipe}) {
+export default function HomePage() {
   const [visibleRecipes,setVisibleRecipes] = useState({next:{},current:{},swiped:null})
   const [loading, setLoading] = useState(true)
   const [course, setCourse] = useState('All')
@@ -43,7 +43,6 @@ export default function HomePage({addRecipe}) {
             recipe={visibleRecipes.current} 
             swipedRecipe={visibleRecipes.swiped} 
             swipe={swipe}
-            addRecipe={addRecipe} 
             nextRecipe={visibleRecipes.next}
           />
         }

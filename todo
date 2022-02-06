@@ -3,14 +3,9 @@ fix directions not taking full space if not many ingredients
 Use empty space in bottom of card
 Create colors file inside config folder and refactor to use colors from there.
 
-Refactor Animations to use Reanimated + Redash
-Refactor code in Recipelist item to reduce unneccsary views and such
-    change 100%width to flex:1 
 
 webscraper -- foodnetwork/custom JS Class
     fetch different sites?
     
 
 convert scraper to async function
-
-update recipes state inside App.js to not rerender on adding recipes

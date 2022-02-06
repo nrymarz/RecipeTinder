@@ -1,14 +1,12 @@
 import React,{useState,useEffect} from 'react'
-import { StyleSheet, Dimensions, View} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StyleSheet, View} from 'react-native';
 import Animated, {useSharedValue,useAnimatedStyle, useAnimatedGestureHandler, useDerivedValue, withTiming} from 'react-native-reanimated'
 import RecipeImage from '../components/RecipeImage'
 import Recipe from '../components/Recipe'
 import {PanGestureHandler} from 'react-native-gesture-handler';
 
-const windowHeight = Dimensions.get('window').height
-const cardHeight = windowHeight - 105
-
-export default function SwipeableRecipeCard({recipe,swipedRecipe,swipe,addRecipe,nextRecipe}){
+export default function SwipeableRecipeCard({recipe,swipedRecipe,swipe,nextRecipe}){
   const [clicked,click] = useState(false)
  
   const translationX = useSharedValue(0)
@@ -37,6 +35,17 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,swipe,addRecipe
     translationY.value = 0
     swipedOnTranslationX.value = withTiming(swipedCardDestination)
   },[swipedRecipe])
+
+  
+  const addRecipeToStorage = async () =>{
+    try{
+      const json = await AsyncStorage.getItem("recipes")
+      const recipes = json === null ? [recipe] : [recipe].concat(JSON.parse(json))
+      await AsyncStorage.setItem("recipes", JSON.stringify(recipes))
+    }catch(e){
+      alert(e)
+    }
+  }
 
   const handlePan = useAnimatedGestureHandler({
     onActive:(e)=>{
@@ -76,7 +85,7 @@ export default function SwipeableRecipeCard({recipe,swipedRecipe,swipe,addRecipe
   const swipedNopeOpacityStyle = useAnimatedStyle(()=>({opacity:-1*swipedLabelOpacity.value}))
 
   const swipeRight = () => {
-    addRecipe(recipe)
+    addRecipeToStorage()
     swipe()
   }
 
