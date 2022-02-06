@@ -9,8 +9,7 @@ import Animated,
         runOnJS, 
         useAnimatedGestureHandler,
         interpolate, 
-        Extrapolation, 
-        withRepeat, 
+        Extrapolation,  
         withSequence
     } from 'react-native-reanimated';
 import {PanGestureHandler} from 'react-native-gesture-handler';

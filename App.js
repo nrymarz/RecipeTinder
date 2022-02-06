@@ -17,7 +17,7 @@ export default function App(){
       const json = await AsyncStorage.getItem("recipes")
       const recipes = json === null ? [recipe] : [recipe].concat(JSON.parse(json))
       await AsyncStorage.setItem("recipes", JSON.stringify(recipes))
-    } catch(e){
+    }catch(e){
       alert(e)
     }
   }

@@ -6,26 +6,34 @@ import RecipeListItem from '../components/RecipeListItem'
 import CourseMenu from './CourseMenu'
 
 export default function MyRecipes({navigation}){
+    const [firstLoad, setFirstLoad] = useState(true)
     const [course,setCourse] = useState('All')
     const [recipes,setRecipes] = useState([])
 
-    useEffect( async ()=>{
-        loadStorage
+    console.log(recipes.length)
+    useEffect(()=>{
+        loadStorage()
         const loadListener = navigation.addListener('focus',loadStorage)
 
         return loadListener
     },[])
 
+    useEffect(()=>{
+        if(firstLoad) setFirstLoad(false)
+        else updateStorage()
+    },[recipes])
+
     const loadStorage = async ()=>{
         try{
-            let recipes = await AsyncStorage.getItem("recipes")
-            setRecipes(JSON.parse(recipes))
+            let recipesJSON = await AsyncStorage.getItem("recipes")
+            setRecipes(JSON.parse(recipesJSON))
         } catch(e){
             alert(e)
         }
     }
 
     const updateStorage = async () =>{
+        console.log('updating recipes to ' + recipes.length + " number of recipes")
         try{
             await AsyncStorage.setItem("recipes",JSON.stringify(recipes))
         }
@@ -34,9 +42,8 @@ export default function MyRecipes({navigation}){
         }
     }
 
-    async function deleteRecipe(id){
-        await setRecipes(recipes.filter(r => r.id !== id))
-        updateStorage()
+    const deleteRecipe = (id) =>{
+        setRecipes(prevRecipes => prevRecipes.filter(r => r.id !== id))
     }
 
     const renderRecipe = ({item}) =>{
