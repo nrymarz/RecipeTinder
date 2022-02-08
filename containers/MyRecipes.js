@@ -1,5 +1,6 @@
 import React,{useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ActivityIndicator } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import RecipeListItem from '../components/RecipeListItem'
@@ -9,8 +10,9 @@ export default function MyRecipes({navigation}){
     const [firstLoad, setFirstLoad] = useState(true)
     const [course,setCourse] = useState('All')
     const [recipes,setRecipes] = useState([])
+    const [loading, setLoading] = useState(true)
 
-    console.log(recipes.length)
+    
     useEffect(()=>{
         loadStorage()
         const loadListener = navigation.addListener('focus',loadStorage)
@@ -25,15 +27,16 @@ export default function MyRecipes({navigation}){
 
     const loadStorage = async ()=>{
         try{
+            setLoading(true)
             let recipesJSON = await AsyncStorage.getItem("recipes")
-            setRecipes(JSON.parse(recipesJSON))
+            await setRecipes(JSON.parse(recipesJSON))
+            setLoading(false)
         } catch(e){
             alert(e)
         }
     }
 
     const updateStorage = async () =>{
-        console.log('updating recipes to ' + recipes.length + " number of recipes")
         try{
             await AsyncStorage.setItem("recipes",JSON.stringify(recipes))
         }
@@ -63,10 +66,14 @@ export default function MyRecipes({navigation}){
     return(
         <SafeAreaView style={{margin:10, alignItems:'center',flex:1}}>
             <CourseMenu activeCourse={course} setCourse={setCourse} />
-            <FlatList 
-                data={filteredRecipes()}
-                renderItem={renderRecipe}
-            />
+            {loading ?
+                <ActivityIndicator size={100} color='black'/>
+            :
+                <FlatList 
+                    data={filteredRecipes()}
+                    renderItem={renderRecipe}
+                />
+            }
         </SafeAreaView>
     )
 }
