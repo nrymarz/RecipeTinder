@@ -33,7 +33,7 @@ export default function DirectionsList({directions}){
     }
 
     return(
-        <View style={{backgroundColor:"antiquewhite", maxHeight:"38%"}} >
+        <View style={{backgroundColor:"antiquewhite", flex:1}} >
             <FlatList 
                 ItemSeparatorComponent={directionSeperator} 
                 data={directions} 
